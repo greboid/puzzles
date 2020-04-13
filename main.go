@@ -18,11 +18,9 @@ import (
 )
 
 var (
-	templates = template.Must(template.ParseFiles(
-		"./templates/main.css",
-		"./templates/index.html",
-	))
-	wordList = flag.String("word-list", "wordlist.txt", "Path of the word list file")
+	templates *template.Template
+	wordList = flag.String("word-list", "/app/wordlist.txt", "Path of the word list file")
+	templateDirectory = flag.String("template-dir", "/app/templates", "Path of the templates directory")
 	words    *kowalski.Node
 	mutex    *sync.Mutex
 )
@@ -47,6 +45,7 @@ func main() {
 		log.Fatalf("Unable to load words: %s", err.Error())
 	}
 	mutex = &sync.Mutex{}
+	reloadTemplates()
 	templateChanges()
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", indexHandler)
@@ -92,10 +91,7 @@ func templateReloader(watcher *fsnotify.Watcher) {
 			if !ok {
 				return
 			}
-			templates = template.Must(template.ParseFiles(
-				"./templates/main.css",
-				"./templates/index.html",
-			))
+			reloadTemplates()
 		case err, ok := <-watcher.Errors:
 			if !ok {
 				return
@@ -103,6 +99,13 @@ func templateReloader(watcher *fsnotify.Watcher) {
 			log.Println("error:", err)
 		}
 	}
+}
+
+func reloadTemplates() {
+	templates = template.Must(template.ParseFiles(
+		filepath.Join(*templateDirectory, "main.css"),
+		filepath.Join(*templateDirectory, "index.html"),
+	))
 }
 
 func requestLogger(targetMux http.Handler) http.Handler {
