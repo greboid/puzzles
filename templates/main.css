@@ -15,6 +15,10 @@ h1 {
     display: inline;
 }
 
+.inlineform input {
+    margin-left: 1em;
+}
+
 input:invalid {
     border: 1px solid #900;
     background-color: #FDD;
@@ -22,4 +26,29 @@ input:invalid {
 
 input:valid {
     border: 1px solid black;
+}
+
+.list {
+    width: 50em;
+    margin: 0 auto;
+    counter-reset: ideas;
+}
+
+.list>ol {
+    list-style: none;
+    font-size: 15px;
+    padding: 0;
+    margin-bottom: 4em;
+}
+
+.list>ol>li {
+    counter-increment: ideas;
+    padding: 0.3em;
+}
+
+.list>ol>li::marker {
+    content: counter(ideas) ".\00a0\00a0";
+    color: black;
+    background: #93C775;
+    border-radius: 2em;
 }

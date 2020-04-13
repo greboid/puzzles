@@ -10,8 +10,7 @@
         <div class="list">
             <ol>
                 <li>Source</li>
-                <li>EXIF</li>
-                <li>Patterns</li>
+                <li>Check EXIF data</li>
                 <li id="anagramItem">
                     <form class="inlineform" id="anagramForm" action="/anagram">
                         <label>Anagram<input type="text" id="anagramInput" name="input" required pattern="^[A-Za-z0-9?]+$" maxlength="12" /></label>
@@ -29,6 +28,7 @@
                 <li>Can the groups be morse/binary encoded?  Check 1st, 9th, 17th etc for 0/1/something in common</li>
                 <li>Google several elements, is there anything in common?</li>
                 <li>Does the title of the puzzle help at all?</li>
+                <li>If this is a file - run through strings/file to see what its like</li>
             </ol>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/axios@0.19.2/dist/axios.min.js" integrity="sha256-T/f7Sju1ZfNNfBh7skWn0idlCBcI3RwdLSS4/I7NQKQ=" crossorigin="anonymous"></script>
