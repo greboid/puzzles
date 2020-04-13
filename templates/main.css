@@ -1,0 +1,47 @@
+.list {
+    width: 50em;
+    margin: 0 auto;
+}
+
+.list ol {
+    counter-reset: li;
+    list-style: none;
+    *list-style: decimal;
+    font-size: 15px;
+    font-family: 'Raleway', sans-serif;
+    padding: 0;
+    margin-bottom: 4em;
+}
+
+.list ol ol {
+    margin: 0 0 0 2em;
+}
+
+.list li {
+    position: relative;
+    display: block;
+    padding: .4em .4em .4em 2em;
+    margin: .5em 0;
+    background: #93C775;
+    color: #000;
+    text-decoration: none;
+    border-radius: 10em;
+}
+
+.list li:before {
+    content: counter(li);
+    counter-increment: li;
+    position: absolute;
+    left: -1em;
+    top: 50%;
+    margin-top: -1.3em;
+    background: #93C775;
+    height: 2em;
+    width: 2em;
+    line-height: 2em;
+    border: .3em solid #fff;
+    text-align: center;
+    font-weight: bold;
+    border-radius: 2em;
+    color: #FFF;
+}
