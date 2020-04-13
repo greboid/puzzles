@@ -1,3 +1,11 @@
+html, body {
+    height: 100%;
+}
+body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
 .list {
     width: 50em;
     margin: 0 auto;
@@ -46,7 +54,6 @@
 }
 
 h1 {
-    width: 50em;
     margin: 0 auto;
 }
 
