@@ -6,7 +6,6 @@
 .list ol {
     counter-reset: li;
     list-style: none;
-    *list-style: decimal;
     font-size: 15px;
     font-family: 'Raleway', sans-serif;
     padding: 0;
@@ -44,4 +43,22 @@
     font-weight: bold;
     border-radius: 2em;
     color: #FFF;
+}
+
+h1 {
+    width: 50em;
+    margin: 0 auto;
+}
+
+.inlineform {
+    display: inline;
+}
+
+input:invalid {
+    border: 1px solid #900;
+    background-color: #FDD;
+}
+
+input:valid {
+    border: 1px solid black;
 }
