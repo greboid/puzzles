@@ -55,6 +55,8 @@ function handleResponse(results, element) {
     if (results === null) {
     } else if (results.length === 0) {
         htmlString += "<li>No Results</li>"
+    } else if (results.length > 1000) {
+        htmlString += "<li>Over 1000 results, please narrow down</li>"
     } else {
         results.forEach(function (result) {
             htmlString += "<li>" + result + "</li>"
