@@ -5,10 +5,10 @@ function ready() {
     document.forms.anagramForm.onsubmit = () => { handleAnagram(); return false }
     document.forms.matchForm.onsubmit = () => { handleMatch(); return false }
     document.querySelector("#anagramForm span").onclick = function() {
-        handleResponse([], document.getElementById("anagramItem"))
+        handleResponse(null, document.getElementById("anagramItem"))
     }
     document.querySelector("#matchForm span").onclick = function() {
-        handleResponse([], document.getElementById("matchItem"))
+        handleResponse(null, document.getElementById("matchItem"))
     }
 }
 
@@ -52,9 +52,14 @@ function handleResponse(results, element) {
         }
     })
     let htmlString = "<ul>"
-    results.forEach(function(result) {
-        htmlString += "<li>"+result+"</li>"
-    })
+    if (results === null) {
+    } else if (results.length === 0) {
+        htmlString += "<li>No Results</li>"
+    } else {
+        results.forEach(function (result) {
+            htmlString += "<li>" + result + "</li>"
+        })
+    }
     htmlString += "</ul>"
     element.insertAdjacentElement("beforeend", htmlToElement(htmlString))
 }
