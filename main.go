@@ -24,17 +24,17 @@ var (
 	))
 	wordList = flag.String("word-list", "wordlist.txt", "Path of the word list file")
 	words    *kowalski.Node
-	mutex *sync.Mutex
+	mutex    *sync.Mutex
 )
 
 type OutputArray struct {
 	Success bool
-	Result []string
+	Result  []string
 }
 
 type OutputString struct {
 	Success bool
-	Result string
+	Result  string
 }
 
 func main() {
@@ -165,7 +165,7 @@ func getResults(input string, function func(string) []string) (output []byte, st
 	if input == "" || len(input) > 9 {
 		output, _ = json.Marshal(OutputString{
 			Success: false,
-			Result: "Invalid input",
+			Result:  "Invalid input",
 		})
 		statusCode = http.StatusBadRequest
 	} else {
