@@ -1,13 +1,14 @@
 github.com/bwmarrin/discordgo v0.20.2/go.mod h1:O9S4p+ofTFwB02em7jkpkV8M3R0/PUVOwN61zSZ0r4Q=
 github.com/csmith/kowalski v0.0.0-20200413151919-98744551e706 h1:P3MMk4l/7cyKJO9Uynuw9GGRYiRYHTIU0jdls1DCwCM=
 github.com/csmith/kowalski v0.0.0-20200413151919-98744551e706/go.mod h1:9iUipr86uKwNRavcrr898aPsJEYWwM/NJv6I1dbkUg8=
+github.com/csmith/kowalski v1.1.0 h1:hYnHYCOa4G3cAiw3Nx6JntqEnqytynH0ipTlyo2JNzQ=
+github.com/csmith/kowalski v1.1.0/go.mod h1:9iUipr86uKwNRavcrr898aPsJEYWwM/NJv6I1dbkUg8=
 github.com/fsnotify/fsnotify v1.4.9 h1:hsms1Qyu0jgnwNXIxa+/V/PDsU6CfLf6CNO8H7IWoS4=
 github.com/fsnotify/fsnotify v1.4.9/go.mod h1:znqG4EE+3YCdAaPaxE2ZRY/06pZUdp0tY4IgpuI1SZQ=
 github.com/gorilla/websocket v1.4.0/go.mod h1:E7qHFY5m1UJ88s3WnNqhKjPHQ0heANvMoAMk2YaljkQ=
 github.com/kouhin/envflag v0.0.0-20150818174321-0e9a86061649 h1:l95EUBxc0iMtMeam3pHFb9jko9ntaLYe2Nc+2evKElM=
 github.com/kouhin/envflag v0.0.0-20150818174321-0e9a86061649/go.mod h1:BT0PpXv8Y4EL/WUsQmYsQ2FSB9HwQXIuvY+pElZVdFg=
 golang.org/x/crypto v0.0.0-20181030102418-4d3f4d9ffa16/go.mod h1:6SG95UA2DQfeDnfUPMdvaQW0Q7yPrPDi9nlGo2tz2b4=
-golang.org/x/sys v0.0.0-20191005200804-aed5e4c7ecf9 h1:L2auWcuQIvxz9xSEqzESnV/QN/gNRXNApHi3fYwl2w0=
 golang.org/x/sys v0.0.0-20191005200804-aed5e4c7ecf9/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
 golang.org/x/sys v0.0.0-20200409092240-59c9f1ba88fa h1:mQTN3ECqfsViCNBgq+A40vdwhkGykrrQlYe3mPj6BoU=
 golang.org/x/sys v0.0.0-20200409092240-59c9f1ba88fa/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
