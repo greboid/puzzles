@@ -50,6 +50,7 @@ func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", indexHandler)
 	mux.HandleFunc("/css", cssHandler)
+	mux.HandleFunc("/js", jsHandler)
 	mux.HandleFunc("/anagram", anagramHandler)
 	mux.HandleFunc("/match", matchHandler)
 	log.Print("Starting server.")
@@ -105,6 +106,7 @@ func reloadTemplates() {
 	templates = template.Must(template.ParseFiles(
 		filepath.Join(*templateDirectory, "main.css"),
 		filepath.Join(*templateDirectory, "index.html"),
+		filepath.Join(*templateDirectory, "main.js"),
 	))
 }
 
@@ -124,6 +126,16 @@ func requestLogger(targetMux http.Handler) http.Handler {
 func cssHandler(writer http.ResponseWriter, _ *http.Request) {
 	writer.Header().Set("Content-Type", "text/css; charset=utf-8")
 	err := templates.ExecuteTemplate(writer, "main.css", nil)
+	if err != nil {
+		log.Printf("Fucked up: %s", err.Error())
+		writer.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+}
+
+func jsHandler(writer http.ResponseWriter, _ *http.Request) {
+	writer.Header().Set("Content-Type", "application/javascript; charset=utf-8")
+	err := templates.ExecuteTemplate(writer, "main.js", nil)
 	if err != nil {
 		log.Printf("Fucked up: %s", err.Error())
 		writer.WriteHeader(http.StatusInternalServerError)
