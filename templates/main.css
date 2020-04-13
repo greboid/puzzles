@@ -20,8 +20,9 @@ h1 {
 }
 
 input:invalid {
-    border: 1px solid #900;
+    border: 1px solid black;
     background-color: #FDD;
+    box-shadow: none;
 }
 
 input:valid {
