@@ -177,7 +177,7 @@ func matchHandler(writer http.ResponseWriter, request *http.Request) {
 }
 
 func getResults(input string, function func(string) []string) (output []byte, statusCode int) {
-	if input == "" || len(input) > 9 {
+	if input == "" || len(input) > 13 {
 		output, _ = json.Marshal(OutputString{
 			Success: false,
 			Result:  "Invalid input",

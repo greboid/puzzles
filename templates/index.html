@@ -14,13 +14,13 @@
                 <li>Patterns</li>
                 <li id="anagramItem">
                     <form class="inlineform" id="anagramForm" action="/anagram">
-                        <label>Anagram<input type="text" id="anagramInput" name="input" required pattern="^[A-Za-z0-9?]+$"/></label>
+                        <label>Anagram<input type="text" id="anagramInput" name="input" required pattern="^[A-Za-z0-9?]+$" maxlength="12" /></label>
                         <span>❌</span>
                     </form>
                 </li>
                 <li id="matchItem">
                     <form class="inlineform" id="matchForm" action="/match">
-                        <label for="input">Matches<input type="text" id="matchInput" name="input" required pattern="^[A-Za-z0-9?]+$"/></label>
+                        <label for="input">Matches<input type="text" id="matchInput" name="input" required pattern="^[A-Za-z0-9?]+$" maxlength="12" /></label>
                         <span>❌</span>
                     </form>
                 </li>
