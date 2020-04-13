@@ -24,6 +24,7 @@ COPY --from=builder /etc/group /etc/group
 COPY --from=builder /usr/share/zoneinfo /usr/share/zoneinfo
 
 COPY --from=builder /app/main /puzzles-site
+COPY ./templates/. /app/templates
 EXPOSE 8080
 USER appuser:appuser
 CMD ["/puzzles-site"]
