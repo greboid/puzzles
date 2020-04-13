@@ -30,9 +30,8 @@ input:valid {
 }
 
 .list {
-    width: 50em;
-    margin: 0 auto;
     counter-reset: ideas;
+    margin: 1em;
 }
 
 .list>ol {
@@ -52,4 +51,9 @@ input:valid {
     color: black;
     background: #93C775;
     border-radius: 2em;
+}
+#ideas {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 }
