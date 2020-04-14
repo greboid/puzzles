@@ -28,6 +28,7 @@ input:valid {
 #ideas {
     counter-reset: ideas;
     margin: 1em;
+    min-width: min(90vw, 900px);
 }
 
 #ideas>ol {
@@ -35,6 +36,7 @@ input:valid {
     font-size: 15px;
     padding: 0;
     margin-bottom: 4em;
+    width: 100%;
 }
 
 #ideas>ol>li {
