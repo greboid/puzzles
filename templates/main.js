@@ -18,7 +18,7 @@ function showCategories(ideas) {
     let children = [ ...radios.children ];
     children.forEach(function(child) {
         if (child.tagName !== "FORM") {
-            element.removeChild(child)
+            radios.removeChild(child)
         }
     })
     let categories = []
@@ -28,20 +28,32 @@ function showCategories(ideas) {
         }
     })
     categories.forEach(function(category) {
-        radios.appendChild(htmlToElement('<label><input checked type="checkbox" name="'+category+'" value="'+category+'"/>'+category+'</label>'))
+        radios.appendChild(htmlToElement('<label><input type="checkbox" name="'+category+'" value="'+category+'"/>'+category+'</label>'))
+    })
+    document.querySelectorAll("#categories input[type=checkbox]").forEach(function(value) {
+        value.addEventListener('change', e => handleCategoryChange(e))
     })
 }
 
 function handleCategoryChange(event) {
-    console.log(event)
+    axios.get('/ideas')
+        .then(function(response){
+            showIdeas(document.getElementById("ideas"), response.data)
+        })
+        .catch(function(error){
+            showIdeas(document.getElementById("ideas"), null)
+        })
 }
 
 function showIdeas(element, ideas) {
+    [ ...document.getElementById("ideas").children ].forEach(function(child) {
+        element.removeChild(child)
+    })
     if (ideas === null) {
         element.appendChild(htmlToElement("<p>No Ideas.</p>"))
         return
     }
-    let radios = [ ...document.forms.categories].filter(ch => ch.checked ).map(value => value.value)
+    let radios = [ ...document.forms.categories ].filter(ch => ch.checked ).map(value => value.value)
     let filteredIdeas = ideas.filter(value => radios.includes(value.category))
     let list = htmlToElement("<ul></ul>")
     filteredIdeas.forEach(function(idea) {
@@ -49,7 +61,7 @@ function showIdeas(element, ideas) {
         list.insertAdjacentElement("beforeend", ideaElement)
     })
     element.appendChild(list)
-    ideas.forEach(function(idea) {
+    filteredIdeas.forEach(function(idea) {
         if (idea.type === "html+js") {
             addScript(idea.script)
         }
