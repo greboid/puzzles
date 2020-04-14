@@ -7,54 +7,9 @@
     </head>
     <body>
         <h1>Puzzle Checklist</h1>
-        <div id="ideas">
-            <div class="list">
-                <h2>Common</h2>
-                <ol>
-                    <li>HTML Source for puzzle</li>
-                </ol>
-            </div>
-            <div class="list">
-                <h2>Strings</h2>
-                <ol>
-                    <li id="anagramItem">
-                        <form class="inlineform" id="anagramForm" action="/anagram">
-                            <label>Anagram<input type="text" id="anagramInput" name="input" required pattern="^[A-Za-z0-9?]+$" maxlength="12" /></label>
-                            <span>❌</span>
-                        </form>
-                    </li>
-                    <li id="matchItem">
-                        <form class="inlineform" id="matchForm" action="/match">
-                            <label for="input">Matches<input type="text" id="matchInput" name="input" required pattern="^[A-Za-z0-9?]+$" maxlength="12" /></label>
-                            <span>❌</span>
-                        </form>
-                    </li>
-                    <li>First/Later letters of each thing spell anything</li>
-                    <li>Can the elements be split into groups?</li>
-                    <li>Can the groups be morse/binary encoded?<br>Check 1st, 9th, 17th etc for 0/1/something in common</li>
-                    <li>Google several elements, is there anything in common?</li>
-                    <li>Does the title of the puzzle help at all?</li>
-                </ol>
-            </div>
-            <div class="list">
-                <h2>Images</h2>
-                <ol>
-                    <li>Can the picture be a simple word</li>
-                    <li>If there are multiple pictures, is there a theme commonality?</li>
-                    <li>Check EXIF data</li>
-                    <li>Check file names, check sizes/dimensions</li>
-                    <li>Run through strings/file, look at results</li>
-                    <li>Check file names</li>
-                    <li>Check sizes/dimensions</li>
-                </ol>
-            </div>
-            <div class="list">
-                <h2>Videos</h2>
-                <ol>
-                    <li>What times do events happen or how long do they take</li>
-                    <li>What times do events happen or how long do they take</li>
-                    <li>Check file names</li>
-                    <li>Run through strings/file, look at results</li>
+        <div id="content">
+            <form id="categories"></form>
+            <div id="ideas">
             </div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/axios@0.19.2/dist/axios.min.js" integrity="sha256-T/f7Sju1ZfNNfBh7skWn0idlCBcI3RwdLSS4/I7NQKQ=" crossorigin="anonymous"></script>
