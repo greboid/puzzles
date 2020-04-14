@@ -48,7 +48,10 @@ function handleCategoryChange(event) {
 function showIdeas(element, ideas) {
     [ ...document.getElementById("ideas").children ].forEach(function(child) {
         element.removeChild(child)
-    })
+    });
+    [ ...document.getElementsByTagName("script") ]
+        .filter(value => value.src === "")
+        .forEach(value => value.remove())
     if (ideas === null) {
         element.appendChild(htmlToElement("<p>No Ideas.</p>"))
         return
