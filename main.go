@@ -8,7 +8,6 @@ import (
 	"github.com/fsnotify/fsnotify"
 	"github.com/kouhin/envflag"
 	"html/template"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -54,7 +53,6 @@ func main() {
 	mux.HandleFunc("/js", jsHandler)
 	mux.HandleFunc("/anagram", anagramHandler)
 	mux.HandleFunc("/match", matchHandler)
-	mux.HandleFunc("/ideas", ideasHandler)
 	log.Print("Starting server.")
 	server := http.Server{
 		Addr:    ":8080",
@@ -109,7 +107,6 @@ func reloadTemplates() {
 		filepath.Join(*templateDirectory, "main.css"),
 		filepath.Join(*templateDirectory, "index.html"),
 		filepath.Join(*templateDirectory, "main.js"),
-		filepath.Join(*templateDirectory, "ideas.json"),
 	))
 }
 
@@ -195,20 +192,4 @@ func getResults(input string, function func(string) []string) (output []byte, st
 		statusCode = http.StatusOK
 	}
 	return
-}
-
-func ideasHandler(writer http.ResponseWriter, request *http.Request) {
-	writer.Header().Add("Content-Type", "application/json")
-	file, err := ioutil.ReadFile(filepath.Join(*templateDirectory, "ideas.json"))
-	if err != nil {
-		log.Printf("Fucked up: %s", err.Error())
-		output, _ := json.Marshal(OutputString{
-			Success: false,
-			Result:  "Invalid input",
-		})
-		writer.WriteHeader(http.StatusInternalServerError)
-		_, _ = writer.Write(output)
-		return
-	}
-	_, _ = writer.Write(file)
 }

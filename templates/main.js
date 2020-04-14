@@ -2,79 +2,33 @@
 document.addEventListener("DOMContentLoaded", ready)
 
 function ready() {
-    axios.get('/ideas')
-        .then(function(response){
-            showCategories(response.data)
-            showIdeas(document.getElementById("ideas"), response.data)
-        })
-        .catch(function(error){
-            showCategories(null)
-            showIdeas(document.getElementById("ideas"), null)
-        })
-}
-
-function showCategories(ideas) {
-    let radios = document.forms.categories;
-    let children = [ ...radios.children ];
-    children.forEach(function(child) {
-        if (child.tagName !== "FORM") {
-            radios.removeChild(child)
-        }
-    })
-    let categories = []
-    ideas.forEach(function(idea) {
-        if (!categories.includes(idea.category)) {
-            categories.push(idea.category)
-        }
-    })
-    categories.forEach(function(category) {
-        radios.appendChild(htmlToElement('<label><input type="checkbox" name="'+category+'" value="'+category+'"/>'+category+'</label>'))
-    })
+    document.forms.anagramForm.onsubmit = () => {
+        handleAnagram(); return false
+    };
+    document.querySelector("#anagramForm span").onclick = function() {
+        handleResponse(null, document.forms.anagramForm.parentNode)
+    }
+    document.forms.matchForm.onsubmit = () => {
+        handleMatch(); return false
+    };
+    document.querySelector("#matchForm span").onclick = function() {
+        handleResponse(null, document.forms.matchForm.parentNode)
+    }
     document.querySelectorAll("#categories input[type=checkbox]").forEach(function(value) {
         value.addEventListener('change', e => handleCategoryChange(e))
     })
+    handleCategoryChange()
 }
 
-function handleCategoryChange(event) {
-    axios.get('/ideas')
-        .then(function(response){
-            showIdeas(document.getElementById("ideas"), response.data)
-        })
-        .catch(function(error){
-            showIdeas(document.getElementById("ideas"), null)
-        })
-}
-
-function showIdeas(element, ideas) {
-    [ ...document.getElementById("ideas").children ].forEach(function(child) {
-        element.removeChild(child)
-    });
-    [ ...document.getElementsByTagName("script") ]
-        .filter(value => value.src === "")
-        .forEach(value => value.remove())
-    if (ideas === null) {
-        element.appendChild(htmlToElement("<p>No Ideas.</p>"))
-        return
-    }
-    let radios = [ ...document.forms.categories ].filter(ch => ch.checked ).map(value => value.value)
-    let filteredIdeas = ideas.filter(value => radios.includes(value.category))
-    let list = htmlToElement("<ul></ul>")
-    filteredIdeas.forEach(function(idea) {
-        let ideaElement = htmlToElement("<li>"+idea.text+"</li>")
-        list.insertAdjacentElement("beforeend", ideaElement)
-    })
-    element.appendChild(list)
-    filteredIdeas.forEach(function(idea) {
-        if (idea.type === "html+js") {
-            addScript(idea.script)
+function handleCategoryChange() {
+    let selectedCategories = [ ...document.forms.categories ].filter(ch => ch.checked ).map(value => value.value);
+    [ ...document.querySelectorAll("#ideas ol li") ].forEach(function(value) {
+        if (selectedCategories.includes(value.dataset.category)) {
+            value.removeAttribute("hidden")
+        } else {
+            value.setAttribute("hidden", '');
         }
     })
-}
-
-function addScript(src) {
-    let s = document.createElement( 'script' );
-    s.appendChild(document.createTextNode(src))
-    document.body.appendChild(s);
 }
 
 function handleAnagram() {
