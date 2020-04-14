@@ -2,13 +2,9 @@ html, body {
     height: 100%;
 }
 body {
-    margin: 0;
     display: flex;
     flex-direction: column;
-}
-
-h1 {
-    margin: 0 auto;
+    align-items: center;
 }
 
 .inlineform {
@@ -45,25 +41,23 @@ input:valid {
     counter-increment: ideas;
     padding: 0.3em;
 }
-#ideas>ol>li.common::marker {
+#ideas>ol>li.common::before {
     content: counter(ideas) ".\00a0🎱\00a0" !important;
 }
-#ideas>ol>li.strings::marker {
+#ideas>ol>li.strings::before {
     content: counter(ideas) ".\00a0🧵\00a0" !important;
 }
-#ideas>ol>li.images::marker {
+#ideas>ol>li.images::before {
     content: counter(ideas) ".\00a0🎨\00a0" !important;
 }
-#ideas>ol>li.videos::marker {
+#ideas>ol>li.videos::before {
     content: counter(ideas) ".\00a0🎞️\00a0" !important;
 }
-#ideas>ol>li.audio::marker {
+#ideas>ol>li.audio::before {
     content: counter(ideas) ".\00a0🎧\00a0" !important;
 }
-#ideas>ol>li::marker {
+#ideas>ol>li::before {
     content: counter(ideas) ".\00a0\00a0";
-    border-radius: 2em;
-    background:#93C775;
 }
 
 #ideas {
