@@ -1,10 +1,45 @@
+:root {
+    --background-colour: #fcfcfc;
+    --foreground-colour: #1c1c1c;
+    --error-colour: #ffdddd;
+    --input-color: black;
+    --input-border: #d6d6d6
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background-colour: #1c1c1c;
+        --foreground-colour: #d6d6d6;
+        --error-colour: #ffdddd;
+        --input-background: #333333;
+        --input-color: #d6d6d6;
+        --input-border: #5b5b5b;
+    }
+}
+
 html, body {
-    height: 100%;
+    height: 98vh;
 }
 body {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+h1 {
+    border: 0.1em;
+    margin: 0.1em;
+}
+.anchor {
+    border: 0.1em;
+    margin: 0.1em;
+}
+a {
+    color: var(--background-colour);
+}
+input {
+    background-color: var(--input-background);
+    color: var(--input-color);
+    border: 1px solid var(--input-border);
 }
 
 .inlineform {
@@ -16,13 +51,13 @@ body {
 }
 
 input:invalid {
-    border: 1px solid black;
-    background-color: #ffdddd;
+    border: 1px solid var(--background-colour);
+    background-color: var(--error-colour);
     box-shadow: none;
 }
 
 input:valid {
-    border: 1px solid black;
+    border: 1px solid var(--background-colour);
 }
 
 #ideas {
@@ -72,6 +107,7 @@ input:valid {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
 
 #tools>ul {
     list-style: none;
