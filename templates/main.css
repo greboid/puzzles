@@ -42,10 +42,10 @@ input:valid {
     padding: 0.3em;
 }
 #ideas>ol>li.common::before {
-    content: counter(ideas) ".\00a0🎱\00a0" !important;
+    content: counter(ideas) ".\00a0💡\00a0" !important;
 }
 #ideas>ol>li.strings::before {
-    content: counter(ideas) ".\00a0🧵\00a0" !important;
+    content: counter(ideas) ".\00a0🔤\00a0" !important;
 }
 #ideas>ol>li.images::before {
     content: counter(ideas) ".\00a0🎨\00a0" !important;
