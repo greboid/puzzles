@@ -29,29 +29,43 @@ input:valid {
     border: 1px solid black;
 }
 
-.list {
+#ideas {
     counter-reset: ideas;
     margin: 1em;
 }
 
-.list>ol {
+#ideas>ol {
     list-style: none;
     font-size: 15px;
     padding: 0;
     margin-bottom: 4em;
 }
 
-.list>ol>li {
+#ideas>ol>li {
     counter-increment: ideas;
     padding: 0.3em;
 }
-
-.list>ol>li::marker {
-    content: counter(ideas) ".\00a0\00a0";
-    color: black;
-    background: #93C775;
-    border-radius: 2em;
+#ideas>ol>li.common::marker {
+    content: counter(ideas) ".\00a0❔\00a0" !important;
 }
+#ideas>ol>li.strings::marker {
+    content: counter(ideas) ".\00a0🧵\00a0" !important;
+}
+#ideas>ol>li.images::marker {
+    content: counter(ideas) ".\00a0🎨\00a0" !important;
+}
+#ideas>ol>li.videos::marker {
+    content: counter(ideas) ".\00a0🎞️\00a0" !important;
+}
+#ideas>ol>li.audio::marker {
+    content: counter(ideas) ".\00a0🎧\00a0" !important;
+}
+#ideas>ol>li::marker {
+    content: counter(ideas) ".\00a0\00a0";
+    border-radius: 2em;
+    background:#93C775;
+}
+
 #ideas {
     display: flex;
     flex-direction: row;
