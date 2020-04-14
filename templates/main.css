@@ -72,4 +72,7 @@ input:valid {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+#tools>ul {
+    list-style: none;
 }
