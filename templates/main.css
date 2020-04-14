@@ -2,15 +2,15 @@
     --background-colour: #fcfcfc;
     --foreground-colour: #1c1c1c;
     --error-colour: #ffdddd;
-    --input-color: black;
-    --input-border: #d6d6d6
+    --input-color: #1c1c1c;
+    --input-border: #1c1c1c;
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
         --background-colour: #1c1c1c;
         --foreground-colour: #d6d6d6;
-        --error-colour: #ffdddd;
+        --error-colour: #670000;
         --input-background: #333333;
         --input-color: #d6d6d6;
         --input-border: #5b5b5b;
@@ -24,6 +24,8 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: var(--background-colour);
+    color: var(--foreground-colour);
 }
 h1 {
     border: 0.1em;
@@ -34,7 +36,7 @@ h1 {
     margin: 0.1em;
 }
 a {
-    color: var(--background-colour);
+    color: var(--foreground-colour);
 }
 input {
     background-color: var(--input-background);
@@ -51,13 +53,13 @@ input {
 }
 
 input:invalid {
-    border: 1px solid var(--background-colour);
+    border: 1px solid var(--input-border);
     background-color: var(--error-colour);
     box-shadow: none;
 }
 
 input:valid {
-    border: 1px solid var(--background-colour);
+    border: 1px solid var(--input-border);
 }
 
 #ideas {
