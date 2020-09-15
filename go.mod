@@ -1,6 +1,6 @@
 module github.com/greboid/puzzles
 
-go 1.13
+go 1.15
 
 require (
 	github.com/csmith/kowalski v1.2.0
