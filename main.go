@@ -13,7 +13,6 @@ import (
 	"os"
 	"os/signal"
 	"path/filepath"
-	"sync"
 	"time"
 )
 
@@ -21,7 +20,6 @@ var (
 	templates *template.Template
 	wordList = flag.String("word-list", "/app/wordlist.txt", "Path of the word list file")
 	templateDirectory = flag.String("template-dir", "/app/templates", "Path of the templates directory")
-	mutex    *sync.Mutex
 )
 
 type OutputArray struct {
@@ -39,7 +37,6 @@ func main() {
 	if err != nil {
 		log.Fatalf("Unable to parse flags: %s", err.Error())
 	}
-	mutex = &sync.Mutex{}
 	reloadTemplates()
 	templateChanges()
 	mux := http.NewServeMux()
@@ -152,8 +149,6 @@ func indexHandler(writer http.ResponseWriter, request *http.Request) {
 }
 
 func anagramHandler(writer http.ResponseWriter, request *http.Request) {
-	mutex.Lock()
-	defer mutex.Unlock()
 	input := request.FormValue("input")
 	words, err := kowalski.LoadWords(*wordList)
 	if err != nil {
@@ -169,8 +164,6 @@ func anagramHandler(writer http.ResponseWriter, request *http.Request) {
 }
 
 func matchHandler(writer http.ResponseWriter, request *http.Request) {
-	mutex.Lock()
-	defer mutex.Unlock()
 	input := request.FormValue("input")
 	words, err := kowalski.LoadWords(*wordList)
 	if err != nil {
