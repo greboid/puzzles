@@ -21,7 +21,6 @@ var (
 	templates *template.Template
 	wordList = flag.String("word-list", "/app/wordlist.txt", "Path of the word list file")
 	templateDirectory = flag.String("template-dir", "/app/templates", "Path of the templates directory")
-	words    *kowalski.Node
 	mutex    *sync.Mutex
 )
 
@@ -39,10 +38,6 @@ func main() {
 	err := envflag.Parse()
 	if err != nil {
 		log.Fatalf("Unable to parse flags: %s", err.Error())
-	}
-	words, err = kowalski.LoadWords(*wordList)
-	if err != nil {
-		log.Fatalf("Unable to load words: %s", err.Error())
 	}
 	mutex = &sync.Mutex{}
 	reloadTemplates()
@@ -160,6 +155,13 @@ func anagramHandler(writer http.ResponseWriter, request *http.Request) {
 	mutex.Lock()
 	defer mutex.Unlock()
 	input := request.FormValue("input")
+	words, err := kowalski.LoadWords(*wordList)
+	if err != nil {
+		log.Printf("Unable to load words: %s", err.Error())
+		writer.WriteHeader(http.StatusInternalServerError)
+		_, _ = writer.Write([]byte("Unable to load wordlist"))
+		return
+	}
 	writer.Header().Add("Content-Type", "application/json")
 	outputBytes, outputStatus := getResults(input, words.Anagrams)
 	writer.WriteHeader(outputStatus)
@@ -170,6 +172,13 @@ func matchHandler(writer http.ResponseWriter, request *http.Request) {
 	mutex.Lock()
 	defer mutex.Unlock()
 	input := request.FormValue("input")
+	words, err := kowalski.LoadWords(*wordList)
+	if err != nil {
+		log.Printf("Unable to load words: %s", err.Error())
+		writer.WriteHeader(http.StatusInternalServerError)
+		_, _ = writer.Write([]byte("Unable to load wordlist"))
+		return
+	}
 	writer.Header().Add("Content-Type", "application/json")
 	outputBytes, outputStatus := getResults(input, words.Match)
 	writer.WriteHeader(outputStatus)
