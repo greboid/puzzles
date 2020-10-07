@@ -11,11 +11,14 @@ function ready() {
     document.forms.matchForm.onsubmit = () => {
         handleMatch(); return false
     };
+    document.querySelector("#matchForm span").onclick = function() {
+        handleResponse(null, document.forms.matchForm.parentNode)
+    }
     document.forms.exifUpload.onsubmit = () => {
         handleExifUpload(); return false
     }
-    document.querySelector("#matchForm span").onclick = function() {
-        handleResponse(null, document.forms.matchForm.parentNode)
+    document.querySelector("#exifUpload span").onclick = function() {
+        handleResponse(null, document.forms.exifUpload.parentNode)
     }
     document.querySelectorAll("#categories input[type=checkbox]").forEach(function(value) {
         value.addEventListener('change', e => handleCategoryChange(e))
