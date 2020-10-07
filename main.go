@@ -252,6 +252,9 @@ func loadWords(wordfile string) (*kowalski.Node, error) {
 		if err != nil {
 			return nil, err
 		}
+		defer func() {
+			_ = f.Close()
+		}()
 		words = &kowalski.Node{}
 		if err := gob.NewDecoder(f).Decode(&words); err != nil {
 			return nil, err
