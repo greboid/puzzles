@@ -11,6 +11,9 @@ function ready() {
     document.forms.matchForm.onsubmit = () => {
         handleMatch(); return false
     };
+    document.forms.exifUpload.onsubmit = () => {
+        handleExifUpload(); return false
+    }
     document.querySelector("#matchForm span").onclick = function() {
         handleResponse(null, document.forms.matchForm.parentNode)
     }
@@ -18,6 +21,35 @@ function ready() {
         value.addEventListener('change', e => handleCategoryChange(e))
     })
     handleCategoryChange()
+}
+
+function handleExifUpload() {
+    let element = document.forms.exifUpload.parentNode;
+    let photo = document.getElementById("exifFile").files[0];
+    let formData = new FormData();
+    formData.append("exifFile", photo);
+    axios({
+        url: '/exifUpload',
+        method: "post",
+        data: formData,
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'multipart/form-data'
+        },
+        })
+        .then(response => {
+            if (!response.data.Success) {
+                handleResponse([], element, 100000)
+            } else {
+                let jsonObj = JSON.parse(response.data.Result);
+                let result = [];
+                for(let i in jsonObj) {
+                    result.push([i, jsonObj [i]]);
+                }
+                handleResponse(result, element, 100000)
+            }
+        })
+        .catch(error => console.log("Error getting exif data"))
 }
 
 function handleCategoryChange() {
@@ -63,7 +95,7 @@ function handleMatch() {
         })
 }
 
-function handleResponse(results, element) {
+function handleResponse(results, element, maxResults = 1000) {
     let children = [ ...element.children ];
     children.forEach(function(child) {
         if (child.tagName !== "FORM") {
@@ -74,8 +106,8 @@ function handleResponse(results, element) {
     if (results === null) {
     } else if (results.length === 0) {
         htmlString += "<li>No Results</li>"
-    } else if (results.length > 1000) {
-        htmlString += "<li>Over 1000 results, please narrow down</li>"
+    } else if (results.length > maxResults) {
+        htmlString += "<li>Over "+maxResults+" results, please narrow down</li>"
     } else {
         results.forEach(function (result) {
             htmlString += "<li>" + result + "</li>"

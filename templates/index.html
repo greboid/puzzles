@@ -60,6 +60,11 @@
                     </li>
                     <li data-category="images" class="images" hidden="">
                         Check EXIF data
+                        <form class="inlineform" id="exifUpload" action="/uploadImage" method="POST" enctype="multipart/form-data">
+                            <label>EXIF<input type="file" id="exifFile" name="exifFile" /></label>
+                            <input type="submit" value="Upload"/>
+                            <span>❌</span>
+                        </form>
                     </li>
                     <li data-category="images" class="images" hidden="">
                         Check file names, check sizes/dimensions

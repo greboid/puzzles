@@ -7,7 +7,9 @@ import (
 	"github.com/csmith/kowalski"
 	"github.com/fsnotify/fsnotify"
 	"github.com/kouhin/envflag"
+	"github.com/simpicapp/goexif/exif"
 	"html/template"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -45,6 +47,7 @@ func main() {
 	mux.HandleFunc("/js", jsHandler)
 	mux.HandleFunc("/anagram", anagramHandler)
 	mux.HandleFunc("/match", matchHandler)
+	mux.HandleFunc("/exifUpload", exifUpload)
 	log.Print("Starting server.")
 	server := http.Server{
 		Addr:    ":8080",
@@ -62,6 +65,46 @@ func main() {
 		log.Fatalf("Unable to shutdown: %s", err.Error())
 	}
 	log.Print("Finishing server.")
+}
+
+func exifUpload(writer http.ResponseWriter, request *http.Request) {
+	file, _, err := request.FormFile("exifFile")
+	if err != nil {
+		writer.WriteHeader(http.StatusInternalServerError)
+		_, _ = writer.Write([]byte("Error"))
+		log.Println("Error Getting File", err)
+		return
+	}
+	defer func() {
+		_ = file.Close()
+	}()
+	exifData, err := getExifData(file)
+	if err != nil {
+		if err == exif.NotFoundError || err == io.EOF {
+			output, _ := json.Marshal(OutputString{
+				Success: false,
+				Result:  "[]",
+			})
+			writer.WriteHeader(http.StatusOK)
+			_, _ = writer.Write(output)
+			return
+		}
+		output, _ := json.Marshal(OutputString{
+			Success: false,
+			Result:  "Error parsing EXIF",
+		})
+		log.Println("Error Parsing EXIF", err)
+		writer.WriteHeader(http.StatusInternalServerError)
+		_, _ = writer.Write(output)
+		return
+	}
+	output, _ := json.Marshal(OutputString{
+		Success: true,
+		Result:  string(exifData),
+	})
+	writer.Header().Add("Content-Type", "application/json")
+	writer.WriteHeader(http.StatusOK)
+	_, _ = writer.Write(output)
 }
 
 func templateChanges() {
@@ -194,4 +237,12 @@ func getResults(input string, function func(string) []string) (output []byte, st
 		statusCode = http.StatusOK
 	}
 	return
+}
+
+func getExifData(input io.Reader) ([]byte, error) {
+	exifData, err := exif.Decode(input)
+	if err != nil {
+		return nil, err
+	}
+	return exifData.MarshalJSON()
 }
