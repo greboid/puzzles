@@ -11,3 +11,4 @@ data
 config.yaml
 .cache
 wordlist.txt
+wordlist.txt.gob
