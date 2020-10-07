@@ -76,46 +76,6 @@ func main() {
 	log.Print("Finishing server.")
 }
 
-func exifUpload(writer http.ResponseWriter, request *http.Request) {
-	file, _, err := request.FormFile("exifFile")
-	if err != nil {
-		writer.WriteHeader(http.StatusInternalServerError)
-		_, _ = writer.Write([]byte("Error"))
-		log.Println("Error Getting File", err)
-		return
-	}
-	defer func() {
-		_ = file.Close()
-	}()
-	exifData, err := getExifData(file)
-	if err != nil {
-		if err == exif.NotFoundError || err == io.EOF {
-			output, _ := json.Marshal(OutputString{
-				Success: false,
-				Result:  "[]",
-			})
-			writer.WriteHeader(http.StatusOK)
-			_, _ = writer.Write(output)
-			return
-		}
-		output, _ := json.Marshal(OutputString{
-			Success: false,
-			Result:  "Error parsing EXIF",
-		})
-		log.Println("Error Parsing EXIF", err)
-		writer.WriteHeader(http.StatusInternalServerError)
-		_, _ = writer.Write(output)
-		return
-	}
-	output, _ := json.Marshal(OutputString{
-		Success: true,
-		Result:  string(exifData),
-	})
-	writer.Header().Add("Content-Type", "application/json")
-	writer.WriteHeader(http.StatusOK)
-	_, _ = writer.Write(output)
-}
-
 func templateChanges() {
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
@@ -232,6 +192,48 @@ func getResults(input string, function func(string) []string) (output []byte, st
 		statusCode = http.StatusOK
 	}
 	return
+}
+
+
+
+func exifUpload(writer http.ResponseWriter, request *http.Request) {
+	file, _, err := request.FormFile("exifFile")
+	if err != nil {
+		writer.WriteHeader(http.StatusInternalServerError)
+		_, _ = writer.Write([]byte("Error"))
+		log.Println("Error Getting File", err)
+		return
+	}
+	defer func() {
+		_ = file.Close()
+	}()
+	exifData, err := getExifData(file)
+	if err != nil {
+		if err == exif.NotFoundError || err == io.EOF {
+			output, _ := json.Marshal(OutputString{
+				Success: false,
+				Result:  "[]",
+			})
+			writer.WriteHeader(http.StatusOK)
+			_, _ = writer.Write(output)
+			return
+		}
+		output, _ := json.Marshal(OutputString{
+			Success: false,
+			Result:  "Error parsing EXIF",
+		})
+		log.Println("Error Parsing EXIF", err)
+		writer.WriteHeader(http.StatusInternalServerError)
+		_, _ = writer.Write(output)
+		return
+	}
+	output, _ := json.Marshal(OutputString{
+		Success: true,
+		Result:  string(exifData),
+	})
+	writer.Header().Add("Content-Type", "application/json")
+	writer.WriteHeader(http.StatusOK)
+	_, _ = writer.Write(output)
 }
 
 func getExifData(input io.Reader) ([]byte, error) {
