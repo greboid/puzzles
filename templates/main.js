@@ -113,7 +113,7 @@ function handleResponse(results, element, maxResults = 1000) {
         htmlString += "<li>Over "+maxResults+" results, please narrow down</li>"
     } else {
         results.forEach(function (result) {
-            htmlString += "<li>" + result + "</li>"
+            htmlString += "<li>" + parseURLs(result[1]) + "</li>"
         })
     }
     htmlString += "</ul>"
@@ -125,4 +125,10 @@ function htmlToElement(html) {
     html = html.trim();
     template.innerHTML = html;
     return template.content.firstChild;
+}
+
+function parseURLs(value) {
+    return value.replace(/(https?:\/\/[^\s]+)/g, function( url ) {
+        return url.link( url );
+    })
 }

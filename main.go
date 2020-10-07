@@ -5,10 +5,7 @@ import (
 	"encoding/gob"
 	"encoding/json"
 	"flag"
-	"github.com/csmith/kowalski"
-	"github.com/fsnotify/fsnotify"
-	"github.com/kouhin/envflag"
-	"github.com/simpicapp/goexif/exif"
+	"fmt"
 	"html/template"
 	"io"
 	"log"
@@ -16,15 +13,22 @@ import (
 	"os"
 	"os/signal"
 	"path/filepath"
+	"sort"
 	"strings"
 	"time"
+
+	"github.com/csmith/kowalski"
+	"github.com/fsnotify/fsnotify"
+	"github.com/kouhin/envflag"
+	"github.com/simpicapp/goexif/exif"
+	"github.com/simpicapp/goexif/tiff"
 )
 
 var (
-	templates *template.Template
-	wordList = flag.String("word-list", "/app/wordlist.txt", "Path of the word list file")
+	templates         *template.Template
+	wordList          = flag.String("word-list", "/app/wordlist.txt", "Path of the word list file")
 	templateDirectory = flag.String("template-dir", "/app/templates", "Path of the templates directory")
-	words *kowalski.Node
+	words             *kowalski.Node
 )
 
 type OutputArray struct {
@@ -194,8 +198,6 @@ func getResults(input string, function func(string) []string) (output []byte, st
 	return
 }
 
-
-
 func exifUpload(writer http.ResponseWriter, request *http.Request) {
 	file, _, err := request.FormFile("exifFile")
 	if err != nil {
@@ -227,21 +229,61 @@ func exifUpload(writer http.ResponseWriter, request *http.Request) {
 		_, _ = writer.Write(output)
 		return
 	}
-	output, _ := json.Marshal(OutputString{
-		Success: true,
-		Result:  string(exifData),
-	})
+	output, _ := json.Marshal(parseExif(exifData))
 	writer.Header().Add("Content-Type", "application/json")
 	writer.WriteHeader(http.StatusOK)
 	_, _ = writer.Write(output)
 }
 
-func getExifData(input io.Reader) ([]byte, error) {
+func getExifData(input io.Reader) (*exif.Exif, error) {
 	exifData, err := exif.Decode(input)
 	if err != nil {
 		return nil, err
 	}
-	return exifData.MarshalJSON()
+	return exifData, nil
+}
+
+func parseExif(exifData *exif.Exif) *OutputString {
+	var data []string
+
+	values := make(map[string]string)
+	walker := &walker{values}
+	_ = exifData.Walk(walker)
+	for key, value := range values {
+		data = append(data, key+": "+value)
+	}
+	sort.Strings(data)
+	data = append([]string{"----Raw Values----"}, data...)
+	datetime, err := exifData.DateTime()
+	if err == nil {
+		data = append([]string{"Date: " + datetime.String()}, data...)
+	}
+	lat, long, err := exifData.LatLong()
+	if err == nil {
+		data = append([]string{fmt.Sprintf("Maps Link: https://www.google.com/maps/search/?api=1&query=%f,%f", lat, long)}, data...)
+	}
+	comment, err := exifData.Get("usercomment")
+	if err == nil {
+		data = append([]string{"Comment: " + comment.String()}, data...)
+	}
+	result, _ := json.Marshal(data)
+	return &OutputString{
+		Success: true,
+		Result:  string(result),
+	}
+}
+
+type walker struct {
+	values map[string]string
+}
+
+func (e *walker) Walk(name exif.FieldName, tag *tiff.Tag) error {
+	e.values[string(name)] = tag.String()
+	return nil
+}
+
+func Walk(name exif.FieldName, tag *tiff.Tag) error {
+	return nil
 }
 
 func loadWords(wordfile string) (*kowalski.Node, error) {
