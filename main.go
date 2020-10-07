@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/gob"
 	"encoding/json"
 	"flag"
 	"github.com/csmith/kowalski"
@@ -15,6 +16,7 @@ import (
 	"os"
 	"os/signal"
 	"path/filepath"
+	"strings"
 	"time"
 )
 
@@ -40,10 +42,12 @@ func main() {
 	if err != nil {
 		log.Fatalf("Unable to parse flags: %s", err.Error())
 	}
-	words, err = kowalski.LoadWords(*wordList)
+	log.Printf("Loading wordlist.")
+	words, err = loadWords(*wordList)
 	if err != nil {
 		log.Printf("Unable to load words: %s", err.Error())
 	}
+	log.Print("Loading templates.")
 	reloadTemplates()
 	templateChanges()
 	mux := http.NewServeMux()
@@ -236,4 +240,27 @@ func getExifData(input io.Reader) ([]byte, error) {
 		return nil, err
 	}
 	return exifData.MarshalJSON()
+}
+
+func loadWords(wordfile string) (*kowalski.Node, error) {
+	if _, err := os.Stat(wordfile + ".gob"); err == nil {
+		log.Printf("Using cached wordlist")
+		wordfile = wordfile + ".gob"
+	}
+	if strings.HasSuffix(wordfile, ".gob") {
+		f, err := os.Open(wordfile)
+		if err != nil {
+			return nil, err
+		}
+		words = &kowalski.Node{}
+		if err := gob.NewDecoder(f).Decode(&words); err != nil {
+			return nil, err
+		}
+		return words, nil
+	}
+	words, err := kowalski.LoadWords(wordfile)
+	if err != nil {
+		return nil, err
+	}
+	return words, nil
 }
