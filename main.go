@@ -13,7 +13,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/csmith/kowalski"
+	"github.com/csmith/kowalski/v2"
 	"github.com/fsnotify/fsnotify"
 	"github.com/kouhin/envflag"
 	"github.com/simpicapp/goexif/exif"
@@ -23,7 +23,7 @@ var (
 	templates         *template.Template
 	wordList          = flag.String("word-list", "/app/wordlist.txt", "Path of the word list file")
 	templateDirectory = flag.String("template-dir", "/app/templates", "Path of the templates directory")
-	words             *kowalski.Node
+	words             *kowalski.SpellChecker
 )
 
 type OutputArray struct {
@@ -45,6 +45,7 @@ func main() {
 	words, err = loadWords(*wordList)
 	if err != nil {
 		log.Printf("Unable to load words: %s", err.Error())
+		return
 	}
 	log.Print("Loading templates.")
 	reloadTemplates()
@@ -162,7 +163,7 @@ func indexHandler(writer http.ResponseWriter, request *http.Request) {
 func anagramHandler(writer http.ResponseWriter, request *http.Request) {
 	input := request.FormValue("input")
 	writer.Header().Add("Content-Type", "application/json")
-	outputBytes, outputStatus := getResults(input, words.Anagrams)
+	outputBytes, outputStatus := getResults(words, input, kowalski.Anagram)
 	writer.WriteHeader(outputStatus)
 	_, _ = writer.Write(outputBytes)
 }
@@ -170,7 +171,7 @@ func anagramHandler(writer http.ResponseWriter, request *http.Request) {
 func matchHandler(writer http.ResponseWriter, request *http.Request) {
 	input := request.FormValue("input")
 	writer.Header().Add("Content-Type", "application/json")
-	outputBytes, outputStatus := getResults(input, words.Match)
+	outputBytes, outputStatus := getResults(words, input, kowalski.Match)
 	writer.WriteHeader(outputStatus)
 	_, _ = writer.Write(outputBytes)
 }

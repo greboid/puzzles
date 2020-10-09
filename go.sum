@@ -1,6 +1,8 @@
 github.com/bwmarrin/discordgo v0.20.2/go.mod h1:O9S4p+ofTFwB02em7jkpkV8M3R0/PUVOwN61zSZ0r4Q=
 github.com/csmith/kowalski v1.3.0 h1:N8lvxi+v1UgLdzHfKA6AQELHq2z/Y+RHWq7kvTw3DnE=
 github.com/csmith/kowalski v1.3.0/go.mod h1:AQ1FdrTc70Hgd3xbyDNiauMAwa8GE/BeA2JdA8CT+/c=
+github.com/csmith/kowalski/v2 v2.0.0 h1:DGSIm2cgVNbI3+Mpy6QwSFe+2nN6remozogZGYZ2bkg=
+github.com/csmith/kowalski/v2 v2.0.0/go.mod h1:DjtlA+lQ/rJrnkZzoWIG/IqxN61Q4yqd6TONZhR2uHg=
 github.com/fsnotify/fsnotify v1.4.9 h1:hsms1Qyu0jgnwNXIxa+/V/PDsU6CfLf6CNO8H7IWoS4=
 github.com/fsnotify/fsnotify v1.4.9/go.mod h1:znqG4EE+3YCdAaPaxE2ZRY/06pZUdp0tY4IgpuI1SZQ=
 github.com/gorilla/websocket v1.4.0/go.mod h1:E7qHFY5m1UJ88s3WnNqhKjPHQ0heANvMoAMk2YaljkQ=
