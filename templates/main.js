@@ -109,7 +109,7 @@ function handleResponse(results, element, maxResults = 1000) {
         htmlString += "<li>Over "+maxResults+" results, please narrow down</li>"
     } else {
         results.forEach(function (result) {
-            htmlString += "<li>" + result[1] + "</li>"
+            htmlString += "<li>" + result + "</li>"
         })
     }
     htmlString += "</ul>"
