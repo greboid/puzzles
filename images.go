@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"sort"
+	"time"
 
 	"github.com/simpicapp/goexif/exif"
 	"github.com/simpicapp/goexif/tiff"
@@ -18,34 +18,34 @@ func getExifData(input io.Reader) (*exif.Exif, error) {
 	return exifData, nil
 }
 
-func parseExif(exifData *exif.Exif) *OutputString {
-	var data []string
+func parseExif(exifData *exif.Exif) []byte {
+	results := &ExifResults{}
 
 	values := make(map[string]string)
 	walker := &walker{values}
 	_ = exifData.Walk(walker)
-	for key, value := range values {
-		data = append(data, key+": "+value)
-	}
-	sort.Strings(data)
-	data = append([]string{"----Raw Values----"}, data...)
+
+	results.RawValues = &values
+
 	datetime, err := exifData.DateTime()
 	if err == nil {
-		data = append([]string{"Date: " + datetime.String()}, data...)
+		results.DateTime = datetime
 	}
+
 	lat, long, err := exifData.LatLong()
 	if err == nil {
-		data = append([]string{fmt.Sprintf("Maps Link: https://www.google.com/maps/search/?api=1&query=%f,%f", lat, long)}, data...)
+		results.MapLink = fmt.Sprintf("https://www.google.com/maps/search/?api=1&query=%f,%f", lat, long)
 	}
 	comment, err := exifData.Get("usercomment")
 	if err == nil {
-		data = append([]string{"Comment: " + comment.String()}, data...)
+		results.Comment = comment.String()
 	}
-	result, _ := json.Marshal(data)
-	return &OutputString{
+	resultsJson, _ := json.Marshal(results)
+	result, _ := json.Marshal(&OutputString{
 		Success: true,
-		Result:  string(result),
-	}
+		Result:  string(resultsJson),
+	})
+	return result
 }
 
 type walker struct {
@@ -55,4 +55,11 @@ type walker struct {
 func (e *walker) Walk(name exif.FieldName, tag *tiff.Tag) error {
 	e.values[string(name)] = tag.String()
 	return nil
+}
+
+type ExifResults struct {
+	MapLink   string             `json:"mapLink,omitempty"`
+	DateTime  time.Time          `json:"datetime,omitempty"`
+	Comment   string             `json:"comment,omitempty"`
+	RawValues *map[string]string `json:"rawValues"`
 }

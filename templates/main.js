@@ -42,14 +42,10 @@ function handleExifUpload() {
         })
         .then(response => {
             if (!response.data.Success) {
-                handleResponse([], element, 100000)
+                handleExifResults([], element)
             } else {
                 let jsonObj = JSON.parse(response.data.Result);
-                let result = [];
-                for(let i in jsonObj) {
-                    result.push([i, jsonObj [i]]);
-                }
-                handleResponse(result, element, 100000)
+                handleExifResults(jsonObj, element)
             }
         })
         .catch(error => console.log("Error getting exif data"))
@@ -113,8 +109,37 @@ function handleResponse(results, element, maxResults = 1000) {
         htmlString += "<li>Over "+maxResults+" results, please narrow down</li>"
     } else {
         results.forEach(function (result) {
-            htmlString += "<li>" + parseURLs(result[1]) + "</li>"
+            htmlString += "<li>" + result[1] + "</li>"
         })
+    }
+    htmlString += "</ul>"
+    element.insertAdjacentElement("beforeend", htmlToElement(htmlString))
+}
+
+function handleExifResults(results, element) {
+    let children = [ ...element.children ];
+    children.forEach(function(child) {
+        if (child.tagName !== "FORM") {
+            element.removeChild(child)
+        }
+    })
+    let htmlString = "<ul>"
+    if (results === null) {
+    } else if (results.length === 0) {
+        htmlString += "<li>No Results</li>"
+    } else {
+        if (results.mapLink != null) {
+            htmlString += "<li><a href='"+results.mapLink+"' target='_blank'>Maps link</a></li>"
+        }
+        if (results.datetime != null) {
+            htmlString += "<li>" + results.datetime + "</li>"
+        }
+        if (results.comments != null) {
+            htmlString += "<li>" + results.comments + "</li>"
+        }
+        for (const [key, value] of Object.entries(results.rawValues)) {
+            htmlString += "<li>" + key + ": " + value +"</li>"
+        }
     }
     htmlString += "</ul>"
     element.insertAdjacentElement("beforeend", htmlToElement(htmlString))
@@ -125,10 +150,4 @@ function htmlToElement(html) {
     html = html.trim();
     template.innerHTML = html;
     return template.content.firstChild;
-}
-
-function parseURLs(value) {
-    return value.replace(/(https?:\/\/[^\s]+)/g, function( url ) {
-        return url.link( url );
-    })
 }

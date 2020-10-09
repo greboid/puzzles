@@ -206,8 +206,7 @@ func exifUpload(writer http.ResponseWriter, request *http.Request) {
 		_, _ = writer.Write(output)
 		return
 	}
-	output, _ := json.Marshal(parseExif(exifData))
 	writer.Header().Add("Content-Type", "application/json")
 	writer.WriteHeader(http.StatusOK)
-	_, _ = writer.Write(output)
+	_, _ = writer.Write(parseExif(exifData))
 }
