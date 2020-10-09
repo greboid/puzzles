@@ -31,6 +31,7 @@ func getResults(checker *kowalski.SpellChecker, input string, function func(*kow
 }
 
 func loadWords(wordfile string) (*kowalski.SpellChecker, error) {
+	wordfile = strings.TrimSpace(wordfile)
 	if _, err := os.Stat(wordfile + ".wl"); err == nil {
 		log.Printf("Cached spellchecker found, using")
 		wordfile = wordfile + ".wl"
