@@ -2,10 +2,8 @@ package main
 
 import (
 	"context"
-	"encoding/json"
 	"flag"
 	"html/template"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -182,45 +180,7 @@ func exifUpload(writer http.ResponseWriter, request *http.Request) {
 	defer func() {
 		_ = file.Close()
 	}()
-	data, err := ioutil.ReadAll(file)
-	if err != nil {
-		output, _ := json.Marshal(OutputString{
-			Success: false,
-			Result:  "Error reading file",
-		})
-		writer.WriteHeader(http.StatusInternalServerError)
-		_, _ = writer.Write(output)
-		return
-	}
-	imageInfo, err := getImageInfo(data)
-	if err != nil {
-		output, _ := json.Marshal(OutputString{
-			Success: false,
-			Result:  "Error parsing EXIF",
-		})
-		writer.WriteHeader(http.StatusInternalServerError)
-		_, _ = writer.Write(output)
-		return
-	}
-	output, _ := json.Marshal(OutputString{
-		Success: false,
-		Result:  "Error parsing EXIF",
-	})
-	serialisedImageInfo, err := json.Marshal(imageInfo)
-	if err != nil {
-		output, _ := json.Marshal(OutputString{
-			Success: false,
-			Result:  "Error parsing EXIF",
-		})
-		writer.WriteHeader(http.StatusInternalServerError)
-		_, _ = writer.Write(output)
-		return
-	}
-	writer.Header().Add("Content-Type", "application/json")
-	output, _ = json.Marshal(OutputString{
-		Success: true,
-		Result:  string(serialisedImageInfo),
-	})
-	writer.WriteHeader(http.StatusOK)
-	_, _ = writer.Write(output)
+	outputBytes, outputStatus := getImageResults(file)
+	writer.WriteHeader(outputStatus)
+	_, _ = writer.Write(outputBytes)
 }
