@@ -48,7 +48,7 @@ function handleExifUpload() {
                 handleExifResults(jsonObj, element)
             }
         })
-        .catch(error => console.log("Error getting exif data"))
+        .catch(error => console.log("Error getting exif data: " + error))
 }
 
 function handleCategoryChange() {
@@ -128,6 +128,8 @@ function handleExifResults(results, element) {
     } else if (results.length === 0) {
         htmlString += "<li>No Results</li>"
     } else {
+        htmlString += "<li>Size: "+results.width+"x"+results.height+"</a></li>"
+        htmlString += "<li>Type: "+results.type+"</li>"
         if (results.mapLink != null) {
             htmlString += "<li><a href='"+results.mapLink+"' target='_blank'>Maps link</a></li>"
         }
@@ -137,8 +139,12 @@ function handleExifResults(results, element) {
         if (results.comments != null) {
             htmlString += "<li>" + results.comments + "</li>"
         }
-        for (const [key, value] of Object.entries(results.rawValues)) {
-            htmlString += "<li>" + key + ": " + value +"</li>"
+        if (results.exifData.rawValues == null) {
+            htmlString += "<li>No Exif</li>"
+        } else {
+            for (const [key, value] of Object.entries(results.exifData.rawValues)) {
+                htmlString += "<li>" + key + ": " + value + "</li>"
+            }
         }
     }
     htmlString += "</ul>"

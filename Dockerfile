@@ -14,7 +14,7 @@ RUN adduser \
 
 WORKDIR /app
 COPY . /app
-RUN CGO_ENABLED=0 GOOS=linux go build -a -ldflags '-extldflags "-static"' -trimpath -ldflags=-buildid= -o main .
+RUN CGO_ENABLED=0 GOOS=linux go build -a -ldflags '-extldflags "-static"' -asmflags -trimpath -ldflags=-buildid= -o main .
 
 FROM scratch
 
