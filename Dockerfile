@@ -25,6 +25,7 @@ COPY --from=builder /usr/share/zoneinfo /usr/share/zoneinfo
 
 COPY --from=builder /app/main /puzzles-site
 COPY ./templates/. /app/templates
+COPY ./wordlists/. /app/wordlists
 EXPOSE 8080
 USER appuser:appuser
 CMD ["/puzzles-site"]
