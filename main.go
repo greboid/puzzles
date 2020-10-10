@@ -118,7 +118,7 @@ func requestLogger(targetMux http.Handler) http.Handler {
 		targetMux.ServeHTTP(w, r)
 		requesterIP := r.RemoteAddr
 		log.Printf(
-			"%s\t\t%s\t\t%s\t",
+			"%s  \t%s  \t%s",
 			requesterIP,
 			r.Method,
 			r.RequestURI,
