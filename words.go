@@ -1,18 +1,18 @@
 package main
 
 import (
-	"bytes"
 	"encoding/json"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/csmith/kowalski/v2"
 )
 
-func getResults(checker *kowalski.SpellChecker, input string, function func(*kowalski.SpellChecker, string) []string) (output []byte, statusCode int) {
+func getResults(checker []*kowalski.SpellChecker, input string, function func([]*kowalski.SpellChecker, string, ...kowalski.MultiplexOption) [][]string) (output []byte, statusCode int) {
 	if input == "" || len(input) > 13 {
 		output, _ = json.Marshal(OutputString{
 			Success: false,
@@ -20,7 +20,13 @@ func getResults(checker *kowalski.SpellChecker, input string, function func(*kow
 		})
 		statusCode = http.StatusBadRequest
 	} else {
-		result := function(checker, input)
+		results := function(checker, input, kowalski.Dedupe)
+		var result []string
+		for i := range results {
+			for j := range results[i] {
+				result = append(result, results[i][j])
+			}
+		}
 		output, _ = json.Marshal(&OutputArray{
 			Success: len(result) > 0,
 			Result:  result,
@@ -30,38 +36,31 @@ func getResults(checker *kowalski.SpellChecker, input string, function func(*kow
 	return
 }
 
-func loadWords(wordfile string) (*kowalski.SpellChecker, error) {
-	wordfile = strings.TrimSpace(wordfile)
-	if _, err := os.Stat(wordfile + ".wl"); err == nil {
-		log.Printf("Cached spellchecker found, using")
-		wordfile = wordfile + ".wl"
+func loadWords(wordlistFolder string) []*kowalski.SpellChecker {
+	files, err := ioutil.ReadDir(wordlistFolder)
+	if err != nil {
+		return nil
 	}
-	if !strings.HasSuffix(wordfile, ".wl") {
-		log.Printf("Creating cached spellchecker")
-		if _, err := os.Stat(wordfile + ".wl"); err != nil {
-			f, err := os.Open(wordfile)
-			if err != nil {
-				return nil, err
+	files, err = ioutil.ReadDir(wordlistFolder)
+	if err != nil {
+		return nil
+	}
+	var wls []*kowalski.SpellChecker
+	for _, file := range files {
+		if strings.HasSuffix(file.Name(), ".wl") {
+			wl, err := loadWordList(filepath.Join(wordlistFolder, file.Name()))
+			if err == nil {
+				wls = append(wls, wl)
+			} else {
+				log.Printf("Unable to load wordlist %s: %s", filepath.Join(wordlistFolder, file.Name()+".wl"), err)
 			}
-			b, err := ioutil.ReadAll(f)
-			if err != nil {
-				return nil, err
-			}
-			count := bytes.Count(b, []byte{'\n'})
-			words, err := kowalski.CreateSpellChecker(bytes.NewReader(b), count)
-			if err != nil {
-				return nil, err
-			}
-			_ = f.Close()
-			w, err := os.Create(wordfile + ".wl")
-			err = kowalski.SaveSpellChecker(w, words)
-			if err != nil {
-				return nil, err
-			}
-			_ = w.Close()
 		}
-		wordfile = wordfile + ".wl"
 	}
+	return wls
+}
+
+func loadWordList(wordfile string) (*kowalski.SpellChecker, error) {
+	log.Printf("Loading wordlist: %s", wordfile)
 	f, err := os.Open(wordfile)
 	if err != nil {
 		return nil, err

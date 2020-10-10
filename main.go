@@ -20,9 +20,9 @@ import (
 
 var (
 	templates         *template.Template
-	wordList          = flag.String("word-list", "/app/wordlist.txt", "Path of the word list file")
+	wordList          = flag.String("wordlist-dir", "/app/wordlists", "Path of the word list directory")
 	templateDirectory = flag.String("template-dir", "/app/templates", "Path of the templates directory")
-	words             *kowalski.SpellChecker
+	words             []*kowalski.SpellChecker
 )
 
 type OutputArray struct {
@@ -41,11 +41,7 @@ func main() {
 		log.Fatalf("Unable to parse flags: %s", err.Error())
 	}
 	log.Printf("Loading wordlist.")
-	words, err = loadWords(*wordList)
-	if err != nil {
-		log.Printf("Unable to load words: %s", err.Error())
-		return
-	}
+	words = loadWords(*wordList)
 	log.Print("Loading templates.")
 	reloadTemplates()
 	templateChanges()
@@ -162,7 +158,7 @@ func indexHandler(writer http.ResponseWriter, request *http.Request) {
 func anagramHandler(writer http.ResponseWriter, request *http.Request) {
 	input := request.FormValue("input")
 	writer.Header().Add("Content-Type", "application/json")
-	outputBytes, outputStatus := getResults(words, input, kowalski.Anagram)
+	outputBytes, outputStatus := getResults(words, input, kowalski.MultiplexAnagram)
 	writer.WriteHeader(outputStatus)
 	_, _ = writer.Write(outputBytes)
 }
@@ -170,7 +166,7 @@ func anagramHandler(writer http.ResponseWriter, request *http.Request) {
 func matchHandler(writer http.ResponseWriter, request *http.Request) {
 	input := request.FormValue("input")
 	writer.Header().Add("Content-Type", "application/json")
-	outputBytes, outputStatus := getResults(words, input, kowalski.Match)
+	outputBytes, outputStatus := getResults(words, input, kowalski.MultiplexMatch)
 	writer.WriteHeader(outputStatus)
 	_, _ = writer.Write(outputBytes)
 }
