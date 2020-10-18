@@ -144,5 +144,5 @@ func getImageResults(file multipart.File) ([]byte, int) {
 		Success: true,
 		Result:  string(serialisedImageInfo),
 	})
-	return output, http.StatusInternalServerError
+	return output, http.StatusOK
 }
