@@ -14,7 +14,7 @@ import (
 
 func getResults(checker []*kowalski.SpellChecker, input string, function func([]*kowalski.SpellChecker, string, ...kowalski.MultiplexOption) [][]string) (output []byte, statusCode int) {
 	if input == "" || len(input) > 13 {
-		output, _ = json.Marshal(OutputString{
+		output, _ = json.Marshal(Output{
 			Success: false,
 			Result:  "Invalid input",
 		})
@@ -27,7 +27,7 @@ func getResults(checker []*kowalski.SpellChecker, input string, function func([]
 				result = append(result, results[i][j])
 			}
 		}
-		output, _ = json.Marshal(&OutputArray{
+		output, _ = json.Marshal(Output{
 			Success: len(result) > 0,
 			Result:  result,
 		})

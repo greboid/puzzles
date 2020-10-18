@@ -44,8 +44,7 @@ function handleExifUpload() {
             if (!response.data.Success) {
                 handleExifResults([], element)
             } else {
-                let jsonObj = JSON.parse(response.data.Result);
-                handleExifResults(jsonObj, element)
+                handleExifResults(response.data.Result, element)
             }
         })
         .catch(error => console.log("Error getting exif data: " + error))
