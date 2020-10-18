@@ -129,14 +129,14 @@ function handleExifResults(results, element) {
     } else {
         htmlString += "<li>Size: "+results.width+"x"+results.height+"</a></li>"
         htmlString += "<li>Type: "+results.type+"</li>"
-        if (results.mapLink != null) {
-            htmlString += "<li><a href='"+results.mapLink+"' target='_blank'>Maps link</a></li>"
+        if (results.exifData.mapLink != null) {
+            htmlString += "<li><a href='"+results.exifData.mapLink+"' target='_blank'>Maps link</a></li>"
         }
-        if (results.datetime != null) {
-            htmlString += "<li>" + results.datetime + "</li>"
+        if (results.exifData.datetime != null) {
+            htmlString += "<li>" + results.exifData.datetime + "</li>"
         }
-        if (results.comments != null) {
-            htmlString += "<li>" + results.comments + "</li>"
+        if (results.exifData.comments != null) {
+            htmlString += "<li>" + results.exifData.comments + "</li>"
         }
         if (results.exifData.rawValues == null) {
             htmlString += "<li>No Exif</li>"
