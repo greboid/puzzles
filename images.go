@@ -114,7 +114,7 @@ func getImageInfo(data []byte) (ImageInfo, error) {
 func getImageResults(file multipart.File) ([]byte, int) {
 	data, err := ioutil.ReadAll(file)
 	if err != nil {
-		output, _ := json.Marshal(OutputString{
+		output, _ := json.Marshal(Output{
 			Success: false,
 			Result:  "Error reading file",
 		})
@@ -122,27 +122,15 @@ func getImageResults(file multipart.File) ([]byte, int) {
 	}
 	imageInfo, err := getImageInfo(data)
 	if err != nil {
-		output, _ := json.Marshal(OutputString{
+		output, _ := json.Marshal(Output{
 			Success: false,
 			Result:  "Error parsing EXIF",
 		})
 		return output, http.StatusInternalServerError
 	}
-	output, _ := json.Marshal(OutputString{
-		Success: false,
-		Result:  "Error parsing EXIF",
-	})
-	serialisedImageInfo, err := json.Marshal(imageInfo)
-	if err != nil {
-		output, _ := json.Marshal(OutputString{
-			Success: false,
-			Result:  "Error parsing EXIF",
-		})
-		return output, http.StatusInternalServerError
-	}
-	output, _ = json.Marshal(OutputString{
+	output, _ := json.Marshal(Output{
 		Success: true,
-		Result:  string(serialisedImageInfo),
+		Result:  imageInfo,
 	})
-	return output, http.StatusInternalServerError
+	return output, http.StatusOK
 }

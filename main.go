@@ -23,14 +23,9 @@ var (
 	words             []*kowalski.SpellChecker
 )
 
-type OutputArray struct {
+type Output struct {
 	Success bool
-	Result  []string
-}
-
-type OutputString struct {
-	Success bool
-	Result  string
+	Result  interface{}
 }
 
 func main() {
