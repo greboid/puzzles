@@ -44,6 +44,8 @@ func main() {
 	reloadTemplates()
 	templateChanges()
 	mux := http.NewServeMux()
+	mux.HandleFunc("/static/axios.js", axiosHandler)
+	mux.HandleFunc("/favicon.ico", faviconHandler)
 	mux.HandleFunc("/", indexHandler)
 	mux.HandleFunc("/css", cssHandler)
 	mux.HandleFunc("/js", jsHandler)
@@ -151,6 +153,15 @@ func indexHandler(writer http.ResponseWriter, request *http.Request) {
 	} else {
 		writer.WriteHeader(http.StatusNotFound)
 	}
+}
+
+func axiosHandler(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, filepath.Join(".", "static", "axios.js"))
+}
+
+func faviconHandler(w http.ResponseWriter, _ *http.Request) {
+	w.WriteHeader(http.StatusOK)
+	_, _ = w.Write([]byte{})
 }
 
 func anagramHandler(writer http.ResponseWriter, request *http.Request) {
