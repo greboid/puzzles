@@ -23,6 +23,11 @@ function ready() {
     document.querySelectorAll("#categories input[type=checkbox]").forEach(function(value) {
         value.addEventListener('change', e => handleCategoryChange(e))
     })
+    document.querySelector("#flagsform span").onclick = function() {
+        while (flagresults.firstChild) {
+            flagresults.removeChild(flagresults.lastChild)
+        }
+    }
     handleCategoryChange()
 }
 
