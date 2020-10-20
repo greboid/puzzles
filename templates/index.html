@@ -67,6 +67,14 @@
                         </form>
                     </li>
                     <li data-category="images" class="images" hidden="">
+                        Could it be a flag? Enter some search terms to find flags
+                        <form class="inlineform" id="flagsform" >
+                            <label><input type="text" id="flagterms" /></label>
+                            <span>❌</span>
+                        </form>
+                        <div id="flagresults"></div>
+                    </li>
+                    <li data-category="images" class="images" hidden="">
                         Run through strings/file, look at results
                     </li>
                     <li data-category="images" class="images" hidden="">
@@ -100,6 +108,7 @@
             </ul>
         </div>
         <script src="/static/axios.js"></script>
+        <script src="/static/flags.js"></script>
         <script src="/js"></script>
     </body>
 </html>

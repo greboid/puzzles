@@ -21,6 +21,7 @@ var (
 	wordList          = flag.String("wordlist-dir", "/app/wordlists", "Path of the word list directory")
 	templateDirectory = flag.String("template-dir", "/app/templates", "Path of the templates directory")
 	words             []*kowalski.SpellChecker
+	download		  = flag.Bool("download-flags", false, "Download new flags data")
 )
 
 type Output struct {
@@ -28,10 +29,16 @@ type Output struct {
 	Result  interface{}
 }
 
+//go:generate go run . -download-flags
+
 func main() {
 	err := envflag.Parse()
 	if err != nil {
 		log.Fatalf("Unable to parse flags: %s", err.Error())
+	}
+	if *download {
+		downloadFlags()
+		return
 	}
 	log.Printf("Loading wordlist.")
 	words = loadWords(*wordList)
@@ -40,6 +47,8 @@ func main() {
 	templateChanges()
 	mux := http.NewServeMux()
 	mux.HandleFunc("/static/axios.js", axiosHandler)
+	mux.HandleFunc("/static/flags.js", flagsjsHandler)
+	mux.HandleFunc("/static/flags.json", flagsjsonHandler)
 	mux.HandleFunc("/favicon.ico", faviconHandler)
 	mux.HandleFunc("/", indexHandler)
 	mux.HandleFunc("/css", cssHandler)
@@ -152,6 +161,14 @@ func indexHandler(writer http.ResponseWriter, request *http.Request) {
 
 func axiosHandler(w http.ResponseWriter, r *http.Request) {
 	http.ServeFile(w, r, filepath.Join(".", "static", "axios.js"))
+}
+
+func flagsjsHandler(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, filepath.Join(".", "static", "flags.js"))
+}
+
+func flagsjsonHandler(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, filepath.Join(".", "static", "flags.json"))
 }
 
 func faviconHandler(w http.ResponseWriter, _ *http.Request) {

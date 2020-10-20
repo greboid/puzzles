@@ -114,3 +114,13 @@ input:valid {
 #tools>ul {
     list-style: none;
 }
+
+#flagResults {
+}
+
+.flagResult h2 {
+    font-size: 1em;
+}
+
+.flagResult img {
+}
