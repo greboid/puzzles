@@ -29,7 +29,6 @@ function ready() {
             flagresults.removeChild(flagresults.lastChild)
         }
     }
-    handleCategoryChange()
 }
 
 function handleExifUpload() {
@@ -45,7 +44,7 @@ function handleExifUpload() {
             'Accept': 'application/json',
             'Content-Type': 'multipart/form-data'
         },
-        })
+    })
         .then(response => {
             if (!response.data.Success) {
                 handleExifResults([], element)
@@ -54,17 +53,6 @@ function handleExifUpload() {
             }
         })
         .catch(error => console.log("Error getting exif data: " + error))
-}
-
-function handleCategoryChange() {
-    let selectedCategories = [ ...document.forms.categories ].filter(ch => ch.checked ).map(value => value.value);
-    [ ...document.querySelectorAll("#ideas ol li") ].forEach(function(value) {
-        if (selectedCategories.includes(value.dataset.category)) {
-            value.removeAttribute("hidden")
-        } else {
-            value.setAttribute("hidden", '');
-        }
-    })
 }
 
 function handleAnagram() {

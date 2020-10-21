@@ -10,55 +10,48 @@
         <h1>Puzzle Checklist</h1>
         <a class="anchor" href="#tools">⬇ Tools ⬇</a>
         <div id="content">
-            <form id="categories">
-                <label><input type="checkbox" name="common" value="common" checked />common</label>
-                <label><input type="checkbox" name="strings" value="strings" checked />strings</label>
-                <label><input type="checkbox" name="images" value="images" checked />images</label>
-                <label><input type="checkbox" name="videos" value="videos" checked />videos</label>
-                <label><input type="checkbox" name="audio" value="audio" checked />audio</label>
-            </form>
             <div id="ideas">
                 <ol>
-                    <li data-category="common" class="common" hidden="">
+                    <li data-category="common" class="common">
                         Check the HTML Source for puzzle
                     </li>
-                    <li data-category="common" class="common" hidden="">
+                    <li data-category="common" class="common">
                         Does the title of the puzzle help at all?
                     </li>
-                    <li data-category="common" class="common" hidden="">
+                    <li data-category="common" class="common">
                         If multiples, is there anything in common? Try searching
                     </li>
-                    <li data-category="strings" class="strings" hidden="">
+                    <li data-category="strings" class="strings">
                         If multiples, is there anything in common? Try searching
                     </li>
-                    <li data-category="strings" class="strings" hidden="">
+                    <li data-category="strings" class="strings">
                         <form class="inlineform" id="anagramForm" action="/anagram">
                             <label>Anagram<input type="text" id="anagramInput" name="input" required pattern="^[A-Za-z0-9?]+$" maxlength="12" /></label>
                             <span>❌</span>
                         </form>
                     </li>
-                    <li data-category="strings" class="strings" hidden="">
+                    <li data-category="strings" class="strings">
                         <form class="inlineform" id="matchForm" action="/anagram">
                             <label>Match<input type="text" id="matchInput" name="input" required pattern="^[A-Za-z0-9?]+$" maxlength="12" /></label>
                             <span>❌</span>
                         </form>
                     </li>
-                    <li data-category="strings" class="strings" hidden="">
+                    <li data-category="strings" class="strings">
                         First/Later letters of each thing spell anything
                     </li>
-                    <li data-category="strings" class="strings" hidden="">
+                    <li data-category="strings" class="strings">
                         Can the elements be split into groups?
                     </li>
-                    <li data-category="strings" class="strings" hidden="">
+                    <li data-category="strings" class="strings">
                         Can the groups be morse/binary encoded? Check 1st, 9th, 17th etc for 0/1/something in common
                     </li>
-                    <li data-category="images" class="images" hidden="">
+                    <li data-category="images" class="images">
                         Can the picture be a simple word
                     </li>
-                    <li data-category="images" class="images" hidden="">
+                    <li data-category="images" class="images">
                         If there are multiple pictures, is there a theme commonality?
                     </li>
-                    <li data-category="images" class="images" hidden="">
+                    <li data-category="images" class="images">
                         Check Exif/Size
                         <form class="inlineform" id="exifUpload" action="/uploadImage" method="POST" enctype="multipart/form-data">
                             <label><input type="file" id="exifFile" name="exifFile" /></label>
@@ -66,7 +59,7 @@
                             <span>❌</span>
                         </form>
                     </li>
-                    <li data-category="images" class="images" hidden="">
+                    <li data-category="images" class="images">
                         Could it be a flag? Enter some search terms to find flags
                         <form class="inlineform" id="flagsform" >
                             <label><input type="text" id="flagterms" /></label>
@@ -74,25 +67,25 @@
                         </form>
                         <div id="flagresults"></div>
                     </li>
-                    <li data-category="images" class="images" hidden="">
+                    <li data-category="images" class="images">
                         Run through strings/file, look at results
                     </li>
-                    <li data-category="images" class="images" hidden="">
+                    <li data-category="images" class="images">
                         Check file names
                     </li>
-                    <li data-category="videos" class="videos" hidden="">
+                    <li data-category="videos" class="videos">
                         What times do events happen or how long do they take
                     </li>
-                    <li data-category="videos" class="videos" hidden="">
+                    <li data-category="videos" class="videos">
                         Check file names
                     </li>
-                    <li data-category="videos"  class="videos" hidden="">
+                    <li data-category="videos"  class="videos">
                         Run through strings/file, look at results
                     </li>
-                    <li data-category="audio"  class="audio" hidden="">
+                    <li data-category="audio"  class="audio">
                         Check channels match
                     </li>
-                    <li data-category="audio"  class="audio" hidden="">
+                    <li data-category="audio"  class="audio">
                         Reverse
                     </li>
                 </ol>
