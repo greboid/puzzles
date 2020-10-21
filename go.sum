@@ -1,6 +1,6 @@
 github.com/bwmarrin/discordgo v0.20.2/go.mod h1:O9S4p+ofTFwB02em7jkpkV8M3R0/PUVOwN61zSZ0r4Q=
-github.com/csmith/kowalski/v2 v2.0.0 h1:DGSIm2cgVNbI3+Mpy6QwSFe+2nN6remozogZGYZ2bkg=
-github.com/csmith/kowalski/v2 v2.0.0/go.mod h1:DjtlA+lQ/rJrnkZzoWIG/IqxN61Q4yqd6TONZhR2uHg=
+github.com/csmith/kowalski/v2 v2.2.0 h1:vvzdjbVyRxAnXwN7rHLjFHiMUxvv6FbEPKwIUei/JvQ=
+github.com/csmith/kowalski/v2 v2.2.0/go.mod h1:DjtlA+lQ/rJrnkZzoWIG/IqxN61Q4yqd6TONZhR2uHg=
 github.com/fsnotify/fsnotify v1.4.9 h1:hsms1Qyu0jgnwNXIxa+/V/PDsU6CfLf6CNO8H7IWoS4=
 github.com/fsnotify/fsnotify v1.4.9/go.mod h1:znqG4EE+3YCdAaPaxE2ZRY/06pZUdp0tY4IgpuI1SZQ=
 github.com/gopherjs/gopherjs v0.0.0-20200217142428-fce0ec30dd00 h1:l5lAOZEym3oK3SQ2HBHWsJUfbNBiTXJDeW2QDxw9AQ0=

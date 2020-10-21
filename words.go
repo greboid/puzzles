@@ -12,7 +12,9 @@ import (
 	"github.com/csmith/kowalski/v2"
 )
 
-func getResults(checker []*kowalski.SpellChecker, input string, function func([]*kowalski.SpellChecker, string, ...kowalski.MultiplexOption) [][]string) (output []byte, statusCode int) {
+type wordsFunction func([]*kowalski.SpellChecker, string, ...kowalski.MultiplexOption) [][]string
+
+func getResults(checker []*kowalski.SpellChecker, input string, function wordsFunction) (output []byte, statusCode int) {
 	if input == "" || len(input) > 13 {
 		output, _ = json.Marshal(Output{
 			Success: false,

@@ -3,7 +3,7 @@ module github.com/greboid/puzzles
 go 1.15
 
 require (
-	github.com/csmith/kowalski/v2 v2.0.0
+	github.com/csmith/kowalski/v2 v2.2.0
 	github.com/fsnotify/fsnotify v1.4.9
 	github.com/gopherjs/gopherjs v0.0.0-20200217142428-fce0ec30dd00 // indirect
 	github.com/kouhin/envflag v0.0.0-20150818174321-0e9a86061649

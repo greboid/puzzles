@@ -89,6 +89,18 @@
                         </form>
                     </div>
                     <div>
+                        <form class="" id="morseForm" action="/morse">
+                            <label>Morse: </label><input type="text" id="morseInput" name="input" required pattern="^[-\.]+$" />
+                            <span>❌</span>
+                        </form>
+                    </div>
+                    <div>
+                        <form class="" id="t9Form" action="/t9">
+                            <label>T9: </label><input type="text" id="t9Input" name="input" required pattern="^[2-9]+$" />
+                            <span>❌</span>
+                        </form>
+                    </div>
+                    <div>
                         <form class="" id="exifUpload" action="/uploadImage" method="POST" enctype="multipart/form-data">
                             <label>Exif Checker: </label><input type="file" id="exifFile" name="exifFile" />
                             <input type="submit" value="Upload"/>
