@@ -46,7 +46,7 @@ func main() {
 	reloadTemplates()
 	templateChanges()
 	mux := http.NewServeMux()
-	mux.Handle("/static/", http.StripPrefix("/static", http.FileServer(http.Dir("./static"))))
+	mux.Handle("/static/", http.StripPrefix("/static", http.FileServer(http.Dir(filepath.Join(".", "static")))))
 	mux.HandleFunc("/favicon.ico", faviconHandler)
 	mux.HandleFunc("/", indexHandler)
 	mux.HandleFunc("/anagram", anagramHandler)
