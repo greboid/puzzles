@@ -14,6 +14,18 @@ function ready() {
     document.querySelector("#matchForm span").onclick = function() {
         handleResponse(null, document.forms.matchForm.parentNode)
     }
+    document.forms.morseForm.onsubmit = () => {
+        handleMorse(); return false
+    };
+    document.querySelector("#morseForm span").onclick = function() {
+        handleResponse(null, document.forms.morseForm.parentNode)
+    }
+    document.forms.t9Form.onsubmit = () => {
+        handleT9(); return false
+    };
+    document.querySelector("#t9Form span").onclick = function() {
+        handleResponse(null, document.forms.t9Form.parentNode)
+    }
     document.forms.exifUpload.onsubmit = () => {
         handleExifUpload(); return false
     }
@@ -67,7 +79,7 @@ function handleAnagram() {
             }
         })
         .catch(function (error) {
-            console.log("Error getting anagram")
+            console.log("Error getting anagram: " + error)
         })
 }
 
@@ -83,9 +95,42 @@ function handleMatch() {
             }
         })
         .catch(function (error) {
-            console.log("Error getting anagram")
+            console.log("Error getting match: " + error)
         })
 }
+
+function handleMorse() {
+    let input = document.forms.morseForm.elements.morseInput.value
+    let element = document.forms.morseForm.parentNode;
+    axios.get('/morse?input='+input)
+      .then(function(response){
+          if (!response.data.Success) {
+              handleResponse([], element)
+          } else {
+              handleResponse(response.data.Result, element)
+          }
+      })
+      .catch(function (error) {
+          console.log("Error getting anagram: " + error)
+      })
+}
+
+function handleT9() {
+    let input = document.forms.t9Form.elements.t9Input.value
+    let element = document.forms.t9Form.parentNode;
+    axios.get('/t9?input='+input)
+      .then(function(response){
+          if (!response.data.Success) {
+              handleResponse([], element)
+          } else {
+              handleResponse(response.data.Result, element)
+          }
+      })
+      .catch(function (error) {
+          console.log("Error getting T9: " + error)
+      })
+}
+
 
 function handleResponse(results, element, maxResults = 1000) {
     let children = [ ...element.children ];

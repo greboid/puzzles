@@ -21,7 +21,7 @@ var (
 	wordList          = flag.String("wordlist-dir", "/app/wordlists", "Path of the word list directory")
 	templateDirectory = flag.String("template-dir", "/app/templates", "Path of the templates directory")
 	words             []*kowalski.SpellChecker
-	download		  = flag.Bool("download-flags", false, "Download new flags data")
+	download          = flag.Bool("download-flags", false, "Download new flags data")
 )
 
 type Output struct {
@@ -49,8 +49,10 @@ func main() {
 	mux.Handle("/static/", http.StripPrefix("/static", http.FileServer(http.Dir(filepath.Join(".", "static")))))
 	mux.HandleFunc("/favicon.ico", faviconHandler)
 	mux.HandleFunc("/", indexHandler)
-	mux.HandleFunc("/anagram", anagramHandler)
-	mux.HandleFunc("/match", matchHandler)
+	mux.HandleFunc("/anagram", multiplexHandler(kowalski.MultiplexAnagram))
+	mux.HandleFunc("/match", multiplexHandler(kowalski.MultiplexMatch))
+	mux.HandleFunc("/morse", multiplexHandler(kowalski.MultiplexFromMorse))
+	mux.HandleFunc("/t9", multiplexHandler(kowalski.MultiplexFromT9))
 	mux.HandleFunc("/exifUpload", exifUpload)
 	log.Print("Starting server.")
 	server := http.Server{
@@ -137,20 +139,14 @@ func faviconHandler(w http.ResponseWriter, r *http.Request) {
 	http.ServeFile(w, r, filepath.Join(".", "static", "favicon.ico"))
 }
 
-func anagramHandler(writer http.ResponseWriter, request *http.Request) {
-	input := request.FormValue("input")
-	writer.Header().Add("Content-Type", "application/json")
-	outputBytes, outputStatus := getResults(words, input, kowalski.MultiplexAnagram)
-	writer.WriteHeader(outputStatus)
-	_, _ = writer.Write(outputBytes)
-}
-
-func matchHandler(writer http.ResponseWriter, request *http.Request) {
-	input := request.FormValue("input")
-	writer.Header().Add("Content-Type", "application/json")
-	outputBytes, outputStatus := getResults(words, input, kowalski.MultiplexMatch)
-	writer.WriteHeader(outputStatus)
-	_, _ = writer.Write(outputBytes)
+func multiplexHandler(function wordsFunction) func(http.ResponseWriter, *http.Request) {
+	return func(writer http.ResponseWriter, request *http.Request) {
+		input := request.FormValue("input")
+		writer.Header().Add("Content-Type", "application/json")
+		outputBytes, outputStatus := getResults(words, input, function)
+		writer.WriteHeader(outputStatus)
+		_, _ = writer.Write(outputBytes)
+	}
 }
 
 func exifUpload(writer http.ResponseWriter, request *http.Request) {
