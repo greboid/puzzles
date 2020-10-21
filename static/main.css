@@ -65,7 +65,6 @@ input:valid {
 #ideas {
     counter-reset: ideas;
     margin: 1em;
-    min-width: min(90vw, 900px);
 }
 
 #ideas>ol {
@@ -103,27 +102,58 @@ input:valid {
     display: flex;
     flex-direction: row;
     justify-content: center;
+    width: 100%;
 }
 #content {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    min-width: 90vw;
 }
 
-#tools>ul {
+#internal {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+form {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 16px;
+    grid-gap: 16px;
+}
+
+label {
+    grid-column: 1 / 2;
+}
+input[type=text] {
+    grid-column: 2 / 3;
+}
+input[type=file] {
+    grid-column: 2 / 3;
+}
+input[type=submit] {
+    grid-column: 3 / 4;
+}
+span {
+    grid-column: 5 / 6;
+}
+
+#externaltools>ul {
     list-style: none;
 }
 
 #flagresults {
     display: grid;
-    grid-template-columns: repeat(auto-fit, 250px);
+    grid-template-columns: repeat(auto-fit, 150px);
 }
 
 .flagResult {
     display: inline-block;
-    width: 240px;
-    height: 150px;
+    width: 150px;
+    height: 75px;
     text-align: center;
     margin: 3em 1em
 }
@@ -133,6 +163,6 @@ input:valid {
 }
 
 .flagResult img {
-    max-width: 230px;
+    max-width: 150px;
     max-height: 120px;
 }

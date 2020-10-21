@@ -10,101 +10,109 @@
         <h1>Puzzle Checklist</h1>
         <a class="anchor" href="#tools">⬇ Tools ⬇</a>
         <div id="content">
-            <div id="ideas">
-                <ol>
-                    <li data-category="common" class="common">
-                        Check the HTML Source for puzzle
-                    </li>
-                    <li data-category="common" class="common">
-                        Does the title of the puzzle help at all?
-                    </li>
-                    <li data-category="common" class="common">
-                        If multiples, is there anything in common? Try searching
-                    </li>
-                    <li data-category="strings" class="strings">
-                        If multiples, is there anything in common? Try searching
-                    </li>
-                    <li data-category="strings" class="strings">
-                        <form class="inlineform" id="anagramForm" action="/anagram">
-                            <label>Anagram<input type="text" id="anagramInput" name="input" required pattern="^[A-Za-z0-9?]+$" maxlength="12" /></label>
+            <div id="internal">
+                <div id="ideas">
+                    <ol>
+                        <li data-category="common" class="common">
+                            Check the HTML Source for puzzle
+                        </li>
+                        <li data-category="common" class="common">
+                            Does the title of the puzzle help at all?
+                        </li>
+                        <li data-category="common" class="common">
+                            If multiples, is there anything in common? Try searching
+                        </li>
+                        <li data-category="strings" class="strings">
+                            Can it be anagrammed?
+                        </li>
+                        <li data-category="strings" class="strings">
+                            First/Later letters of each thing spell anything
+                        </li>
+                        <li data-category="strings" class="strings">
+                            Can the elements be split into groups?
+                        </li>
+                        <li data-category="strings" class="strings">
+                            Can the groups be morse/binary encoded? Check 1st, 9th, 17th etc for 0/1/something in common
+                        </li>
+                        <li data-category="strings" class="strings">
+                            Can this be converted to or from braille?
+                        </li>
+                        <li data-category="strings" class="strings">
+                            Is this some kind of ASCII art for a word?
+                        </li>
+                        <li data-category="images" class="images">
+                            Can the picture be a simple word
+                        </li>
+                        <li data-category="images" class="images">
+                            If there are multiple pictures, is there a theme commonality?
+                        </li>
+                        <li data-category="images" class="images">
+                            Check Exif/Size
+                        </li>
+                        <li data-category="images" class="images">
+                            Could it be a flag? Enter some search terms to find flags
+                        </li>
+                        <li data-category="images" class="images">
+                            Run through strings/file, look at results
+                        </li>
+                        <li data-category="images" class="images">
+                            Check file names
+                        </li>
+                        <li data-category="videos" class="videos">
+                            What times do events happen or how long do they take
+                        </li>
+                        <li data-category="videos" class="videos">
+                            Check file names
+                        </li>
+                        <li data-category="videos"  class="videos">
+                            Run through strings/file, look at results
+                        </li>
+                        <li data-category="audio"  class="audio">
+                            Check channels match
+                        </li>
+                        <li data-category="audio"  class="audio">
+                            Reverse
+                        </li>
+                    </ol>
+                </div>
+                <div>
+                    <div>
+                        <form class="" id="anagramForm" action="/anagram">
+                            <label>Anagram solver: </label><input type="text" id="anagramInput" name="input" required pattern="^[A-Za-z0-9?]+$" maxlength="12" />
                             <span>❌</span>
                         </form>
-                    </li>
-                    <li data-category="strings" class="strings">
-                        <form class="inlineform" id="matchForm" action="/anagram">
-                            <label>Match<input type="text" id="matchInput" name="input" required pattern="^[A-Za-z0-9?]+$" maxlength="12" /></label>
+                    </div>
+                    <div>
+                        <form class="" id="matchForm" action="/anagram">
+                            <label>Word Matcher: </label><input type="text" id="matchInput" name="input" required pattern="^[A-Za-z0-9?]+$" maxlength="12" />
                             <span>❌</span>
                         </form>
-                    </li>
-                    <li data-category="strings" class="strings">
-                        First/Later letters of each thing spell anything
-                    </li>
-                    <li data-category="strings" class="strings">
-                        Can the elements be split into groups?
-                    </li>
-                    <li data-category="strings" class="strings">
-                        Can the groups be morse/binary encoded? Check 1st, 9th, 17th etc for 0/1/something in common
-                    </li>
-                    <li data-category="strings" class="strings">
-                        Can this be converted to or from braille?
-                    </li>
-                    <li data-category="strings" class="strings">
-                        Is this some kind of ASCII art for a word?
-                    </li>
-                    <li data-category="images" class="images">
-                        Can the picture be a simple word
-                    </li>
-                    <li data-category="images" class="images">
-                        If there are multiple pictures, is there a theme commonality?
-                    </li>
-                    <li data-category="images" class="images">
-                        Check Exif/Size
-                        <form class="inlineform" id="exifUpload" action="/uploadImage" method="POST" enctype="multipart/form-data">
-                            <label><input type="file" id="exifFile" name="exifFile" /></label>
+                    </div>
+                    <div>
+                        <form class="" id="exifUpload" action="/uploadImage" method="POST" enctype="multipart/form-data">
+                            <label>Exif Checker: </label><input type="file" id="exifFile" name="exifFile" />
                             <input type="submit" value="Upload"/>
                             <span>❌</span>
                         </form>
-                    </li>
-                    <li data-category="images" class="images">
-                        Could it be a flag? Enter some search terms to find flags
-                        <form class="inlineform" id="flagsform" >
-                            <label><input type="text" id="flagterms" /></label>
+                    </div>
+                    <div>
+                        <form class="" id="flagsform" >
+                            <label>Describe Flag: </label><input type="text" id="flagterms" />
                             <span>❌</span>
                         </form>
-                        <div id="flagresults"></div>
-                    </li>
-                    <li data-category="images" class="images">
-                        Run through strings/file, look at results
-                    </li>
-                    <li data-category="images" class="images">
-                        Check file names
-                    </li>
-                    <li data-category="videos" class="videos">
-                        What times do events happen or how long do they take
-                    </li>
-                    <li data-category="videos" class="videos">
-                        Check file names
-                    </li>
-                    <li data-category="videos"  class="videos">
-                        Run through strings/file, look at results
-                    </li>
-                    <li data-category="audio"  class="audio">
-                        Check channels match
-                    </li>
-                    <li data-category="audio"  class="audio">
-                        Reverse
-                    </li>
-                </ol>
+                    </div>
+                    <div id="flagresults"></div>
+                </div>
             </div>
         </div>
-        <div id="tools">
+        <div id="externaltools">
             <a class="anchor" href="#top">⬆ Top ⬆</a>
             <ul>
                 <li><a href="https://gchq.github.io/CyberChef/">Cyberchef</a></li>
                 <li><a href="https://gramener.com/flags">Flags</a></li>
                 <li><a href="http://rumkin.com/tools/cipher/">Ciphers</a></li>
                 <li><a href="https://www.dcode.fr/en">Decode.fr</a></li>
-                <li><a href="https://ptable.com">Period Table</a></li>
+                <li><a href="https://ptable.com">Periodic Table</a></li>
             </ul>
         </div>
         <script src="/static/axios.js"></script>
