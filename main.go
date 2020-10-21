@@ -133,9 +133,8 @@ func indexHandler(writer http.ResponseWriter, request *http.Request) {
 	}
 }
 
-func faviconHandler(w http.ResponseWriter, _ *http.Request) {
-	w.WriteHeader(http.StatusOK)
-	_, _ = w.Write([]byte{})
+func faviconHandler(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, filepath.Join(".", "static", "favicon.ico"))
 }
 
 func anagramHandler(writer http.ResponseWriter, request *http.Request) {
