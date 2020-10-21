@@ -46,13 +46,9 @@ func main() {
 	reloadTemplates()
 	templateChanges()
 	mux := http.NewServeMux()
-	mux.HandleFunc("/static/axios.js", axiosHandler)
-	mux.HandleFunc("/static/flags.js", flagsjsHandler)
-	mux.HandleFunc("/static/flags.json", flagsjsonHandler)
+	mux.Handle("/static/", http.StripPrefix("/static", http.FileServer(http.Dir("./static"))))
 	mux.HandleFunc("/favicon.ico", faviconHandler)
 	mux.HandleFunc("/", indexHandler)
-	mux.HandleFunc("/css", cssHandler)
-	mux.HandleFunc("/js", jsHandler)
 	mux.HandleFunc("/anagram", anagramHandler)
 	mux.HandleFunc("/match", matchHandler)
 	mux.HandleFunc("/exifUpload", exifUpload)
@@ -107,9 +103,7 @@ func templateReloader(watcher *fsnotify.Watcher) {
 
 func reloadTemplates() {
 	templates = template.Must(template.ParseFiles(
-		filepath.Join(*templateDirectory, "main.css"),
 		filepath.Join(*templateDirectory, "index.html"),
-		filepath.Join(*templateDirectory, "main.js"),
 	))
 }
 
@@ -126,26 +120,6 @@ func requestLogger(targetMux http.Handler) http.Handler {
 	})
 }
 
-func cssHandler(writer http.ResponseWriter, _ *http.Request) {
-	writer.Header().Set("Content-Type", "text/css; charset=utf-8")
-	err := templates.ExecuteTemplate(writer, "main.css", nil)
-	if err != nil {
-		log.Printf("Fucked up: %s", err.Error())
-		writer.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-}
-
-func jsHandler(writer http.ResponseWriter, _ *http.Request) {
-	writer.Header().Set("Content-Type", "application/javascript; charset=utf-8")
-	err := templates.ExecuteTemplate(writer, "main.js", nil)
-	if err != nil {
-		log.Printf("Fucked up: %s", err.Error())
-		writer.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-}
-
 func indexHandler(writer http.ResponseWriter, request *http.Request) {
 	if request.URL.Path == "/" {
 		err := templates.ExecuteTemplate(writer, "index.html", "")
@@ -157,18 +131,6 @@ func indexHandler(writer http.ResponseWriter, request *http.Request) {
 	} else {
 		writer.WriteHeader(http.StatusNotFound)
 	}
-}
-
-func axiosHandler(w http.ResponseWriter, r *http.Request) {
-	http.ServeFile(w, r, filepath.Join(".", "static", "axios.js"))
-}
-
-func flagsjsHandler(w http.ResponseWriter, r *http.Request) {
-	http.ServeFile(w, r, filepath.Join(".", "static", "flags.js"))
-}
-
-func flagsjsonHandler(w http.ResponseWriter, r *http.Request) {
-	http.ServeFile(w, r, filepath.Join(".", "static", "flags.json"))
 }
 
 func faviconHandler(w http.ResponseWriter, _ *http.Request) {
