@@ -24,6 +24,7 @@ function ready() {
         value.addEventListener('change', e => handleCategoryChange(e))
     })
     document.querySelector("#flagsform span").onclick = function() {
+        flagterms.value = ""
         while (flagresults.firstChild) {
             flagresults.removeChild(flagresults.lastChild)
         }
