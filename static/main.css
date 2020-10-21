@@ -147,7 +147,7 @@ span {
     padding-left: 0;
 }
 
-#flagresults {
+#toolresults {
     display: grid;
     grid-template-columns: repeat(auto-fit, 150px);
 }

@@ -6,30 +6,35 @@ function ready() {
         handleAnagram(); return false
     };
     document.querySelector("#anagramForm span").onclick = function() {
+        anagramInput.value = ""
         handleResponse(null, document.forms.anagramForm.parentNode)
     }
     document.forms.matchForm.onsubmit = () => {
         handleMatch(); return false
     };
     document.querySelector("#matchForm span").onclick = function() {
+        matchInput.value = ""
         handleResponse(null, document.forms.matchForm.parentNode)
     }
     document.forms.morseForm.onsubmit = () => {
         handleMorse(); return false
     };
     document.querySelector("#morseForm span").onclick = function() {
+        morseInput.value = ""
         handleResponse(null, document.forms.morseForm.parentNode)
     }
     document.forms.t9Form.onsubmit = () => {
         handleT9(); return false
     };
     document.querySelector("#t9Form span").onclick = function() {
+        t9Input.value = ""
         handleResponse(null, document.forms.t9Form.parentNode)
     }
     document.forms.exifUpload.onsubmit = () => {
         handleExifUpload(); return false
     }
     document.querySelector("#exifUpload span").onclick = function() {
+        exifUpload.innerHTML = exifUpload.innerHTML
         handleResponse(null, document.forms.exifUpload.parentNode)
     }
     document.querySelectorAll("#categories input[type=checkbox]").forEach(function(value) {
@@ -37,8 +42,8 @@ function ready() {
     })
     document.querySelector("#flagsform span").onclick = function() {
         flagterms.value = ""
-        while (flagresults.firstChild) {
-            flagresults.removeChild(flagresults.lastChild)
+        while (toolresults.firstChild) {
+            toolresults.removeChild(toolresults.lastChild)
         }
     }
 }

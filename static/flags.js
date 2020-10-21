@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
         })
 
     const terms = document.getElementById('flagterms')
-    const output = document.getElementById('flagresults')
+    const output = document.getElementById('toolresults')
     let lastQuery = []
 
     function update () {
