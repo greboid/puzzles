@@ -146,7 +146,6 @@ input[type=submit] {
 
 #toolresults {
     display: grid;
-    grid-template-columns: repeat(auto-fit, 150px);
 }
 
 .flagResult {
@@ -154,7 +153,7 @@ input[type=submit] {
     width: 150px;
     height: 75px;
     text-align: center;
-    margin: 3em 1em
+    margin: 3em 1em;
 }
 
 .flagResult h2 {
