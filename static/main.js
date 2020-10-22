@@ -1,58 +1,37 @@
 'use strict';
 document.addEventListener("DOMContentLoaded", ready)
 
+let toolResults = null
+
 function ready() {
-    document.forms.anagramForm.onsubmit = () => {
-        handleAnagram(); return false
+    document.getElementById('anagramForm').onsubmit = () => {
+        handleAnagram()
+        return false
     };
-    document.querySelector("#anagramForm span").onclick = function() {
-        anagramInput.value = ""
-        handleResponse(null, document.forms.anagramForm.parentNode)
-    }
-    document.forms.matchForm.onsubmit = () => {
-        handleMatch(); return false
+    document.getElementById('matchForm').onsubmit = () => {
+        handleMatch()
+        return false
     };
-    document.querySelector("#matchForm span").onclick = function() {
-        matchInput.value = ""
-        handleResponse(null, document.forms.matchForm.parentNode)
-    }
-    document.forms.morseForm.onsubmit = () => {
-        handleMorse(); return false
+    document.getElementById('morseForm').onsubmit = () => {
+        handleMorse()
+        return false
     };
-    document.querySelector("#morseForm span").onclick = function() {
-        morseInput.value = ""
-        handleResponse(null, document.forms.morseForm.parentNode)
-    }
-    document.forms.t9Form.onsubmit = () => {
-        handleT9(); return false
+    document.getElementById('t9Form').onsubmit = () => {
+        handleT9()
+        return false
     };
-    document.querySelector("#t9Form span").onclick = function() {
-        t9Input.value = ""
-        handleResponse(null, document.forms.t9Form.parentNode)
+    document.getElementById('exifUpload').onsubmit = () => {
+        handleExifUpload()
+        return false
     }
-    document.forms.exifUpload.onsubmit = () => {
-        handleExifUpload(); return false
-    }
-    document.querySelector("#exifUpload span").onclick = function() {
-        exifUpload.innerHTML = exifUpload.innerHTML
-        handleResponse(null, document.forms.exifUpload.parentNode)
-    }
-    document.querySelectorAll("#categories input[type=checkbox]").forEach(function(value) {
-        value.addEventListener('change', e => handleCategoryChange(e))
-    })
-    document.querySelector("#flagsform span").onclick = function() {
-        flagterms.value = ""
-        while (toolresults.firstChild) {
-            toolresults.removeChild(toolresults.lastChild)
-        }
-    }
+    toolResults = document.getElementById('toolresults')
 }
 
 function handleExifUpload() {
-    let element = document.forms.exifUpload.parentNode;
-    let photo = document.getElementById("exifFile").files[0];
-    let formData = new FormData();
-    formData.append("exifFile", photo);
+    let element = document.getElementById('exifUpload').parentNode
+    let photo = document.getElementById("exifFile").files[0]
+    let formData = new FormData()
+    formData.append("exifFile", photo)
     axios({
         url: '/exifUpload',
         method: "post",
@@ -73,8 +52,8 @@ function handleExifUpload() {
 }
 
 function handleAnagram() {
-    let input = document.forms.anagramForm.elements.anagramInput.value
-    let element = document.forms.anagramForm.parentNode;
+    let input = document.getElementById('anagramInput').value
+    let element = document.getElementById('anagramForm').parentNode;
     axios.get('/anagram?input='+input)
         .then(function(response){
             if (!response.data.Success) {
@@ -89,8 +68,8 @@ function handleAnagram() {
 }
 
 function handleMatch() {
-    let input = document.forms.matchForm.elements.matchInput.value
-    let element = document.forms.matchForm.parentNode;
+    let input = document.getElementById('matchInput').value
+    let element = document.getElementById('matchForm').parentNode;
     axios.get('/match?input='+input)
         .then(function(response){
             if (!response.data.Success) {
@@ -105,8 +84,8 @@ function handleMatch() {
 }
 
 function handleMorse() {
-    let input = document.forms.morseForm.elements.morseInput.value
-    let element = document.forms.morseForm.parentNode;
+    let input = document.getElementById('morseInput').value
+    let element = document.getElementById('morseForm').parentNode;
     axios.get('/morse?input='+input)
       .then(function(response){
           if (!response.data.Success) {
@@ -121,8 +100,8 @@ function handleMorse() {
 }
 
 function handleT9() {
-    let input = document.forms.t9Form.elements.t9Input.value
-    let element = document.forms.t9Form.parentNode;
+    let input = document.getElementById('t9Input').value
+    let element = document.getElementById('t9Form').parentNode;
     axios.get('/t9?input='+input)
       .then(function(response){
           if (!response.data.Success) {
@@ -136,67 +115,88 @@ function handleT9() {
       })
 }
 
-
-function handleResponse(results, element, maxResults = 1000) {
-    let children = [ ...element.children ];
-    children.forEach(function(child) {
-        if (child.tagName !== "FORM") {
-            element.removeChild(child)
-        }
-    })
-    let htmlString = "<ul>"
+function handleResponse(results, maxResults = 1000) {
+    clearResults(toolResults)
+    toolResults.appendChild(createClearResultsButton())
+    let resultsList = document.createElement('ul')
     if (results === null) {
     } else if (results.length === 0) {
-        htmlString += "<li>No Results</li>"
+        resultsList.appendChild(createListItem('No Results'))
     } else if (results.length > maxResults) {
-        htmlString += "<li>Over "+maxResults+" results, please narrow down</li>"
+        resultsList.appendChild(createListItem('Over '+maxResults+' results, please narrow down'))
     } else {
         results.forEach(function (result) {
-            htmlString += "<li>" + result + "</li>"
+            resultsList.appendChild(createListItem(result))
         })
     }
-    htmlString += "</ul>"
-    element.insertAdjacentElement("beforeend", htmlToElement(htmlString))
+    toolResults.appendChild(resultsList)
 }
 
-function handleExifResults(results, element) {
-    let children = [ ...element.children ];
-    children.forEach(function(child) {
-        if (child.tagName !== "FORM") {
-            element.removeChild(child)
-        }
-    })
-    let htmlString = "<ul>"
+function handleExifResults(results) {
+    clearResults(toolResults)
+    toolResults.appendChild(createClearResultsButton())
+    let resultsList = document.createElement('ul')
     if (results === null) {
     } else if (results.length === 0) {
-        htmlString += "<li>No Results</li>"
+        resultsList.appendChild(createListItem('No Results'))
     } else {
-        htmlString += "<li>Size: "+results.width+"x"+results.height+"</a></li>"
-        htmlString += "<li>Type: "+results.type+"</li>"
+        resultsList.appendChild(createListItem('Size: '+results.width+'x'+results.height))
+        resultsList.appendChild(createListItem('Type: '+results.type))
         if (results.exifData.mapLink != null) {
-            htmlString += "<li><a href='"+results.exifData.mapLink+"' target='_blank'>Maps link</a></li>"
+            let listItem = document.createElement('li')
+            let link = document.createElement('a');
+            link.title = 'Maps Link'
+            link.href = results.exifData.mapLink
+            link.target = '_blank'
+            let linkText = document.createTextNode('Maps link')
+            link.appendChild(linkText)
+            listItem.appendChild(link)
+            resultsList.appendChild(listItem)
         }
         if (results.exifData.datetime != null) {
-            htmlString += "<li>" + results.exifData.datetime + "</li>"
+            resultsList.appendChild(createListItem(results.exifData.datetime))
         }
         if (results.exifData.comments != null) {
-            htmlString += "<li>" + results.exifData.comments + "</li>"
+            resultsList.appendChild(createListItem(results.exifData.comments))
         }
         if (results.exifData.rawValues == null) {
-            htmlString += "<li>No Exif</li>"
+            resultsList.appendChild(createListItem('No Exif'))
         } else {
             for (const [key, value] of Object.entries(results.exifData.rawValues)) {
-                htmlString += "<li>" + key + ": " + value + "</li>"
+                resultsList.appendChild(createListItem(key + ": " + value))
             }
         }
     }
-    htmlString += "</ul>"
-    element.insertAdjacentElement("beforeend", htmlToElement(htmlString))
+    toolResults.appendChild(resultsList)
 }
 
-function htmlToElement(html) {
-    let template = document.createElement('template');
-    html = html.trim();
-    template.innerHTML = html;
-    return template.content.firstChild;
+function createClearResultsButton() {
+    let clearResultsButton = document.createElement('span');
+    clearResultsButton.appendChild(document.createTextNode('❌'));
+    clearResultsButton.id = "clearResults"
+    clearResultsButton.onclick = clearResultsAndInputs
+    return clearResultsButton
+}
+
+function createListItem(content) {
+    let listItem = document.createElement('li')
+    listItem.appendChild(document.createTextNode(content));
+    return listItem
+}
+
+function clearResults(element) {
+    while (element.firstChild) {
+        element.removeChild(element.lastChild)
+    }
+}
+
+function clearResultsAndInputs() {
+    document.getElementById('anagramInput').value = ""
+    document.getElementById('morseInput').value = ""
+    document.getElementById('matchInput').value = ""
+    document.getElementById('t9Input').value = ""
+    document.getElementById('flagterms').value = ""
+    let exifUpload = document.getElementById('exifUpload')
+    exifUpload.innerHTML = exifUpload.innerHTML
+    clearResults(toolResults)
 }

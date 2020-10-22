@@ -77,29 +77,29 @@
                 </div>
                 <div id="tools">
                     <form class="" id="anagramForm" action="/anagram">
-                        <label>Anagram solver: </label><input type="text" id="anagramInput" name="input" required pattern="^[A-Za-z0-9?]+$" maxlength="12" />
-                        <span>❌</span>
+                        <label for="anagramInput">Anagram solver: </label>
+                        <input type="text" id="anagramInput" name="input" required pattern="^[A-Za-z0-9?]+$" maxlength="12" />
                     </form>
                     <form class="" id="matchForm" action="/anagram">
-                        <label>Word Matcher: </label><input type="text" id="matchInput" name="input" required pattern="^[A-Za-z0-9?]+$" maxlength="12" />
-                        <span>❌</span>
+                        <label for="matchInput">Word Matcher: </label>
+                        <input type="text" id="matchInput" name="input" required pattern="^[A-Za-z0-9?]+$" maxlength="12" />
                     </form>
                     <form class="" id="morseForm" action="/morse">
-                        <label>Morse: </label><input type="text" id="morseInput" name="input" required pattern="^[-\.]+$" />
-                        <span>❌</span>
+                        <label for="morseInput">Morse: </label>
+                        <input type="text" id="morseInput" name="input" required pattern="^[-\.]+$" />
                     </form>
                     <form class="" id="t9Form" action="/t9">
-                        <label>T9: </label><input type="text" id="t9Input" name="input" required pattern="^[2-9]+$" />
-                        <span>❌</span>
+                        <label for="t9Input">T9: </label>
+                        <input type="text" id="t9Input" name="input" required pattern="^[2-9]+$" />
                     </form>
                     <form class="" id="exifUpload" action="/uploadImage" method="POST" enctype="multipart/form-data">
-                        <label>Exif Checker: </label><input type="file" id="exifFile" name="exifFile" />
+                        <label>Exif Checker: </label>
+                        <input type="file" id="exifFile" name="exifFile" />
                         <input type="submit" value="Upload"/>
-                        <span>❌</span>
                     </form>
                     <form class="" id="flagsform" >
-                        <label>Describe Flag: </label><input type="text" id="flagterms" />
-                        <span>❌</span>
+                        <label for="flagterms">Describe Flag: </label>
+                        <input type="text" id="flagterms" />
                     </form>
                     <div id="toolresults"></div>
                 </div>

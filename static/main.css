@@ -138,9 +138,6 @@ input[type=file] {
 input[type=submit] {
     grid-column: 3 / 4;
 }
-span {
-    grid-column: 5 / 6;
-}
 
 #externaltools>ul {
     list-style: none;
