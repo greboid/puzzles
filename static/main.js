@@ -19,6 +19,10 @@ function ready() {
         handleSimpleResponse('t9', document.getElementById('t9Input'), toolResults)
         return false
     };
+    document.getElementById("exifUpload").onchange = () => {
+        handleExifUpload(toolResults)
+        return false
+    }
     document.getElementById('exifUpload').onsubmit = () => {
         handleExifUpload(toolResults)
         return false
