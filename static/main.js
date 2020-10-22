@@ -28,7 +28,6 @@ function ready() {
 }
 
 function handleExifUpload() {
-    let element = document.getElementById('exifUpload').parentNode
     let photo = document.getElementById("exifFile").files[0]
     let formData = new FormData()
     formData.append("exifFile", photo)
@@ -43,9 +42,9 @@ function handleExifUpload() {
     })
         .then(response => {
             if (!response.data.Success) {
-                handleExifResults([], element)
+                clearResults(toolResults)
             } else {
-                handleExifResults(response.data.Result, element)
+                handleExifResults(response.data.Result)
             }
         })
         .catch(error => console.log("Error getting exif data: " + error))
@@ -53,13 +52,12 @@ function handleExifUpload() {
 
 function handleAnagram() {
     let input = document.getElementById('anagramInput').value
-    let element = document.getElementById('anagramForm').parentNode;
     axios.get('/anagram?input='+input)
         .then(function(response){
             if (!response.data.Success) {
-                handleResponse([], element)
+                clearResults(toolResults)
             } else {
-                handleResponse(response.data.Result, element)
+                handleResponse(response.data.Result)
             }
         })
         .catch(function (error) {
@@ -69,13 +67,12 @@ function handleAnagram() {
 
 function handleMatch() {
     let input = document.getElementById('matchInput').value
-    let element = document.getElementById('matchForm').parentNode;
     axios.get('/match?input='+input)
         .then(function(response){
             if (!response.data.Success) {
-                handleResponse([], element)
+                clearResults(toolResults)
             } else {
-                handleResponse(response.data.Result, element)
+                handleResponse(response.data.Result)
             }
         })
         .catch(function (error) {
@@ -85,13 +82,12 @@ function handleMatch() {
 
 function handleMorse() {
     let input = document.getElementById('morseInput').value
-    let element = document.getElementById('morseForm').parentNode;
     axios.get('/morse?input='+input)
       .then(function(response){
           if (!response.data.Success) {
-              handleResponse([], element)
+              clearResults(toolResults)
           } else {
-              handleResponse(response.data.Result, element)
+              handleResponse(response.data.Result)
           }
       })
       .catch(function (error) {
@@ -101,13 +97,12 @@ function handleMorse() {
 
 function handleT9() {
     let input = document.getElementById('t9Input').value
-    let element = document.getElementById('t9Form').parentNode;
     axios.get('/t9?input='+input)
       .then(function(response){
           if (!response.data.Success) {
-              handleResponse([], element)
+              clearResults(toolResults)
           } else {
-              handleResponse(response.data.Result, element)
+              handleResponse(response.data.Result)
           }
       })
       .catch(function (error) {
