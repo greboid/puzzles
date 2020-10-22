@@ -4,19 +4,19 @@ document.addEventListener("DOMContentLoaded", ready)
 function ready() {
     let toolResults = document.getElementById('toolresults')
     document.getElementById('anagramForm').onsubmit = () => {
-        handleAnagram(toolResults)
+        handleSimpleResponse('anagram', document.getElementById('anagramInput'), toolResults)
         return false
     };
     document.getElementById('matchForm').onsubmit = () => {
-        handleMatch(toolResults)
+        handleSimpleResponse('match', document.getElementById('matchInput'), toolResults)
         return false
     };
     document.getElementById('morseForm').onsubmit = () => {
-        handleMorse(toolResults)
+        handleSimpleResponse('morse', document.getElementById('morseInput'), toolResults)
         return false
     };
     document.getElementById('t9Form').onsubmit = () => {
-        handleT9(toolResults)
+        handleSimpleResponse('t9', document.getElementById('t9Input'), toolResults)
         return false
     };
     document.getElementById('exifUpload').onsubmit = () => {
@@ -48,30 +48,8 @@ function handleExifUpload(resultsElement) {
         .catch(error => handleError(error, resultsElement))
 }
 
-function handleAnagram(resultsElement) {
-    let input = document.getElementById('anagramInput').value
-    axios.get('/anagram?input='+input)
-        .then(response => handleResponse(response.data, resultsElement))
-        .catch(error => handleError(error, resultsElement))
-}
-
-function handleMatch(resultsElement) {
-    let input = document.getElementById('matchInput').value
-    axios.get('/match?input='+input)
-        .then(response => handleResponse(response.data, resultsElement))
-        .catch(error => handleError(error, resultsElement))
-}
-
-function handleMorse(resultsElement) {
-    let input = document.getElementById('morseInput').value
-    axios.get('/morse?input='+input)
-        .then(response => handleResponse(response.data, resultsElement))
-        .catch(error => handleError(error, resultsElement))
-}
-
-function handleT9(resultsElement) {
-    let input = document.getElementById('t9Input').value
-    axios.get('/t9?input='+input)
+function handleSimpleResponse(url, inputElement, resultsElement) {
+    axios.get('/'+url+'?input='+inputElement.value)
         .then(response => handleResponse(response.data, resultsElement))
         .catch(error => handleError(error, resultsElement))
 }
