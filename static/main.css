@@ -102,7 +102,7 @@ input:valid {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    width: 100%;
+    width: 40%;
 }
 #content {
     display: flex;
@@ -117,13 +117,20 @@ input:valid {
     flex-direction: row;
     justify-content: center;
     align-items: flex-start;
+    width: 100%;
+}
+
+#tools {
+    display: grid;
+    gap: 1em;
+    flex-grow: 1;
 }
 
 form {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 16px;
-    grid-template-rows: auto auto;
-    grid-gap: 16px;
+    grid-template-columns: 2fr 3fr;
+    grid-template-rows: 1fr;
+    gap: 10px 10px;
 }
 
 label {
@@ -134,9 +141,6 @@ input[type=text] {
 }
 input[type=file] {
     grid-column: 2 / 3;
-}
-input[type=submit] {
-    grid-column: 3 / 4;
 }
 
 #externaltools>ul {
