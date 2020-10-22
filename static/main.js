@@ -28,6 +28,7 @@ function ready() {
 function handleExifUpload(resultsElement) {
     let photo = document.getElementById("exifFile").files[0]
     let formData = new FormData()
+    addLoading(resultsElement)
     formData.append("exifFile", photo)
     axios({
         url: '/exifUpload',
@@ -49,6 +50,7 @@ function handleExifUpload(resultsElement) {
 }
 
 function handleSimpleResponse(url, inputElement, resultsElement) {
+    addLoading(resultsElement)
     axios.get('/'+url+'?input='+inputElement.value)
         .then(response => handleResponse(response.data, resultsElement))
         .catch(error => handleError(error, resultsElement))
@@ -131,6 +133,13 @@ function clearResults(element) {
     while (element.firstChild) {
         element.removeChild(element.lastChild)
     }
+}
+
+function addLoading(element) {
+    while (element.firstChild) {
+        element.removeChild(element.lastChild)
+    }
+    element.appendChild(document.createTextNode('Loading response'))
 }
 
 function clearResultsAndInputs(resultsElement) {
