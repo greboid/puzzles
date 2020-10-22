@@ -149,7 +149,9 @@ input[type=file] {
 }
 
 #toolresults {
-    display: grid;
+    display: flex;
+    max-width: 50vw;
+    flex-wrap: wrap;
 }
 
 .flagResult {
