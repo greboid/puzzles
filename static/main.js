@@ -47,75 +47,47 @@ function handleExifUpload() {
                 handleExifResults(response.data.Result)
             }
         })
-        .catch(error => console.log("Error getting exif data: " + error))
+        .catch(error => handleError(error))
 }
 
 function handleAnagram() {
     let input = document.getElementById('anagramInput').value
     axios.get('/anagram?input='+input)
-        .then(function(response){
-            if (!response.data.Success) {
-                clearResults(toolResults)
-            } else {
-                handleResponse(response.data.Result)
-            }
-        })
-        .catch(function (error) {
-            console.log("Error getting anagram: " + error)
-        })
+        .then(response => handleResponse(response.data))
+        .catch(error => handleError(error))
 }
 
 function handleMatch() {
     let input = document.getElementById('matchInput').value
     axios.get('/match?input='+input)
-        .then(function(response){
-            if (!response.data.Success) {
-                clearResults(toolResults)
-            } else {
-                handleResponse(response.data.Result)
-            }
-        })
-        .catch(function (error) {
-            console.log("Error getting match: " + error)
-        })
+        .then(response => handleResponse(response.data))
+        .catch(error => handleError(error))
 }
 
 function handleMorse() {
     let input = document.getElementById('morseInput').value
     axios.get('/morse?input='+input)
-      .then(function(response){
-          if (!response.data.Success) {
-              clearResults(toolResults)
-          } else {
-              handleResponse(response.data.Result)
-          }
-      })
-      .catch(function (error) {
-          console.log("Error getting anagram: " + error)
-      })
+        .then(response => handleResponse(response.data))
+        .catch(error => handleError(error))
 }
 
 function handleT9() {
     let input = document.getElementById('t9Input').value
     axios.get('/t9?input='+input)
-      .then(function(response){
-          if (!response.data.Success) {
-              clearResults(toolResults)
-          } else {
-              handleResponse(response.data.Result)
-          }
-      })
-      .catch(function (error) {
-          console.log("Error getting T9: " + error)
-      })
+        .then(response => handleResponse(response.data))
+        .catch(error => handleError(error))
 }
 
-function handleResponse(results, maxResults = 1000) {
+function handleResponse(result, maxResults = 1000) {
     clearResults(toolResults)
+    if (!result.Success) {
+        toolResults.appendChild(document.createTextNode('Response had a failed response'))
+        return
+    }
+    let results = result.Result
     toolResults.appendChild(createClearResultsButton())
     let resultsList = document.createElement('ul')
-    if (results === null) {
-    } else if (results.length === 0) {
+    if (results === null || results.length === 0) {
         resultsList.appendChild(createListItem('No Results'))
     } else if (results.length > maxResults) {
         resultsList.appendChild(createListItem('Over '+maxResults+' results, please narrow down'))
@@ -194,4 +166,10 @@ function clearResultsAndInputs() {
     let exifUpload = document.getElementById('exifUpload')
     exifUpload.innerHTML = exifUpload.innerHTML
     clearResults(toolResults)
+}
+
+function handleError(error) {
+    clearResults(toolResults)
+    toolResults.appendChild(document.createTextNode('Error requesting data: '+error.message))
+    console.log(error)
 }
