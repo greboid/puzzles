@@ -23,10 +23,6 @@ function ready() {
         handleExifUpload(toolResults)
         return false
     }
-    document.getElementById('exifUpload').onsubmit = () => {
-        handleExifUpload(toolResults)
-        return false
-    }
 }
 
 function handleExifUpload(resultsElement) {
