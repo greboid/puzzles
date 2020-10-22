@@ -1,33 +1,31 @@
 'use strict';
 document.addEventListener("DOMContentLoaded", ready)
 
-let toolResults = null
-
 function ready() {
+    let toolResults = document.getElementById('toolresults')
     document.getElementById('anagramForm').onsubmit = () => {
-        handleAnagram()
+        handleAnagram(toolResults)
         return false
     };
     document.getElementById('matchForm').onsubmit = () => {
-        handleMatch()
+        handleMatch(toolResults)
         return false
     };
     document.getElementById('morseForm').onsubmit = () => {
-        handleMorse()
+        handleMorse(toolResults)
         return false
     };
     document.getElementById('t9Form').onsubmit = () => {
-        handleT9()
+        handleT9(toolResults)
         return false
     };
     document.getElementById('exifUpload').onsubmit = () => {
-        handleExifUpload()
+        handleExifUpload(toolResults)
         return false
     }
-    toolResults = document.getElementById('toolresults')
 }
 
-function handleExifUpload() {
+function handleExifUpload(resultsElement) {
     let photo = document.getElementById("exifFile").files[0]
     let formData = new FormData()
     formData.append("exifFile", photo)
@@ -42,50 +40,50 @@ function handleExifUpload() {
     })
         .then(response => {
             if (!response.data.Success) {
-                clearResults(toolResults)
+                clearResults(resultsElement)
             } else {
-                handleExifResults(response.data.Result)
+                handleExifResults(response.data.Result, resultsElement)
             }
         })
-        .catch(error => handleError(error))
+        .catch(error => handleError(error, resultsElement))
 }
 
-function handleAnagram() {
+function handleAnagram(resultsElement) {
     let input = document.getElementById('anagramInput').value
     axios.get('/anagram?input='+input)
-        .then(response => handleResponse(response.data))
-        .catch(error => handleError(error))
+        .then(response => handleResponse(response.data, resultsElement))
+        .catch(error => handleError(error, resultsElement))
 }
 
-function handleMatch() {
+function handleMatch(resultsElement) {
     let input = document.getElementById('matchInput').value
     axios.get('/match?input='+input)
-        .then(response => handleResponse(response.data))
-        .catch(error => handleError(error))
+        .then(response => handleResponse(response.data, resultsElement))
+        .catch(error => handleError(error, resultsElement))
 }
 
-function handleMorse() {
+function handleMorse(resultsElement) {
     let input = document.getElementById('morseInput').value
     axios.get('/morse?input='+input)
-        .then(response => handleResponse(response.data))
-        .catch(error => handleError(error))
+        .then(response => handleResponse(response.data, resultsElement))
+        .catch(error => handleError(error, resultsElement))
 }
 
-function handleT9() {
+function handleT9(resultsElement) {
     let input = document.getElementById('t9Input').value
     axios.get('/t9?input='+input)
-        .then(response => handleResponse(response.data))
-        .catch(error => handleError(error))
+        .then(response => handleResponse(response.data, resultsElement))
+        .catch(error => handleError(error, resultsElement))
 }
 
-function handleResponse(result, maxResults = 1000) {
-    clearResults(toolResults)
+function handleResponse(result, resultsElement, maxResults = 1000) {
+    clearResults(resultsElement)
     if (!result.Success) {
-        toolResults.appendChild(document.createTextNode('Response had a failed response'))
+        resultsElement.appendChild(document.createTextNode('Response had a failed response'))
         return
     }
     let results = result.Result
-    toolResults.appendChild(createClearResultsButton())
+    resultsElement.appendChild(createClearResultsButton(resultsElement))
     let resultsList = document.createElement('ul')
     if (results === null || results.length === 0) {
         resultsList.appendChild(createListItem('No Results'))
@@ -96,12 +94,12 @@ function handleResponse(result, maxResults = 1000) {
             resultsList.appendChild(createListItem(result))
         })
     }
-    toolResults.appendChild(resultsList)
+    resultsElement.appendChild(resultsList)
 }
 
-function handleExifResults(results) {
-    clearResults(toolResults)
-    toolResults.appendChild(createClearResultsButton())
+function handleExifResults(results, resultsElement) {
+    clearResults(resultsElement)
+    resultsElement.appendChild(createClearResultsButton(resultsElement))
     let resultsList = document.createElement('ul')
     if (results === null) {
     } else if (results.length === 0) {
@@ -134,14 +132,14 @@ function handleExifResults(results) {
             }
         }
     }
-    toolResults.appendChild(resultsList)
+    resultsElement.appendChild(resultsList)
 }
 
-function createClearResultsButton() {
+function createClearResultsButton(resultsElement) {
     let clearResultsButton = document.createElement('span');
     clearResultsButton.appendChild(document.createTextNode('❌'));
     clearResultsButton.id = "clearResults"
-    clearResultsButton.onclick = clearResultsAndInputs
+    clearResultsButton.onclick = () => clearResultsAndInputs(resultsElement)
     return clearResultsButton
 }
 
@@ -157,7 +155,7 @@ function clearResults(element) {
     }
 }
 
-function clearResultsAndInputs() {
+function clearResultsAndInputs(resultsElement) {
     document.getElementById('anagramInput').value = ""
     document.getElementById('morseInput').value = ""
     document.getElementById('matchInput').value = ""
@@ -165,11 +163,11 @@ function clearResultsAndInputs() {
     document.getElementById('flagterms').value = ""
     let exifUpload = document.getElementById('exifUpload')
     exifUpload.innerHTML = exifUpload.innerHTML
-    clearResults(toolResults)
+    clearResults(resultsElement)
 }
 
-function handleError(error) {
-    clearResults(toolResults)
-    toolResults.appendChild(document.createTextNode('Error requesting data: '+error.message))
+function handleError(error, resultsElement) {
+    clearResults(resultsElement)
+    resultsElement.appendChild(document.createTextNode('Error requesting data: '+error.message))
     console.log(error)
 }
