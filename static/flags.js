@@ -5,7 +5,7 @@ let flags = []
 let allWords = []
 
 document.addEventListener('DOMContentLoaded', function () {
-    fetch('/static/flags.json')
+    fetch('/flags.json')
         .then(response => response.json())
         .then(json => {
             flags = json
@@ -48,16 +48,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 .appendChild(document.createTextNode(flag.country))
             container
                 .appendChild(document.createElement('img'))
-                .setAttribute('src', "/static/flags/"+flag.image+".webp")
+                .setAttribute('src', "/flags/"+flag.image+".webp")
             output.appendChild(container)
         })
     }
 
     terms.addEventListener('input', update)
-    document.querySelectorAll('.demo').forEach(function (demo) {
-        demo.addEventListener('click', function () {
-            terms.value = demo.textContent
-            update()
-        })
-    })
 })
