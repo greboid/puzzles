@@ -4,7 +4,7 @@ go 1.15
 
 require (
 	github.com/csmith/kowalski/v2 v2.2.0
-	github.com/fsnotify/fsnotify v1.4.9
+	github.com/go-git/go-git/v5 v5.2.0
 	github.com/gopherjs/gopherjs v0.0.0-20200217142428-fce0ec30dd00 // indirect
 	github.com/kouhin/envflag v0.0.0-20150818174321-0e9a86061649
 	github.com/oov/psd v0.0.0-20201002182931-74231384897f

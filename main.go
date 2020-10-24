@@ -26,7 +26,7 @@ type Output struct {
 	Result  interface{}
 }
 
-//go:generate go run . -download-flags
+//go:generate go run flags/flags.go
 
 func main() {
 	err := envflag.Parse()
