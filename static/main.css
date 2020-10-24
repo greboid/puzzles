@@ -155,7 +155,6 @@ input[type=file] {
 }
 
 .flagResult {
-    display: inline-block;
     width: 150px;
     height: 75px;
     text-align: center;
@@ -164,6 +163,7 @@ input[type=file] {
 
 .flagResult h2 {
     font-size: 1em;
+    height: 2em;
 }
 
 .flagResult img {
