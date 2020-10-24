@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"flag"
+	"github.com/julienschmidt/httprouter"
 	"log"
 	"net/http"
 	"os"
@@ -35,17 +36,17 @@ func main() {
 	}
 	log.Printf("Loading wordlist.")
 	words = loadWords(*wordList)
-	mux := http.NewServeMux()
-	mux.Handle("/", disableDirectoryListing(http.FileServer(http.Dir(filepath.Join(".", "static")))))
-	mux.HandleFunc("/anagram", multiplexHandler(kowalski.MultiplexAnagram))
-	mux.HandleFunc("/match", multiplexHandler(kowalski.MultiplexMatch))
-	mux.HandleFunc("/morse", multiplexHandler(kowalski.MultiplexFromMorse))
-	mux.HandleFunc("/t9", multiplexHandler(kowalski.MultiplexFromT9))
-	mux.HandleFunc("/exifUpload", exifUpload)
+	router := httprouter.New()
+	router.GET("/anagram", multiplexHandler(kowalski.MultiplexAnagram))
+	router.GET("/match", multiplexHandler(kowalski.MultiplexMatch))
+	router.GET("/morse", multiplexHandler(kowalski.MultiplexFromMorse))
+	router.GET("/t9", multiplexHandler(kowalski.MultiplexFromT9))
+	router.POST("/exifUpload", exifUpload)
+	router.NotFound = staticHandler(http.FileServer(http.Dir(filepath.Join(".", "static"))))
 	log.Print("Starting server.")
 	server := http.Server{
 		Addr:    ":8080",
-		Handler: notFoundHandler(requestLogger(mux)),
+		Handler: requestLogger(router),
 	}
 	go func() {
 		_ = server.ListenAndServe()
@@ -61,26 +62,15 @@ func main() {
 	log.Print("Finishing server.")
 }
 
-func serveNotFound(w http.ResponseWriter, r *http.Request) {
-	http.ServeFile(w, r, filepath.Join(".", "static", "404.html"))
-}
-
-func notFoundHandler(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		cleanPath := path.Clean(r.URL.Path)
-		if _, err :=  os.Stat(filepath.Join(".", "static", cleanPath)); os.IsNotExist(err)  {
-			serveNotFound(w, r)
-			return
-		}
-		next.ServeHTTP(w, r)
-		return
-	})
-}
-
-func disableDirectoryListing(next http.Handler) http.Handler {
+func staticHandler(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Path != "/" && strings.HasSuffix(r.URL.Path, "/") {
-			serveNotFound(w, r)
+			http.ServeFile(w, r, filepath.Join(".", "static", "404.html"))
+			return
+		}
+		cleanPath := path.Clean(r.URL.Path)
+		if _, err :=  os.Stat(filepath.Join(".", "static", cleanPath)); os.IsNotExist(err)  {
+			http.ServeFile(w, r, filepath.Join(".", "static", "404.html"))
 			return
 		}
 		next.ServeHTTP(w, r)
@@ -100,8 +90,8 @@ func requestLogger(targetMux http.Handler) http.Handler {
 	})
 }
 
-func multiplexHandler(function wordsFunction) func(http.ResponseWriter, *http.Request) {
-	return func(writer http.ResponseWriter, request *http.Request) {
+func multiplexHandler(function wordsFunction) func(http.ResponseWriter, *http.Request, httprouter.Params) {
+	return func(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
 		input := request.FormValue("input")
 		writer.Header().Add("Content-Type", "application/json")
 		outputBytes, outputStatus := getResults(words, input, function)
@@ -110,7 +100,7 @@ func multiplexHandler(function wordsFunction) func(http.ResponseWriter, *http.Re
 	}
 }
 
-func exifUpload(writer http.ResponseWriter, request *http.Request) {
+func exifUpload(writer http.ResponseWriter, request *http.Request, _ httprouter.Params) {
 	file, _, err := request.FormFile("exifFile")
 	if err != nil {
 		writer.WriteHeader(http.StatusInternalServerError)
