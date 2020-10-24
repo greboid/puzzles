@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 .appendChild(document.createTextNode(flag.country))
             container
                 .appendChild(document.createElement('img'))
-                .setAttribute('src', "https://ghcdn.rawgit.org/csmith/flagdata/master/images/"+flag.image.substr(7, 2)+"-flag.jpg")
+                .setAttribute('src', "/static/flags/"+flag.image.substr(7, 2)+"-flag.webp")
             output.appendChild(container)
         })
     }
