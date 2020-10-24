@@ -24,7 +24,6 @@ COPY --from=builder /etc/group /etc/group
 COPY --from=builder /usr/share/zoneinfo /usr/share/zoneinfo
 
 COPY --from=builder /app/main /puzzles-site
-COPY ./templates/. /app/templates
 COPY ./static/. /static
 COPY ./wordlists/. /app/wordlists
 EXPOSE 8080
