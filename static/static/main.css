@@ -118,6 +118,7 @@ input:valid {
     justify-content: center;
     align-items: flex-start;
     width: 100%;
+    padding: 2em 0;
 }
 
 #tools {
