@@ -91,7 +91,7 @@ func requestLogger(targetMux http.Handler) http.Handler {
 }
 
 func multiplexHandler(function wordsFunction) func(http.ResponseWriter, *http.Request, httprouter.Params) {
-	return func(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
+	return func(writer http.ResponseWriter, request *http.Request, _ httprouter.Params) {
 		input := request.FormValue("input")
 		writer.Header().Add("Content-Type", "application/json")
 		outputBytes, outputStatus := getResults(words, input, function)
