@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"path"
 	"path/filepath"
 	"strings"
 	"time"
@@ -49,7 +50,7 @@ func main() {
 	log.Print("Starting server.")
 	server := http.Server{
 		Addr:    ":8080",
-		Handler: requestLogger(mux),
+		Handler: notFoundHandler(requestLogger(mux)),
 	}
 	go func() {
 		_ = server.ListenAndServe()
@@ -65,13 +66,28 @@ func main() {
 	log.Print("Finishing server.")
 }
 
+func serveNotFound(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, filepath.Join(".", "static", "404.html"))
+}
+
+func notFoundHandler(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		cleanPath := path.Clean(r.URL.Path)
+		if _, err :=  os.Stat(filepath.Join(".", "static", cleanPath)); os.IsNotExist(err)  {
+			serveNotFound(w, r)
+			return
+		}
+		next.ServeHTTP(w, r)
+		return
+	})
+}
+
 func disableDirectoryListing(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Path != "/" && strings.HasSuffix(r.URL.Path, "/") {
-			http.NotFound(w, r)
+			serveNotFound(w, r)
 			return
 		}
-
 		next.ServeHTTP(w, r)
 	})
 }
