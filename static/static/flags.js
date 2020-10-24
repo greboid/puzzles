@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 .appendChild(document.createTextNode(flag.country))
             container
                 .appendChild(document.createElement('img'))
-                .setAttribute('src', "/static/flags/"+flag.image.substr(7, 2)+"-flag.webp")
+                .setAttribute('src', "/static/flags/"+flag.image+".webp")
             output.appendChild(container)
         })
     }
