@@ -7,7 +7,9 @@ import (
 	"path/filepath"
 )
 
-func downloadFlags() {
+func main() {
+	log.Printf("Flags")
+	return
 	flagsURL := "https://ghcdn.rawgit.org/csmith/flagdata/master/flags.json"
 	rsp, err := http.Get(flagsURL)
 	if err != nil {
