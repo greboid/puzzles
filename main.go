@@ -19,7 +19,6 @@ import (
 var (
 	wordList          = flag.String("wordlist-dir", "/app/wordlists", "Path of the word list directory")
 	words             []*kowalski.SpellChecker
-	download          = flag.Bool("download-flags", false, "Download new flags data")
 )
 
 type Output struct {
@@ -33,10 +32,6 @@ func main() {
 	err := envflag.Parse()
 	if err != nil {
 		log.Fatalf("Unable to parse flags: %s", err.Error())
-	}
-	if *download {
-		downloadFlags()
-		return
 	}
 	log.Printf("Loading wordlist.")
 	words = loadWords(*wordList)
