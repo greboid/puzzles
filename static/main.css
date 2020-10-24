@@ -156,9 +156,8 @@ input[type=file] {
 
 .flagResult {
     width: 150px;
-    height: 75px;
     text-align: center;
-    margin: 3em 1em;
+    padding: 0.2em;
 }
 
 .flagResult h2 {
