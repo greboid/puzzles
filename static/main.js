@@ -66,7 +66,7 @@ function handleSimpleResponse(url, inputElement, resultsElement) {
 function handleResponse(result, resultsElement, maxResults = 1000) {
     clearResults(resultsElement)
     if (!result.Success) {
-        resultsElement.appendChild(document.createTextNode('Response had a failed response'))
+        resultsElement.appendChild(document.createTextNode('There was no result for this.'))
         return
     }
     let results = result.Result
