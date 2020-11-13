@@ -41,6 +41,7 @@ func main() {
 	router.GET("/match", multiplexHandler(kowalski.MultiplexMatch))
 	router.GET("/morse", multiplexHandler(kowalski.MultiplexFromMorse))
 	router.GET("/t9", multiplexHandler(kowalski.MultiplexFromT9))
+	router.GET("/analyse", analyseHandler)
 	router.POST("/exifUpload", exifUpload)
 	router.NotFound = staticHandler(http.FileServer(http.Dir(filepath.Join(".", "static"))))
 	log.Print("Starting server.")
@@ -98,6 +99,14 @@ func multiplexHandler(function wordsFunction) func(http.ResponseWriter, *http.Re
 		writer.WriteHeader(outputStatus)
 		_, _ = writer.Write(outputBytes)
 	}
+}
+
+func analyseHandler(writer http.ResponseWriter, request *http.Request, _ httprouter.Params) {
+	input := request.FormValue("input")
+	writer.Header().Add("Content-Type", "application/json")
+	outputBytes, outputStatus := analyse(input)
+	writer.WriteHeader(outputStatus)
+	_, _ = writer.Write(outputBytes)
 }
 
 func exifUpload(writer http.ResponseWriter, request *http.Request, _ httprouter.Params) {

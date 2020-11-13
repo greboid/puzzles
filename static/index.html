@@ -92,6 +92,10 @@
                         <label for="t9Input">T9: </label>
                         <input type="text" id="t9Input" name="input" required pattern="^[2-9]+$" />
                     </form>
+                    <form class="" id="analyseForm" action="/analyse">
+                        <label for="analyseInput">Analyse: </label>
+                        <input type="text" id="analyseInput" name="input" required pattern="^[A-Za-z0-9?]+$" />
+                    </form>
                     <form class="" id="exifUpload" action="/uploadImage" method="POST" enctype="multipart/form-data">
                         <label>Exif Checker: </label>
                         <input type="file" id="exifFile" name="exifFile" required />

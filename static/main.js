@@ -20,6 +20,10 @@ function ready() {
         return false
     };
     document.getElementById('flagterms').onsubmit = () => {
+            return false
+    };
+    document.getElementById('analyseForm').onsubmit = () => {
+        handleSimpleResponse('analyse', document.getElementById('analyseInput'), toolResults)
         return false
     };
     document.getElementById("exifUpload").onchange = () => {

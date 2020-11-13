@@ -38,6 +38,16 @@ func getResults(checker []*kowalski.SpellChecker, input string, function wordsFu
 	return
 }
 
+func analyse(input string) (output []byte, statusCode int) {
+	result := kowalski.Analyse(input)
+	output, _ = json.Marshal(Output{
+		Success: true,
+		Result:  result,
+	})
+	statusCode = http.StatusOK
+	return
+}
+
 func loadWords(wordlistFolder string) []*kowalski.SpellChecker {
 	files, err := ioutil.ReadDir(wordlistFolder)
 	if err != nil {
