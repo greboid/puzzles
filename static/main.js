@@ -3,30 +3,42 @@ document.addEventListener("DOMContentLoaded", ready)
 
 function ready() {
     let toolResults = document.getElementById('toolresults')
+    let flagResults = document.getElementById('flagResults')
     document.getElementById('anagramForm').onsubmit = () => {
+        clearResults(flagResults)
         handleSimpleResponse('anagram', document.getElementById('anagramInput'), toolResults)
         return false
     };
     document.getElementById('matchForm').onsubmit = () => {
+        clearResults(flagResults)
         handleSimpleResponse('match', document.getElementById('matchInput'), toolResults)
         return false
     };
     document.getElementById('morseForm').onsubmit = () => {
+        clearResults(flagResults)
         handleSimpleResponse('morse', document.getElementById('morseInput'), toolResults)
         return false
     };
     document.getElementById('t9Form').onsubmit = () => {
+        clearResults(flagResults)
         handleSimpleResponse('t9', document.getElementById('t9Input'), toolResults)
         return false
     };
     document.getElementById('flagterms').onsubmit = () => {
-            return false
+        clearResults(toolResults)
+        return false
+    };
+    document.getElementById('flagterms').oninput = () => {
+        clearResults(toolResults)
+        return false
     };
     document.getElementById('analyseForm').onsubmit = () => {
+        clearResults(flagResults)
         handleSimpleResponse('analyse', document.getElementById('analyseInput'), toolResults)
         return false
     };
     document.getElementById("exifUpload").onchange = () => {
+        clearResults(flagResults)
         handleExifUpload(toolResults)
         return false
     }

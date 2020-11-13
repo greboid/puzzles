@@ -150,6 +150,13 @@ input[type=file] {
 }
 
 #toolresults {
+    display: grid;
+    grid-gap: 0.2em;
+    grid-auto-rows: 1fr;
+    grid-template-columns: repeat(auto-fill, 150px);
+}
+
+#flagResults {
     max-width: 50vw;
     display: grid;
     grid-gap: 0.2em;
