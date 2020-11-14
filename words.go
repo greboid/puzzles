@@ -15,7 +15,7 @@ import (
 type wordsFunction func([]*kowalski.SpellChecker, string, ...kowalski.MultiplexOption) [][]string
 
 func getResults(checker []*kowalski.SpellChecker, input string, function wordsFunction) (output []byte, statusCode int) {
-	if input == "" || len(input) > 13 {
+	if input == "" || len(input) > 100 {
 		output, _ = json.Marshal(Output{
 			Success: false,
 			Result:  "Invalid input",
