@@ -13,7 +13,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/csmith/kowalski/v2"
+	"github.com/csmith/kowalski/v3"
 	"github.com/kouhin/envflag"
 )
 
@@ -104,7 +104,7 @@ func multiplexHandler(function wordsFunction) func(http.ResponseWriter, *http.Re
 func analyseHandler(writer http.ResponseWriter, request *http.Request, _ httprouter.Params) {
 	input := request.FormValue("input")
 	writer.Header().Add("Content-Type", "application/json")
-	outputBytes, outputStatus := analyse(input)
+	outputBytes, outputStatus := analyse(words[0], input)
 	writer.WriteHeader(outputStatus)
 	_, _ = writer.Write(outputBytes)
 }

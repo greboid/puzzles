@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/csmith/kowalski/v2"
+	"github.com/csmith/kowalski/v3"
 )
 
 type wordsFunction func([]*kowalski.SpellChecker, string, ...kowalski.MultiplexOption) [][]string
@@ -35,8 +35,8 @@ func getResults(checker []*kowalski.SpellChecker, input string, function wordsFu
 	return
 }
 
-func analyse(input string) (output []byte, statusCode int) {
-	result := kowalski.Analyse(input)
+func analyse(words *kowalski.SpellChecker, input string) (output []byte, statusCode int) {
+	result := kowalski.Analyse(words, input)
 	output, _ = json.Marshal(Output{
 		Success: true,
 		Result:  result,
