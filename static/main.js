@@ -6,12 +6,12 @@ function ready() {
     let flagResults = document.getElementById('flagResults')
     document.getElementById('anagramForm').onsubmit = () => {
         clearResults(flagResults)
-        handleSimpleResponse('anagram', document.getElementById('anagramInput'), toolResults)
+        handleDictionaryResponse('anagram', document.getElementById('anagramInput'), toolResults)
         return false
     };
     document.getElementById('matchForm').onsubmit = () => {
         clearResults(flagResults)
-        handleSimpleResponse('match', document.getElementById('matchInput'), toolResults)
+        handleDictionaryResponse('match', document.getElementById('matchInput'), toolResults)
         return false
     };
     document.getElementById('morseForm').onsubmit = () => {
@@ -73,6 +73,51 @@ function handleSimpleResponse(url, inputElement, resultsElement) {
     axios.get('/'+url+'?input='+inputElement.value)
         .then(response => handleResponse(response.data, resultsElement))
         .catch(error => handleError(error, resultsElement))
+}
+
+function handleDictionaryResponse(url, inputElement, resultsElement) {
+    addLoading(resultsElement)
+    axios.get('/'+url+'?input='+inputElement.value)
+        .then(response => outputDictionaryResults(response.data, resultsElement))
+        .catch(error => handleError(error, resultsElement))
+}
+
+function outputDictionaryResults(result, resultsElement, maxResults = 1000) {
+    clearResults(resultsElement)
+    if (!result.Success) {
+        resultsElement.appendChild(document.createTextNode('There was no result for this.'))
+        return
+    }
+    let results = result.Result
+    resultsElement.appendChild(createClearResultsButton(resultsElement))
+    let resultsList = document.createElement('ul')
+    if (results === null || results.length === 0) {
+        resultsList.appendChild(createListItem('No Results'))
+    } else if (results.length > maxResults) {
+        resultsList.appendChild(createListItem('Over '+maxResults+' results, please narrow down'))
+    } else {
+        objectToMap(results).forEach(function (name, dictionary) {
+            resultsList.appendChild(createListItem(dictionary))
+            let dictionaryList = document.createElement('ul')
+            objectToMap(name).forEach(function (word) {
+                dictionaryList.appendChild(createListItem(word))
+            })
+            resultsList.appendChild(dictionaryList)
+        })
+    }
+    resultsElement.appendChild(resultsList)
+}
+
+function objectToMap(obj) {
+    if (obj == null) {
+        return new Map()
+    }
+    const keys = Object.keys(obj)
+    const map = new Map()
+    for(let i = 0; i < keys.length; i++){
+        map.set(keys[i], obj[keys[i]])
+    }
+    return map;
 }
 
 function handleResponse(result, resultsElement, maxResults = 1000) {

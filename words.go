@@ -23,15 +23,12 @@ func getResults(checker []*kowalski.SpellChecker, input string, function wordsFu
 		statusCode = http.StatusBadRequest
 	} else {
 		results := function(checker, input, kowalski.Dedupe)
-		var result []string
-		for i := range results {
-			for j := range results[i] {
-				result = append(result, results[i][j])
-			}
-		}
 		output, _ = json.Marshal(Output{
-			Success: len(result) > 0,
-			Result:  result,
+			Success: len(results) > 0 && (len(results[0]) > 0 || len(results[1]) > 0),
+			Result:  map[string][]string{
+				"Standard": results[0],
+				"UrbanDictionary": results[1],
+			},
 		})
 		statusCode = http.StatusOK
 	}
