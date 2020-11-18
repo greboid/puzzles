@@ -16,12 +16,12 @@ function ready() {
     };
     document.getElementById('morseForm').onsubmit = () => {
         clearResults(flagResults)
-        handleSimpleResponse('morse', document.getElementById('morseInput'), toolResults)
+        handleDictionaryResponse('morse', document.getElementById('morseInput'), toolResults)
         return false
     };
     document.getElementById('t9Form').onsubmit = () => {
         clearResults(flagResults)
-        handleSimpleResponse('t9', document.getElementById('t9Input'), toolResults)
+        handleDictionaryResponse('t9', document.getElementById('t9Input'), toolResults)
         return false
     };
     document.getElementById('flagterms').onsubmit = () => {
