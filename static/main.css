@@ -169,7 +169,6 @@ input[type=file] {
 
 .flagResult h2 {
     font-size: clamp(1em, 1em, 30px);
-    flex-grow: 2;
     max-width: 150px;
 }
 
