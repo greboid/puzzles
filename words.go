@@ -1,9 +1,7 @@
 package main
 
 import (
-	"encoding/json"
 	"log"
-	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
@@ -13,34 +11,21 @@ import (
 
 type wordsFunction func([]*kowalski.SpellChecker, string, ...kowalski.MultiplexOption) [][]string
 
-func getResults(checker []*kowalski.SpellChecker, input string, function wordsFunction) (output []byte, statusCode int) {
+func getResults(checker []*kowalski.SpellChecker, input string, function wordsFunction) (success bool, results map[string][]string) {
 	if input == "" || len(input) > 100 {
-		output, _ = json.Marshal(Output{
-			Success: false,
-			Result:  "Invalid input",
-		})
-		statusCode = http.StatusBadRequest
+		success = false
+		results = make(map[string][]string)
 	} else {
-		results := function(checker, input, kowalski.Dedupe)
-		output, _ = json.Marshal(Output{
-			Success: len(results) > 0 && (len(results[0]) > 0 || len(results[1]) > 0),
-			Result: map[string][]string{
-				"Standard":        results[0],
-				"UrbanDictionary": results[1],
-			},
-		})
-		statusCode = http.StatusOK
+		success = true
+		tmpResults := function(checker, input, kowalski.Dedupe)
+		results = map[string][]string{"Standard": tmpResults[0], "Urban Dictionary": tmpResults[1]}
 	}
 	return
 }
 
-func analyse(words *kowalski.SpellChecker, input string) (output []byte, statusCode int) {
-	result := kowalski.Analyse(words, input)
-	output, _ = json.Marshal(Output{
-		Success: true,
-		Result:  result,
-	})
-	statusCode = http.StatusOK
+func analyse(words *kowalski.SpellChecker, input string) (success bool, result []string) {
+	success = true
+	result = kowalski.Analyse(words, input)
 	return
 }
 

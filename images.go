@@ -2,7 +2,6 @@ package main
 
 import (
 	"bytes"
-	"encoding/json"
 	"fmt"
 	"image"
 	_ "image/gif"
@@ -10,7 +9,6 @@ import (
 	_ "image/png"
 	"io"
 	"mime/multipart"
-	"net/http"
 	"time"
 
 	_ "github.com/oov/psd"
@@ -111,26 +109,18 @@ func getImageInfo(data []byte) (ImageInfo, error) {
 	return imageInfo, nil
 }
 
-func getImageResults(file multipart.File) ([]byte, int) {
+func getImageResults(file multipart.File) (success bool, results *ImageInfo) {
 	data, err := io.ReadAll(file)
 	if err != nil {
-		output, _ := json.Marshal(Output{
-			Success: false,
-			Result:  "Error reading file",
-		})
-		return output, http.StatusInternalServerError
+		success = false
+		results = nil
 	}
 	imageInfo, err := getImageInfo(data)
 	if err != nil {
-		output, _ := json.Marshal(Output{
-			Success: false,
-			Result:  "Error parsing EXIF",
-		})
-		return output, http.StatusInternalServerError
+		success = false
+		results = nil
 	}
-	output, _ := json.Marshal(Output{
-		Success: true,
-		Result:  imageInfo,
-	})
-	return output, http.StatusOK
+	success = true
+	results = &imageInfo
+	return
 }

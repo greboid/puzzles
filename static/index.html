@@ -85,27 +85,41 @@
                     </ol>
                 </div>
                 <div id="tools">
-                    <form class="" id="anagramForm" action="/anagram">
+                    <form id="anagramForm"
+                          data-hx-get="/anagram"
+                          data-hx-target="#toolresults">
                         <label for="anagramInput">Anagram solver: </label>
                         <input type="text" id="anagramInput" name="input" required pattern="^[A-Za-z0-9?]+$" maxlength="20" />
                     </form>
-                    <form class="" id="matchForm" action="/anagram">
+                    <form id="matchForm"
+                          data-hx-get="/anagram"
+                          data-hx-target="#toolresults">
                         <label for="matchInput">Word Matcher: </label>
                         <input type="text" id="matchInput" name="input" required pattern="^[A-Za-z0-9?]+$" maxlength="20" />
                     </form>
-                    <form class="" id="morseForm" action="/morse">
+                    <form id="morseForm"
+                          data-hx-get="/morse"
+                          data-hx-target="#toolresults">
                         <label for="morseInput">Morse: </label>
                         <input type="text" id="morseInput" name="input" required pattern="^[-\.]+$" />
                     </form>
-                    <form class="" id="t9Form" action="/t9">
+                    <form id="t9Form"
+                          data-hx-get="/t9"
+                          data-hx-target="#toolresults">
                         <label for="t9Input">T9: </label>
                         <input type="text" id="t9Input" name="input" required pattern="^[2-9]+$" />
                     </form>
-                    <form class="" id="analyseForm" action="/analyse">
+                    <form id="analyseForm"
+                          data-hx-get="/analyse"
+                          data-hx-target="#toolresults">
                         <label for="analyseInput">Analyse: </label>
                         <input type="text" id="analyseInput" name="input" required pattern="^[A-Za-z0-9? ]+$" />
                     </form>
-                    <form class="" id="exifUpload" action="/uploadImage" method="POST" enctype="multipart/form-data">
+                    <form id="exifUpload"
+                          data-hx-post="/exifUpload"
+                          data-hx-encoding="multipart/form-data"
+                          data-hx-target="#toolresults"
+                          data-hx-trigger="change">
                         <label>Exif Checker: </label>
                         <input type="file" id="exifFile" name="exifFile" required />
                     </form>
@@ -130,6 +144,6 @@
         </div>
         <script src="/axios.js"></script>
         <script src="/flags.js"></script>
-        <script src="/main.js"></script>
+        <script src="https://unpkg.com/htmx.org@1.2.1"></script>
     </body>
 </html>
