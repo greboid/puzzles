@@ -5,8 +5,9 @@ import (
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing/object"
 	"github.com/go-git/go-git/v5/storage/memory"
-	"io/ioutil"
+	"io"
 	"log"
+	"os"
 	"path/filepath"
 	"strings"
 )
@@ -31,10 +32,10 @@ func main() {
 	CheckIfError("getting flags.json file", err)
 	flagsReader, err := flagsData.Reader()
 	CheckIfError("getting flags.json file reader", err)
-	body, err := ioutil.ReadAll(flagsReader)
+	body, err := io.ReadAll(flagsReader)
 	CheckIfError("getting reading flags.json", err)
 	_ = flagsReader.Close()
-	err = ioutil.WriteFile(filepath.Join(".", "static", "static", "flags.json"), body, 0777)
+	err = os.WriteFile(filepath.Join(".", "static", "static", "flags.json"), body, 0777)
 	CheckIfError("writing flags.json", err)
 	log.Printf("Downloaded flags.json")
 	fileIter := tree.Files()
@@ -44,9 +45,9 @@ func main() {
 			filename := strings.TrimPrefix(file.Name, imagesFolder)
 			reader, err := file.Reader()
 			CheckIfError(fmt.Sprintf("error getting reader for file %s", filename), err)
-			body,err := ioutil.ReadAll(reader)
+			body, err := io.ReadAll(reader)
 			CheckIfError(fmt.Sprintf("error reading file %s", filename), err)
-			err = ioutil.WriteFile(filepath.Join(".", "static", "static", "flags", filename), body, 0777)
+			err = os.WriteFile(filepath.Join(".", "static", "static", "flags", filename), body, 0777)
 			CheckIfError(fmt.Sprintf("error writing file %s", filename), err)
 			_ = reader.Close()
 			log.Printf("Downloaded %s", filename)

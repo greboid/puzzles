@@ -8,7 +8,7 @@ import (
 	_ "image/gif"
 	_ "image/jpeg"
 	_ "image/png"
-	"io/ioutil"
+	"io"
 	"mime/multipart"
 	"net/http"
 	"time"
@@ -112,7 +112,7 @@ func getImageInfo(data []byte) (ImageInfo, error) {
 }
 
 func getImageResults(file multipart.File) ([]byte, int) {
-	data, err := ioutil.ReadAll(file)
+	data, err := io.ReadAll(file)
 	if err != nil {
 		output, _ := json.Marshal(Output{
 			Success: false,

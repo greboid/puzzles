@@ -3,23 +3,23 @@ package main
 import (
 	"context"
 	"flag"
-	"github.com/julienschmidt/httprouter"
+	"io"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
-	"path"
 	"path/filepath"
-	"strings"
 	"time"
 
 	"github.com/csmith/kowalski/v3"
+	"github.com/gorilla/handlers"
+	"github.com/gorilla/mux"
 	"github.com/kouhin/envflag"
 )
 
 var (
-	wordList          = flag.String("wordlist-dir", "/app/wordlists", "Path of the word list directory")
-	words             []*kowalski.SpellChecker
+	wordList = flag.String("wordlist-dir", "/app/wordlists", "Path of the word list directory")
+	words    []*kowalski.SpellChecker
 )
 
 type Output struct {
@@ -36,18 +36,21 @@ func main() {
 	}
 	log.Printf("Loading wordlist.")
 	words = loadWords(*wordList)
-	router := httprouter.New()
-	router.GET("/anagram", multiplexHandler(kowalski.MultiplexAnagram))
-	router.GET("/match", multiplexHandler(kowalski.MultiplexMatch))
-	router.GET("/morse", multiplexHandler(kowalski.MultiplexFromMorse))
-	router.GET("/t9", multiplexHandler(kowalski.MultiplexFromT9))
-	router.GET("/analyse", analyseHandler)
-	router.POST("/exifUpload", exifUpload)
-	router.NotFound = staticHandler(http.FileServer(http.Dir(filepath.Join(".", "static"))))
+	router := mux.NewRouter()
+	router.Use(handlers.ProxyHeaders)
+	router.Use(handlers.CompressHandler)
+	router.Use(newLoggingHandler(os.Stdout))
+	router.HandleFunc("/anagram", multiplexHandler(kowalski.MultiplexAnagram)).Methods("GET")
+	router.HandleFunc("/match", multiplexHandler(kowalski.MultiplexMatch)).Methods("GET")
+	router.HandleFunc("/morse", multiplexHandler(kowalski.MultiplexFromMorse)).Methods("GET")
+	router.HandleFunc("/t9", multiplexHandler(kowalski.MultiplexFromT9)).Methods("GET")
+	router.HandleFunc("/analyse", analyseHandler).Methods("GET")
+	router.HandleFunc("/exifUpload", exifUpload).Methods("POST")
+	router.PathPrefix("/").Handler(http.FileServer(http.Dir(filepath.Join(".", "static"))))
 	log.Print("Starting server.")
 	server := http.Server{
 		Addr:    ":8080",
-		Handler: requestLogger(router),
+		Handler: router,
 	}
 	go func() {
 		_ = server.ListenAndServe()
@@ -63,36 +66,14 @@ func main() {
 	log.Print("Finishing server.")
 }
 
-func staticHandler(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Path != "/" && strings.HasSuffix(r.URL.Path, "/") {
-			http.ServeFile(w, r, filepath.Join(".", "static", "404.html"))
-			return
-		}
-		cleanPath := path.Clean(r.URL.Path)
-		if _, err :=  os.Stat(filepath.Join(".", "static", cleanPath)); os.IsNotExist(err)  {
-			http.ServeFile(w, r, filepath.Join(".", "static", "404.html"))
-			return
-		}
-		next.ServeHTTP(w, r)
-	})
+func newLoggingHandler(dst io.Writer) func(http.Handler) http.Handler {
+	return func(h http.Handler) http.Handler {
+		return handlers.LoggingHandler(dst, h)
+	}
 }
 
-func requestLogger(targetMux http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		targetMux.ServeHTTP(w, r)
-		requesterIP := r.RemoteAddr
-		log.Printf(
-			"%s  \t%s  \t%s",
-			requesterIP,
-			r.Method,
-			r.RequestURI,
-		)
-	})
-}
-
-func multiplexHandler(function wordsFunction) func(http.ResponseWriter, *http.Request, httprouter.Params) {
-	return func(writer http.ResponseWriter, request *http.Request, _ httprouter.Params) {
+func multiplexHandler(function wordsFunction) func(http.ResponseWriter, *http.Request) {
+	return func(writer http.ResponseWriter, request *http.Request) {
 		input := request.FormValue("input")
 		writer.Header().Add("Content-Type", "application/json")
 		outputBytes, outputStatus := getResults(words, input, function)
@@ -101,7 +82,7 @@ func multiplexHandler(function wordsFunction) func(http.ResponseWriter, *http.Re
 	}
 }
 
-func analyseHandler(writer http.ResponseWriter, request *http.Request, _ httprouter.Params) {
+func analyseHandler(writer http.ResponseWriter, request *http.Request) {
 	input := request.FormValue("input")
 	writer.Header().Add("Content-Type", "application/json")
 	outputBytes, outputStatus := analyse(words[0], input)
@@ -109,7 +90,7 @@ func analyseHandler(writer http.ResponseWriter, request *http.Request, _ httprou
 	_, _ = writer.Write(outputBytes)
 }
 
-func exifUpload(writer http.ResponseWriter, request *http.Request, _ httprouter.Params) {
+func exifUpload(writer http.ResponseWriter, request *http.Request) {
 	file, _, err := request.FormFile("exifFile")
 	if err != nil {
 		writer.WriteHeader(http.StatusInternalServerError)

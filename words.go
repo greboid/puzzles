@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -25,8 +24,8 @@ func getResults(checker []*kowalski.SpellChecker, input string, function wordsFu
 		results := function(checker, input, kowalski.Dedupe)
 		output, _ = json.Marshal(Output{
 			Success: len(results) > 0 && (len(results[0]) > 0 || len(results[1]) > 0),
-			Result:  map[string][]string{
-				"Standard": results[0],
+			Result: map[string][]string{
+				"Standard":        results[0],
 				"UrbanDictionary": results[1],
 			},
 		})
@@ -46,11 +45,11 @@ func analyse(words *kowalski.SpellChecker, input string) (output []byte, statusC
 }
 
 func loadWords(wordlistFolder string) []*kowalski.SpellChecker {
-	files, err := ioutil.ReadDir(wordlistFolder)
+	files, err := os.ReadDir(wordlistFolder)
 	if err != nil {
 		return nil
 	}
-	files, err = ioutil.ReadDir(wordlistFolder)
+	files, err = os.ReadDir(wordlistFolder)
 	if err != nil {
 		return nil
 	}
