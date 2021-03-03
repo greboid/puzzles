@@ -2,13 +2,13 @@ package main
 
 import (
 	"context"
+	"embed"
 	"flag"
-	"io"
+	"io/fs"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
-	"path/filepath"
 	"time"
 
 	"github.com/csmith/kowalski/v3"
@@ -16,6 +16,9 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/kouhin/envflag"
 )
+
+//go:embed static
+var staticFS embed.FS
 
 var (
 	wordList = flag.String("wordlist-dir", "/app/wordlists", "Path of the word list directory")
@@ -34,19 +37,23 @@ func main() {
 	if err != nil {
 		log.Fatalf("Unable to parse flags: %s", err.Error())
 	}
+	staticFiles, err := fs.Sub(staticFS, "static")
+	if err != nil {
+		log.Fatalf("Unable to get static folder: %s", err.Error())
+	}
 	log.Printf("Loading wordlist.")
 	words = loadWords(*wordList)
 	router := mux.NewRouter()
 	router.Use(handlers.ProxyHeaders)
 	router.Use(handlers.CompressHandler)
-	router.Use(newLoggingHandler(os.Stdout))
+	router.Use(NewLoggingHandler(os.Stdout))
 	router.HandleFunc("/anagram", multiplexHandler(kowalski.MultiplexAnagram)).Methods("GET")
 	router.HandleFunc("/match", multiplexHandler(kowalski.MultiplexMatch)).Methods("GET")
 	router.HandleFunc("/morse", multiplexHandler(kowalski.MultiplexFromMorse)).Methods("GET")
 	router.HandleFunc("/t9", multiplexHandler(kowalski.MultiplexFromT9)).Methods("GET")
 	router.HandleFunc("/analyse", analyseHandler).Methods("GET")
 	router.HandleFunc("/exifUpload", exifUpload).Methods("POST")
-	router.PathPrefix("/").Handler(http.FileServer(http.Dir(filepath.Join(".", "static"))))
+	router.PathPrefix("/").Handler(NotFoundHandler(http.FileServer(http.FS(staticFiles))))
 	log.Print("Starting server.")
 	server := http.Server{
 		Addr:    ":8080",
@@ -64,12 +71,6 @@ func main() {
 		log.Fatalf("Unable to shutdown: %s", err.Error())
 	}
 	log.Print("Finishing server.")
-}
-
-func newLoggingHandler(dst io.Writer) func(http.Handler) http.Handler {
-	return func(h http.Handler) http.Handler {
-		return handlers.LoggingHandler(dst, h)
-	}
 }
 
 func multiplexHandler(function wordsFunction) func(http.ResponseWriter, *http.Request) {
