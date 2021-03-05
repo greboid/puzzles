@@ -3,6 +3,8 @@ package main
 import (
 	"github.com/gorilla/handlers"
 	"io"
+	"io/fs"
+	"log"
 	"net/http"
 )
 
@@ -35,16 +37,29 @@ func NewLoggingHandler(dst io.Writer) func(http.Handler) http.Handler {
 	}
 }
 
-func CustomNotFoundHandler(h http.Handler, redirect string) http.HandlerFunc {
+func NotFoundHandler(h http.Handler, files fs.FS) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		fakeWriter := &notFoundInterceptWriter{realWriter: w}
 		h.ServeHTTP(fakeWriter, r)
 		if fakeWriter.status == http.StatusNotFound {
-			http.Redirect(w, r, redirect, http.StatusFound)
+			errorFile, err := files.Open("404.html")
+			if err != nil {
+				log.Printf("Unable to output 404: %s", err.Error())
+				http.NotFound(w, r)
+				return
+			}
+			errorbytes, err := io.ReadAll(errorFile)
+			if err != nil {
+				log.Printf("Unable to output 404: %s", err.Error())
+				http.NotFound(w, r)
+				return
+			}
+			w.Header().Set("Content-Type", "text/html; charset=utf-8")
+			w.WriteHeader(http.StatusNotFound)
+			_, err = w.Write(errorbytes)
+			if err != nil {
+				log.Printf("Unable to output 404: %s", err.Error())
+			}
 		}
 	}
-}
-
-func NotFoundHandler(h http.Handler) http.HandlerFunc {
-	return CustomNotFoundHandler(h, "/404.html")
 }

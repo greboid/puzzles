@@ -56,7 +56,7 @@ func main() {
 	router.HandleFunc("/t9", multiplexHandler(kowalski.MultiplexFromT9, templates)).Methods("GET")
 	router.HandleFunc("/analyse", analyseHandler(templates)).Methods("GET")
 	router.HandleFunc("/exifUpload", exifUpload(templates)).Methods("POST")
-	router.PathPrefix("/").Handler(NotFoundHandler(http.FileServer(http.FS(staticFiles))))
+	router.PathPrefix("/").Handler(NotFoundHandler(http.FileServer(http.FS(staticFiles)), staticFiles))
 	log.Print("Starting server.")
 	server := http.Server{
 		Addr:    ":8080",
