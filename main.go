@@ -56,6 +56,7 @@ func main() {
 	router.HandleFunc("/t9", multiplexHandler(kowalski.MultiplexFromT9, templates)).Methods("GET")
 	router.HandleFunc("/analyse", analyseHandler(templates)).Methods("GET")
 	router.HandleFunc("/exifUpload", exifUpload(templates)).Methods("POST")
+	router.HandleFunc("/flags", flagResult(templates)).Methods("GET")
 	router.PathPrefix("/").Handler(NotFoundHandler(http.FileServer(http.FS(staticFiles)), staticFiles))
 	log.Print("Starting server.")
 	server := http.Server{
@@ -120,6 +121,19 @@ func exifUpload(templates *template.Template) func(http.ResponseWriter, *http.Re
 		} else {
 			writer.WriteHeader(http.StatusOK)
 			_ = templates.ExecuteTemplate(writer, "imageinfo.tpl", result)
+		}
+	}
+}
+
+func flagResult(templates *template.Template) func(http.ResponseWriter, *http.Request) {
+	return func(writer http.ResponseWriter, request *http.Request) {
+		input := request.FormValue("input")
+		success, result := reduceResult(input)
+		if !success {
+			writer.WriteHeader(http.StatusBadRequest)
+		} else {
+			writer.WriteHeader(http.StatusOK)
+			_ = templates.ExecuteTemplate(writer, "flags.tpl", result)
 		}
 	}
 }

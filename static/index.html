@@ -123,10 +123,13 @@
                         <label>Exif Checker: </label>
                         <input type="file" id="exifFile" name="exifFile" required />
                     </form>
-                    <form class="" id="flagsform" >
+                    <div id="flagsform">
                         <label for="flagterms">Describe Flag: </label>
-                        <input type="text" id="flagterms" />
-                    </form>
+                        <input type="text" id="flagterms" name="input"
+                               data-hx-get="/flags"
+                               data-hx-target="#flagResults"
+                               data-hx-trigger="keyup changed delay:500ms" />
+                    </div>
                     <div id="toolresults"></div>
                     <div id="flagResults"></div>
                 </div>
@@ -142,7 +145,6 @@
                 <li><a href="https://ptable.com">Periodic Table</a></li>
             </ul>
         </div>
-        <script src="/flags.js"></script>
         <script src="/htmx@1.2.1.js"></script>
     </body>
 </html>
