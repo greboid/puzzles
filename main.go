@@ -85,6 +85,7 @@ func multiplexHandler(function wordsFunction, templates *template.Template) func
 		if !success {
 			writer.WriteHeader(http.StatusBadRequest)
 		} else {
+			writer.Header().Set("Content-Type", "text/html; charset=utf-8")
 			writer.WriteHeader(http.StatusOK)
 			_ = templates.ExecuteTemplate(writer, "wordlist.tpl", results)
 		}
@@ -98,6 +99,7 @@ func analyseHandler(templates *template.Template) func(http.ResponseWriter, *htt
 		if !success {
 			writer.WriteHeader(http.StatusBadRequest)
 		} else {
+			writer.Header().Set("Content-Type", "text/html; charset=utf-8")
 			writer.WriteHeader(http.StatusOK)
 			_ = templates.ExecuteTemplate(writer, "analysis.tpl", result)
 		}
@@ -120,6 +122,7 @@ func exifUpload(templates *template.Template) func(http.ResponseWriter, *http.Re
 		if !success {
 			writer.WriteHeader(http.StatusBadRequest)
 		} else {
+			writer.Header().Set("Content-Type", "text/html; charset=utf-8")
 			writer.WriteHeader(http.StatusOK)
 			_ = templates.ExecuteTemplate(writer, "imageinfo.tpl", result)
 		}
@@ -133,6 +136,7 @@ func flagResult(templates *template.Template) func(http.ResponseWriter, *http.Re
 		if !success {
 			writer.WriteHeader(http.StatusBadRequest)
 		} else {
+			writer.Header().Set("Content-Type", "text/html; charset=utf-8")
 			writer.WriteHeader(http.StatusOK)
 			_ = templates.ExecuteTemplate(writer, "flags.tpl", result)
 		}
