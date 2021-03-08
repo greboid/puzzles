@@ -20,6 +20,7 @@ import (
 
 //go:embed static
 var staticFS embed.FS
+var staticFiles fs.FS
 
 //go:embed templates
 var templateFS embed.FS
@@ -36,7 +37,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("Unable to parse flags: %s", err.Error())
 	}
-	staticFiles, err := fs.Sub(staticFS, "static")
+	staticFiles, err = fs.Sub(staticFS, "static")
 	if err != nil {
 		log.Fatalf("Unable to get static folder: %s", err.Error())
 	}
@@ -128,7 +129,7 @@ func exifUpload(templates *template.Template) func(http.ResponseWriter, *http.Re
 func flagResult(templates *template.Template) func(http.ResponseWriter, *http.Request) {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		input := request.FormValue("input")
-		success, result := reduceResult(input)
+		success, result := reduceResult(staticFiles, input)
 		if !success {
 			writer.WriteHeader(http.StatusBadRequest)
 		} else {

@@ -2,7 +2,9 @@ package main
 
 import (
 	"encoding/json"
-	"os"
+	"io"
+	"io/fs"
+	"log"
 	"regexp"
 	"strings"
 )
@@ -14,8 +16,8 @@ type flagInfo struct {
 	Keywords    []string `json:"keywords"`
 }
 
-func reduceResult(input string) (success bool, result []flagInfo) {
-	flags, flagKeywords, err := reduceFlags()
+func reduceResult(files fs.FS, input string) (success bool, result []flagInfo) {
+	flags, flagKeywords, err := reduceFlags(files)
 	if err != nil {
 		success = true
 		return
@@ -85,15 +87,22 @@ func intersects(u1 []string, u2 []string) (output []string) {
 	return output
 }
 
-func reduceFlags() ([]flagInfo, []string, error) {
-	flagBytes, err := os.ReadFile("static/flags.json")
-	flags := make([]flagInfo, 0)
-	flagKeywords := make([]string, 0)
+func reduceFlags(files fs.FS) ([]flagInfo, []string, error) {
+	file, err := files.Open("flags.json")
 	if err != nil {
+		log.Printf("Unable to open flags.json: %s", err)
 		return nil, nil, err
 	}
+	flagBytes, err := io.ReadAll(file)
+	if err != nil {
+		log.Printf("Unable to read flags.json: %s", err)
+		return nil, nil, err
+	}
+	flags := make([]flagInfo, 0)
+	flagKeywords := make([]string, 0)
 	err = json.Unmarshal(flagBytes, &flags)
 	if err != nil {
+		log.Printf("Unable to unmarshall flags.json: %s", err)
 		return nil, nil, err
 	}
 	for _, flag := range flags {
