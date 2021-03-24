@@ -63,12 +63,11 @@ input:valid {
 }
 
 #ideas {
-    counter-reset: ideas;
     margin: 1em;
 }
 
 #ideas>ol {
-    list-style: pad-example;
+    list-style: decimal-leading-zero;
     font-size: 15px;
     padding: 0;
     margin-bottom: 4em;
@@ -76,13 +75,7 @@ input:valid {
 }
 
 #ideas>ol>li {
-    counter-increment: ideas;
     padding: 0.3em;
-}
-@counter-style pad-example {
-    system: numeric;
-    symbols: "0" "1" "2" "3" "4" "5" "6" "7" "8" "9";
-    pad: 2 "0";
 }
 #ideas>ol>li.common::before {
     content: "\00a0💡\00a0" !important;
