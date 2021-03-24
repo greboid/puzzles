@@ -134,7 +134,9 @@ func flagResult(templates *template.Template) func(http.ResponseWriter, *http.Re
 		input := request.FormValue("input")
 		success, result := reduceResult(staticFiles, input)
 		if !success {
-			writer.WriteHeader(http.StatusBadRequest)
+			writer.Header().Set("Content-Type", "text/html; charset=utf-8")
+			writer.WriteHeader(http.StatusOK)
+			_ = templates.ExecuteTemplate(writer, "flags.tpl", nil)
 		} else {
 			writer.Header().Set("Content-Type", "text/html; charset=utf-8")
 			writer.WriteHeader(http.StatusOK)
