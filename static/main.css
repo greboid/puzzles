@@ -149,9 +149,14 @@ input[type=file] {
     grid-column: 2 / 3;
 }
 
-#externaltools>ul {
+#externaltools ul {
+    display: flex;
+    flex-direction: row;
+}
+
+#externaltools li {
     list-style: none;
-    padding-left: 0;
+    padding-left: 1em;
 }
 
 #toolresults {
