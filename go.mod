@@ -3,7 +3,7 @@ module github.com/greboid/puzzles
 go 1.16
 
 require (
-	github.com/csmith/kowalski/v3 v3.0.0
+	github.com/csmith/kowalski/v3 v3.1.0
 	github.com/go-git/go-git/v5 v5.2.0
 	github.com/gopherjs/gopherjs v0.0.0-20200217142428-fce0ec30dd00 // indirect
 	github.com/gorilla/handlers v1.5.1
