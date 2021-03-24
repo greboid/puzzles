@@ -88,22 +88,22 @@ func intersects(u1 []string, u2 []string) (output []string) {
 }
 
 func reduceFlags(files fs.FS) ([]flagInfo, []string, error) {
+	flags := make([]flagInfo, 0)
+	flagKeywords := make([]string, 0)
 	file, err := files.Open("flags.json")
 	if err != nil {
 		log.Printf("Unable to open flags.json: %s", err)
-		return nil, nil, err
+		return flags, flagKeywords, err
 	}
 	flagBytes, err := io.ReadAll(file)
 	if err != nil {
 		log.Printf("Unable to read flags.json: %s", err)
-		return nil, nil, err
+		return flags, flagKeywords, err
 	}
-	flags := make([]flagInfo, 0)
-	flagKeywords := make([]string, 0)
 	err = json.Unmarshal(flagBytes, &flags)
 	if err != nil {
 		log.Printf("Unable to unmarshall flags.json: %s", err)
-		return nil, nil, err
+		return flags, flagKeywords, err
 	}
 	for _, flag := range flags {
 		for _, flagKeyword := range flag.Keywords {

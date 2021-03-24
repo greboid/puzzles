@@ -37,7 +37,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("Unable to parse flags: %s", err.Error())
 	}
-	staticFiles, err := GetEmbedOrOSFS("static", staticFS)
+	staticFiles, err = GetEmbedOrOSFS("static", staticFS)
 	if err != nil {
 		log.Fatalf("Unable to get static folder: %s", err.Error())
 	}
