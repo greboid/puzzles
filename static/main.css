@@ -62,10 +62,6 @@ input:valid {
     border: 1px solid var(--input-border);
 }
 
-#ideas {
-    margin: 1em;
-}
-
 #ideas>ol {
     list-style: decimal-leading-zero;
     font-size: 15px;
@@ -75,25 +71,7 @@ input:valid {
 }
 
 #ideas>ol>li {
-    padding: 0.3em;
-}
-#ideas>ol>li.common::before {
-    content: "\00a0💡\00a0" !important;
-}
-#ideas>ol>li.strings::before {
-    content: "\00a0🔤\00a0" !important;
-}
-#ideas>ol>li.images::before {
-    content: "\00a0🎨\00a0" !important;
-}
-#ideas>ol>li.videos::before {
-    content: "\00a0🎞️\00a0" !important;
-}
-#ideas>ol>li.audio::before {
-    content: "\00a0🎧\00a0" !important;
-}
-#ideas>ol>li::before {
-    content: "\00a0\00a0";
+    padding-left: 0.3em;
 }
 
 #ideas {
