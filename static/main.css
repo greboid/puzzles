@@ -186,3 +186,13 @@ input[type=file] {
     max-width: 150px;
     align-self: flex-end;
 }
+
+.indicator{
+    display:none;
+}
+.htmx-request .indicator {
+    display:inline;
+}
+.htmx-request.indicator{
+    display:inline;
+}

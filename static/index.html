@@ -8,7 +8,6 @@
     </head>
     <body>
         <h1>Puzzle Checklist</h1>
-        <a class="anchor" href="#tools">⬇ Tools ⬇</a>
         <div id="content">
             <div id="internal">
                 <div id="ideas">
@@ -87,34 +86,39 @@
                         </li>
                     </ol>
                 </div>
-                <div id="tools">
+                <div id="tools" data-hx-ext="clear-on-event, disable-on-event">
                     <form id="anagramForm"
                           data-hx-get="/anagram"
-                          data-hx-target="#toolresults">
+                          data-hx-target="#toolresults"
+                          data-hx-indicator="#indicator">
                         <label for="anagramInput">Anagram solver: </label>
-                        <input type="text" id="anagramInput" name="input" required pattern="^[A-Za-z0-9?]+$" maxlength="20" />
+                        <input type="text" id="anagramInput" name="input" required pattern="^[A-Za-z0-9?]+$" maxlength="32" />
                     </form>
                     <form id="matchForm"
                           data-hx-get="/anagram"
-                          data-hx-target="#toolresults">
+                          data-hx-target="#toolresults"
+                          data-hx-indicator="#indicator">
                         <label for="matchInput">Word Matcher: </label>
-                        <input type="text" id="matchInput" name="input" required pattern="^[A-Za-z0-9?]+$" maxlength="20" />
+                        <input type="text" id="matchInput" name="input" required pattern="^[A-Za-z0-9?]+$" maxlength="32" />
                     </form>
                     <form id="morseForm"
                           data-hx-get="/morse"
-                          data-hx-target="#toolresults">
+                          data-hx-target="#toolresults"
+                          data-hx-indicator="#indicator">
                         <label for="morseInput">Morse: </label>
                         <input type="text" id="morseInput" name="input" required pattern="^[-\.]+$" />
                     </form>
                     <form id="t9Form"
                           data-hx-get="/t9"
-                          data-hx-target="#toolresults">
+                          data-hx-target="#toolresults"
+                          data-hx-indicator="#indicator">
                         <label for="t9Input">T9: </label>
                         <input type="text" id="t9Input" name="input" required pattern="^[2-9]+$" />
                     </form>
                     <form id="analyseForm"
                           data-hx-get="/analyse"
-                          data-hx-target="#toolresults">
+                          data-hx-target="#toolresults"
+                          data-hx-indicator="#indicator">
                         <label for="analyseInput">Analyse: </label>
                         <input type="text" id="analyseInput" name="input" required pattern="^[A-Za-z0-9? ]+$" />
                     </form>
@@ -122,7 +126,8 @@
                           data-hx-post="/exifUpload"
                           data-hx-encoding="multipart/form-data"
                           data-hx-target="#toolresults"
-                          data-hx-trigger="change">
+                          data-hx-trigger="change"
+                          data-hx-indicator="#indicator">
                         <label>Exif Checker: </label>
                         <input type="file" id="exifFile" name="exifFile" required />
                     </form>
@@ -131,14 +136,15 @@
                         <input type="text" id="flagterms" name="input"
                                data-hx-get="/flags"
                                data-hx-target="#flagResults"
-                               data-hx-trigger="keyup changed delay:500ms" />
+                               data-hx-trigger="keyup changed delay:500ms"
+                               data-hx-indicator="#indicator"/>
                     </div>
+                    <img id="indicator" class="indicator" src="/spinner.gif" alt="spinner"/>
                     <div id="toolresults"></div>
                     <div id="flagResults"></div>
                 </div>
             </div>
         </div>
-        <a class="anchor" href="#top">⬆ Top ⬆</a>
         <div id="externaltools">
             <ul>
                 <li><a href="https://csmith.github.io/semaphore-o-matic/demo">Semaphore</a></li>
@@ -147,8 +153,41 @@
                 <li><a href="http://rumkin.com/tools/cipher/">Ciphers</a></li>
                 <li><a href="https://www.dcode.fr/en">Decode.fr</a></li>
                 <li><a href="https://ptable.com">Periodic Table</a></li>
+                <li><a href="https://v2.cryptii.com/text/ita2">ITA2</a></li>
             </ul>
         </div>
         <script src="/htmx@1.2.1.js"></script>
+        <script>
+            htmx.defineExtension('clear-on-event', {
+                onEvent : function(name, evt) {
+                    if (name === "htmx:xhr:loadstart") {
+                        div = document.getElementById("toolresults")
+                        while (div.firstChild && div.removeChild(div.firstChild)) {
+                        }
+                        div = document.getElementById("flagResults")
+                        while (div.firstChild && div.removeChild(div.firstChild)) {
+                        }
+                    }
+                }
+            })
+        </script>
+        <script>
+            htmx.defineExtension('disable-on-event', {
+                onEvent : function(name, evt) {
+                    if (name === "htmx:xhr:loadstart") {
+                        let inputs = document.getElementsByTagName("input");
+                        for (let i = 0; i < inputs.length; i++) {
+                            inputs[i].disabled = true;
+                        }
+                    }
+                    if (name === "htmx:xhr:loadend") {
+                        let inputs = document.getElementsByTagName("input");
+                        for (let i = 0; i < inputs.length; i++) {
+                            inputs[i].disabled = false;
+                        }
+                    }
+                }
+            })
+        </script>
     </body>
 </html>
