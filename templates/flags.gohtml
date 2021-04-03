@@ -1,0 +1,11 @@
+{{- /*gotype: github.com/greboid/puzzles.FlagData*/ -}}
+{{ if not .Result }}
+    No Flags.
+{{ else }}
+    {{ range $key, $value := .Result }}
+    <div class="flagResult">
+        <h2>{{$value.Country}}</h2>
+        <img alt="{{$value.Country}}" src="//{{$.FullHost}}/flags/{{$value.Image}}.webp">
+    </div>
+    {{ end }}
+{{ end }}

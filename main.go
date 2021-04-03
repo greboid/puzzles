@@ -41,7 +41,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("Unable to get static folder: %s", err.Error())
 	}
-	templates, err := template.ParseFS(templateFS, "templates/*.tpl")
+	templates, err := template.ParseFS(templateFS, "templates/*.tpl", "templates/*.gohtml")
 	if err != nil {
 		log.Fatalf("Unable to load templates: %s", err.Error())
 	}
@@ -134,6 +134,11 @@ func exifUpload(templates *template.Template) func(http.ResponseWriter, *http.Re
 	}
 }
 
+type FlagData struct {
+	FullHost string
+	Result []flagInfo
+}
+
 func flagResult(templates *template.Template) func(http.ResponseWriter, *http.Request) {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		input := request.FormValue("input")
@@ -141,11 +146,14 @@ func flagResult(templates *template.Template) func(http.ResponseWriter, *http.Re
 		if !success {
 			writer.Header().Set("Content-Type", "text/html; charset=utf-8")
 			writer.WriteHeader(http.StatusOK)
-			_ = templates.ExecuteTemplate(writer, "flags.tpl", nil)
+			_ = templates.ExecuteTemplate(writer, "flags.gohtml", nil)
 		} else {
 			writer.Header().Set("Content-Type", "text/html; charset=utf-8")
 			writer.WriteHeader(http.StatusOK)
-			_ = templates.ExecuteTemplate(writer, "flags.tpl", result)
+			_ = templates.ExecuteTemplate(writer, "flags.gohtml", FlagData{
+				FullHost: request.Host,
+				Result:   result,
+			})
 		}
 	}
 }
