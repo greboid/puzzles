@@ -51,7 +51,7 @@ func main() {
 	router.Use(handlers.ProxyHeaders)
 	router.Use(handlers.CompressHandler)
 	router.Use(handlers.CORS(
-		handlers.AllowedHeaders([]string{"hx-current-url","hx-request","hx-target","hx-trigger"}),
+		handlers.AllowedHeaders([]string{"hx-current-url", "hx-request", "hx-target", "hx-trigger", "hx-trigger-name"}),
 		handlers.AllowedMethods([]string{"GET", "OPTION", "POST"}),
 		handlers.AllowedOrigins([]string{"https://puzzles.mdbot.uk"}),
 		))
