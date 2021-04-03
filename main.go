@@ -50,6 +50,7 @@ func main() {
 	router := mux.NewRouter()
 	router.Use(handlers.ProxyHeaders)
 	router.Use(handlers.CompressHandler)
+	router.Use(handlers.CORS(handlers.AllowedOrigins([]string{"puzzles.mdbot.uk"})))
 	router.Use(NewLoggingHandler(os.Stdout))
 	router.HandleFunc("/anagram", multiplexHandler(kowalski.MultiplexAnagram, templates)).Methods("GET")
 	router.HandleFunc("/match", multiplexHandler(kowalski.MultiplexMatch, templates)).Methods("GET")
