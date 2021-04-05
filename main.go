@@ -63,7 +63,7 @@ func main() {
 	router.HandleFunc("/analyse", analyseHandler(templates)).Methods("GET")
 	router.HandleFunc("/exifUpload", exifUpload(templates)).Methods("POST")
 	router.HandleFunc("/flags", flagResult(templates)).Methods("GET")
-	router.PathPrefix("/").Handler(NotFoundHandler(http.FileServer(http.FS(staticFiles)), staticFiles))
+	router.PathPrefix("/").Handler(http.RedirectHandler("https://puzzles.mdbot.uk", http.StatusTemporaryRedirect))
 	log.Print("Starting server.")
 	server := http.Server{
 		Addr:    ":8080",
