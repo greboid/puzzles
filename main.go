@@ -84,10 +84,10 @@ func main() {
 	log.Print("Finishing server.")
 }
 
-func multiplexHandlerWithContext(function func(ctx context.Context, checkers []*kowalski.SpellChecker, pattern string, opts ...kowalski.MultiplexOption) ([][]string, error), templates *template.Template) func(http.ResponseWriter, *http.Request) {
+func multiplexHandlerWithContext(function wordsFunctionWithContext, templates *template.Template) func(http.ResponseWriter, *http.Request) {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		input := request.FormValue("input")
-		success, results := getResultsWithContext(words, input, function)
+		success, results := getResultsWithContext(request.Context(), words, input, function)
 		if !success {
 			writer.WriteHeader(http.StatusBadRequest)
 		} else {
@@ -98,7 +98,7 @@ func multiplexHandlerWithContext(function func(ctx context.Context, checkers []*
 	}
 }
 
-func multiplexHandler(function func(checkers []*kowalski.SpellChecker, pattern string, opts ...kowalski.MultiplexOption) [][]string, templates *template.Template) func(http.ResponseWriter, *http.Request) {
+func multiplexHandler(function wordsFunction, templates *template.Template) func(http.ResponseWriter, *http.Request) {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		input := request.FormValue("input")
 		success, results := getResults(words, input, function)

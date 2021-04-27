@@ -13,13 +13,13 @@ import (
 type wordsFunctionWithContext func(context.Context, []*kowalski.SpellChecker, string, ...kowalski.MultiplexOption) ([][]string, error)
 type wordsFunction func([]*kowalski.SpellChecker, string, ...kowalski.MultiplexOption) [][]string
 
-func getResultsWithContext(checker []*kowalski.SpellChecker, input string, function wordsFunctionWithContext) (success bool, results map[string][]string) {
+func getResultsWithContext(ctx context.Context, checker []*kowalski.SpellChecker, input string, function wordsFunctionWithContext) (success bool, results map[string][]string) {
 	if input == "" || len(input) > 100 {
 		success = false
 		results = make(map[string][]string)
 	} else {
 		success = true
-		tmpResults, err := function(context.Background(), checker, input, kowalski.Dedupe)
+		tmpResults, err := function(ctx, checker, input, kowalski.Dedupe)
 		if err != nil {
 			success = false
 		}
