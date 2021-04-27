@@ -1,15 +1,33 @@
 package main
 
 import (
+	"context"
 	"log"
 	"os"
 	"path/filepath"
 	"strings"
 
-	"github.com/csmith/kowalski/v3"
+	"github.com/csmith/kowalski/v5"
 )
 
+type wordsFunctionWithContext func(context.Context, []*kowalski.SpellChecker, string, ...kowalski.MultiplexOption) ([][]string, error)
 type wordsFunction func([]*kowalski.SpellChecker, string, ...kowalski.MultiplexOption) [][]string
+
+func getResultsWithContext(checker []*kowalski.SpellChecker, input string, function wordsFunctionWithContext) (success bool, results map[string][]string) {
+	if input == "" || len(input) > 100 {
+		success = false
+		results = make(map[string][]string)
+	} else {
+		success = true
+		tmpResults, err := function(context.Background(), checker, input, kowalski.Dedupe)
+		if err != nil {
+			success = false
+		}
+		results = map[string][]string{"Standard": tmpResults[0], "Urban Dictionary": tmpResults[1]}
+	}
+	return
+}
+
 
 func getResults(checker []*kowalski.SpellChecker, input string, function wordsFunction) (success bool, results map[string][]string) {
 	if input == "" || len(input) > 100 {

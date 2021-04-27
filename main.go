@@ -12,7 +12,7 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/csmith/kowalski/v3"
+	"github.com/csmith/kowalski/v5"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/kouhin/envflag"
@@ -56,8 +56,8 @@ func main() {
 		handlers.AllowedOrigins([]string{"https://puzzles.mdbot.uk"}),
 		))
 	router.Use(NewLoggingHandler(os.Stdout))
-	router.HandleFunc("/anagram", multiplexHandler(kowalski.MultiplexAnagram, templates)).Methods("GET")
-	router.HandleFunc("/match", multiplexHandler(kowalski.MultiplexMatch, templates)).Methods("GET")
+	router.HandleFunc("/anagram", multiplexHandlerWithContext(kowalski.MultiplexAnagram, templates)).Methods("GET")
+	router.HandleFunc("/match", multiplexHandlerWithContext(kowalski.MultiplexMatch, templates)).Methods("GET")
 	router.HandleFunc("/morse", multiplexHandler(kowalski.MultiplexFromMorse, templates)).Methods("GET")
 	router.HandleFunc("/t9", multiplexHandler(kowalski.MultiplexFromT9, templates)).Methods("GET")
 	router.HandleFunc("/analyse", analyseHandler(templates)).Methods("GET")
@@ -84,7 +84,21 @@ func main() {
 	log.Print("Finishing server.")
 }
 
-func multiplexHandler(function wordsFunction, templates *template.Template) func(http.ResponseWriter, *http.Request) {
+func multiplexHandlerWithContext(function func(ctx context.Context, checkers []*kowalski.SpellChecker, pattern string, opts ...kowalski.MultiplexOption) ([][]string, error), templates *template.Template) func(http.ResponseWriter, *http.Request) {
+	return func(writer http.ResponseWriter, request *http.Request) {
+		input := request.FormValue("input")
+		success, results := getResultsWithContext(words, input, function)
+		if !success {
+			writer.WriteHeader(http.StatusBadRequest)
+		} else {
+			writer.Header().Set("Content-Type", "text/html; charset=utf-8")
+			writer.WriteHeader(http.StatusOK)
+			_ = templates.ExecuteTemplate(writer, "wordlist.tpl", results)
+		}
+	}
+}
+
+func multiplexHandler(function func(checkers []*kowalski.SpellChecker, pattern string, opts ...kowalski.MultiplexOption) [][]string, templates *template.Template) func(http.ResponseWriter, *http.Request) {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		input := request.FormValue("input")
 		success, results := getResults(words, input, function)
