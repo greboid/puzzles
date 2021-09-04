@@ -1,6 +1,6 @@
 module github.com/greboid/puzzles
 
-go 1.16
+go 1.17
 
 require (
 	github.com/csmith/kowalski/v5 v5.0.0
@@ -13,4 +13,25 @@ require (
 	github.com/simpicapp/goexif v1.0.0
 	github.com/stretchr/testify v1.6.1 // indirect
 	golang.org/x/image v0.0.0-20210220032944-ac19c3e999fb
+)
+
+require (
+	github.com/csmith/cryptography v1.0.0 // indirect
+	github.com/emirpasic/gods v1.12.0 // indirect
+	github.com/felixge/httpsnoop v1.0.1 // indirect
+	github.com/go-git/gcfg v1.5.0 // indirect
+	github.com/go-git/go-billy/v5 v5.0.0 // indirect
+	github.com/imdario/mergo v0.3.9 // indirect
+	github.com/jbenet/go-context v0.0.0-20150711004518-d14ea06fba99 // indirect
+	github.com/kevinburke/ssh_config v0.0.0-20190725054713-01f96b0aa0cd // indirect
+	github.com/mitchellh/go-homedir v1.1.0 // indirect
+	github.com/sergi/go-diff v1.1.0 // indirect
+	github.com/spaolacci/murmur3 v1.1.0 // indirect
+	github.com/willf/bitset v1.1.11 // indirect
+	github.com/willf/bloom v2.0.3+incompatible // indirect
+	github.com/xanzy/ssh-agent v0.2.1 // indirect
+	golang.org/x/crypto v0.0.0-20210322153248-0c34fe9e7dc2 // indirect
+	golang.org/x/net v0.0.0-20210226172049-e18ecbb05110 // indirect
+	golang.org/x/sys v0.0.0-20210326220804-49726bf1d181 // indirect
+	gopkg.in/warnings.v0 v0.1.2 // indirect
 )
