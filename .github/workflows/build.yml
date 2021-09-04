@@ -32,7 +32,7 @@ jobs:
         uses: redhat-actions/buildah-build@v2.6.2
         with:
           dockerfiles: Dockerfile
-          image: greboid.com
+          image: puzzles
           tags: ${{ steps.tags.outputs.tags }}
           extra-args: >
             --timestamp
