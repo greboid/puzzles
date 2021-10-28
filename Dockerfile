@@ -7,6 +7,6 @@ RUN CGO_ENABLED=0 GOOS=linux go build -a -ldflags '-extldflags "-static"' -asmfl
 FROM ghcr.io/greboid/dockerfiles/base@sha256:82873fbcddc94e3cf77fdfe36765391b6e6049701623a62c2a23248d2a42b1cf
 
 COPY --from=builder --chown=65532 /app/main /puzzles-site
-COPY ./wordlists/. --chown=65532 /app/wordlists
+COPY ./wordlists/. /app/wordlists
 EXPOSE 8080
 CMD ["/puzzles-site"]
