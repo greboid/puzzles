@@ -12,10 +12,10 @@ import (
 	"os/signal"
 	"time"
 
+	"github.com/csmith/envflag"
 	"github.com/csmith/kowalski/v5"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
-	"github.com/kouhin/envflag"
 )
 
 //go:embed static
@@ -33,10 +33,8 @@ var (
 //go:generate go run flags/flags.go
 
 func main() {
-	err := envflag.Parse()
-	if err != nil {
-		log.Fatalf("Unable to parse flags: %s", err.Error())
-	}
+	envflag.Parse()
+	var err error
 	staticFiles, err = GetEmbedOrOSFS("static", staticFS)
 	if err != nil {
 		log.Fatalf("Unable to get static folder: %s", err.Error())
@@ -54,7 +52,7 @@ func main() {
 		handlers.AllowedHeaders([]string{"hx-current-url", "hx-request", "hx-target", "hx-trigger", "hx-trigger-name"}),
 		handlers.AllowedMethods([]string{"GET", "OPTION", "POST"}),
 		handlers.AllowedOrigins([]string{"https://puzzles.mdbot.uk"}),
-		))
+	))
 	router.Use(NewLoggingHandler(os.Stdout))
 	router.HandleFunc("/anagram", multiplexHandlerWithContext(kowalski.MultiplexAnagram, templates)).Methods("GET")
 	router.HandleFunc("/match", multiplexHandlerWithContext(kowalski.MultiplexMatch, templates)).Methods("GET")
@@ -151,7 +149,7 @@ func exifUpload(templates *template.Template) func(http.ResponseWriter, *http.Re
 
 type FlagData struct {
 	FullHost string
-	Result []flagInfo
+	Result   []flagInfo
 }
 
 func flagResult(templates *template.Template) func(http.ResponseWriter, *http.Request) {
