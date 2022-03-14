@@ -81,10 +81,8 @@ github.com/csmith/cryptography v1.0.0 h1:wfG+4HDpiSRA8Y5qJLsc0sbGEwsW81JIaSlV5s/
 github.com/csmith/cryptography v1.0.0/go.mod h1:jBl57vRCz3YdEwPoAtKWhtl3187+GPJFAS1BW7j8nyE=
 github.com/csmith/envflag v1.0.0 h1:ARMp9RyT/+1eMevJrB0cQeHxBlGpnoLSjuPdGVINzIA=
 github.com/csmith/envflag v1.0.0/go.mod h1:cE/k+xEpKPaIvo7Tz3RubNpWXRRf/WcI+bvPopn4VE0=
-github.com/csmith/kowalski/v5 v5.0.0 h1:1F9OhAkjo8X+tx3OTo5L6hMpGJxI4+sEKjlucLq3mp0=
-github.com/csmith/kowalski/v5 v5.0.0/go.mod h1:yHRldWD0z/s0JUJEkYw22zjjIdAoYjK0g0h5g8mgvrI=
-github.com/csmith/kowalski/v5 v5.1.0 h1:ydNwdlQQLYgZ0HjmzkLN/gj4z6K8bco+jBmIDnYJJL0=
-github.com/csmith/kowalski/v5 v5.1.0/go.mod h1:Fn2PTegNbeT2k02tqrMLuM3ldu1XffkQTC1vAwhtAhU=
+github.com/csmith/kowalski/v5 v5.2.0 h1:gT8PEW9kKbah24xzA8eOQWaf8DiD8pOpOBh2+qOY8d8=
+github.com/csmith/kowalski/v5 v5.2.0/go.mod h1:Fn2PTegNbeT2k02tqrMLuM3ldu1XffkQTC1vAwhtAhU=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
@@ -98,7 +96,6 @@ github.com/envoyproxy/go-control-plane v0.9.9-0.20201210154907-fd9021fe5dad/go.m
 github.com/envoyproxy/go-control-plane v0.9.9-0.20210217033140-668b12f5399d/go.mod h1:cXg6YxExXjJnVBQHBLXeUAgxn2UodCpnH306RInaBQk=
 github.com/envoyproxy/protoc-gen-validate v0.1.0/go.mod h1:iSmxcyjqTsJpI2R4NaDN7+kN2VEUnK/pcBlmesArF7c=
 github.com/fatih/color v1.7.0/go.mod h1:Zm6kSWBoL9eyXnKyktHP6abPY2pDugNf5KwzbycvMj4=
-github.com/felixge/httpsnoop v1.0.1 h1:lvB5Jl89CsZtGIWuTcDM1E/vkVs49/Ml7JJe07l8SPQ=
 github.com/felixge/httpsnoop v1.0.1/go.mod h1:m8KPJKqk1gH5J9DgRY2ASl2lWCfGKXixSwevea8zH2U=
 github.com/felixge/httpsnoop v1.0.2 h1:+nS9g82KMXccJ/wp0zyRW9ZBHFETmMGtkk+2CTTrW4o=
 github.com/felixge/httpsnoop v1.0.2/go.mod h1:m8KPJKqk1gH5J9DgRY2ASl2lWCfGKXixSwevea8zH2U=
