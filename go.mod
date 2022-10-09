@@ -1,6 +1,6 @@
 module github.com/greboid/puzzles
 
-go 1.17
+go 1.19
 
 require (
 	github.com/csmith/envflag v1.0.0
@@ -10,7 +10,7 @@ require (
 	github.com/gorilla/mux v1.8.0
 	github.com/oov/psd v0.0.0-20220121172623-5db5eafcecbb
 	github.com/simpicapp/goexif v1.0.0
-	golang.org/x/image v0.0.0-20220302094943-723b81ca9867
+	golang.org/x/image v0.0.0-20220902085622-e7cb96979f69
 )
 
 require (
@@ -19,11 +19,11 @@ require (
 	github.com/acomagu/bufpipe v1.0.3 // indirect
 	github.com/csmith/cryptography v1.0.0 // indirect
 	github.com/emirpasic/gods v1.12.0 // indirect
-	github.com/felixge/httpsnoop v1.0.2 // indirect
+	github.com/felixge/httpsnoop v1.0.3 // indirect
 	github.com/go-git/gcfg v1.5.0 // indirect
 	github.com/go-git/go-billy/v5 v5.3.1 // indirect
 	github.com/google/go-cmp v0.5.7 // indirect
-	github.com/gopherjs/gopherjs v0.0.0-20220221023154-0b2280d3ff96 // indirect
+	github.com/gopherjs/gopherjs v1.17.2 // indirect
 	github.com/imdario/mergo v0.3.12 // indirect
 	github.com/jbenet/go-context v0.0.0-20150711004518-d14ea06fba99 // indirect
 	github.com/kevinburke/ssh_config v0.0.0-20201106050909-4977a11b4351 // indirect
