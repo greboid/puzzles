@@ -5,7 +5,7 @@ go 1.20
 require (
 	github.com/csmith/envflag v1.0.0
 	github.com/csmith/kowalski/v5 v5.3.0
-	github.com/go-git/go-git/v5 v5.9.0
+	github.com/go-git/go-git/v5 v5.10.0
 	github.com/gorilla/handlers v1.5.1
 	github.com/gorilla/mux v1.8.0
 	github.com/oov/psd v0.0.0-20220121172623-5db5eafcecbb
