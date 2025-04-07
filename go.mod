@@ -12,7 +12,7 @@ require (
 	github.com/gorilla/mux v1.8.1
 	github.com/oov/psd v0.0.0-20220121172623-5db5eafcecbb
 	github.com/simpicapp/goexif v1.0.0
-	golang.org/x/image v0.25.0
+	golang.org/x/image v0.26.0
 )
 
 require (
