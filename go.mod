@@ -7,7 +7,7 @@ toolchain go1.24.0
 require (
 	github.com/csmith/envflag v1.0.0
 	github.com/csmith/kowalski/v5 v5.3.0
-	github.com/go-git/go-git/v5 v5.16.0
+	github.com/go-git/go-git/v5 v5.16.1
 	github.com/gorilla/handlers v1.5.2
 	github.com/gorilla/mux v1.8.1
 	github.com/oov/psd v0.0.0-20220121172623-5db5eafcecbb
