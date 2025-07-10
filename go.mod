@@ -10,7 +10,7 @@ require (
 	github.com/gorilla/mux v1.8.1
 	github.com/oov/psd v0.0.0-20220121172623-5db5eafcecbb
 	github.com/simpicapp/goexif v1.1.0
-	golang.org/x/image v0.28.0
+	golang.org/x/image v0.29.0
 )
 
 require (
