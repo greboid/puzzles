@@ -5,7 +5,7 @@ go 1.24.3
 require (
 	github.com/csmith/envflag v1.0.0
 	github.com/csmith/kowalski/v5 v5.4.0
-	github.com/go-git/go-git/v5 v5.16.2
+	github.com/go-git/go-git/v5 v5.16.3
 	github.com/gorilla/handlers v1.5.2
 	github.com/gorilla/mux v1.8.1
 	github.com/oov/psd v0.0.0-20220121172623-5db5eafcecbb
