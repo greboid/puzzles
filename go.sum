@@ -20,8 +20,8 @@ github.com/csmith/cryptography v1.1.0 h1:ZO3w3A27vXKXrFr6gebr4ZNZvUy671pmpk0pz4Y
 github.com/csmith/cryptography v1.1.0/go.mod h1:gxgxyQDaeurHFCAGwj0y0KCOLZ19Aecs5msWPu1jKrk=
 github.com/csmith/envflag v1.0.0 h1:ARMp9RyT/+1eMevJrB0cQeHxBlGpnoLSjuPdGVINzIA=
 github.com/csmith/envflag v1.0.0/go.mod h1:cE/k+xEpKPaIvo7Tz3RubNpWXRRf/WcI+bvPopn4VE0=
-github.com/csmith/kowalski/v5 v5.4.0 h1:7JxM4ZCnvdRXsTOIO7XO7/p6Vfs2uS9LYmbGN/LbF6I=
-github.com/csmith/kowalski/v5 v5.4.0/go.mod h1:axtB8GrPv5bWDYh3i/9fPJ1dxNKudWesyI6UVImkFaY=
+github.com/csmith/kowalski/v6 v6.0.3 h1:BWEJdKZrSVNtDKW/eoLeOKo98thzy2yv5HIFvad7gj0=
+github.com/csmith/kowalski/v6 v6.0.3/go.mod h1:UEigYzyqCpV/b7L5clHFSIylIU7d+YCxaG3P3Qxd6kk=
 github.com/cyphar/filepath-securejoin v0.4.1 h1:JyxxyPEaktOD+GAnqIqTf9A8tHyAG22rowi7HkoSU1s=
 github.com/cyphar/filepath-securejoin v0.4.1/go.mod h1:Sdj7gXlvMcPZsbhwhQ33GguGLDGQL7h7bg04C/+u9jI=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
