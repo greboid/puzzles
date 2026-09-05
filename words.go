@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/csmith/kowalski/v5"
+	"github.com/csmith/kowalski/v6"
 )
 
 type wordsFunctionWithContext func(context.Context, []*kowalski.SpellChecker, string, ...kowalski.MultiplexOption) ([][]string, error)
