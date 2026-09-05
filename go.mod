@@ -10,7 +10,7 @@ require (
 	github.com/gorilla/mux v1.8.1
 	github.com/oov/psd v0.0.0-20220121172623-5db5eafcecbb
 	github.com/simpicapp/goexif v1.1.0
-	golang.org/x/image v0.37.0
+	golang.org/x/image v0.45.0
 )
 
 require (
@@ -37,6 +37,6 @@ require (
 	golang.org/x/crypto v0.45.0 // indirect
 	golang.org/x/exp v0.0.0-20250531010427-b6e5de432a8b // indirect
 	golang.org/x/net v0.47.0 // indirect
-	golang.org/x/sys v0.38.0 // indirect
+	golang.org/x/sys v0.47.0 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
 )
