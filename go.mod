@@ -3,7 +3,7 @@ module github.com/greboid/puzzles
 go 1.25.0
 
 require (
-	github.com/csmith/envflag v1.0.0
+	github.com/csmith/envflag/v2 v2.0.0
 	github.com/csmith/kowalski/v5 v5.4.0
 	github.com/go-git/go-git/v5 v5.17.0
 	github.com/gorilla/handlers v1.5.2
