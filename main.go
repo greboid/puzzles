@@ -12,7 +12,7 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/csmith/envflag"
+	"github.com/csmith/envflag/v2"
 	"github.com/csmith/kowalski/v5"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"

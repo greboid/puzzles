@@ -18,8 +18,8 @@ github.com/cloudflare/circl v1.6.3 h1:9GPOhQGF9MCYUeXyMYlqTR6a5gTrgR/fBLXvUgtVcg
 github.com/cloudflare/circl v1.6.3/go.mod h1:2eXP6Qfat4O/Yhh8BznvKnJ+uzEoTQ6jVKJRn81BiS4=
 github.com/csmith/cryptography v1.1.0 h1:ZO3w3A27vXKXrFr6gebr4ZNZvUy671pmpk0pz4Yango=
 github.com/csmith/cryptography v1.1.0/go.mod h1:gxgxyQDaeurHFCAGwj0y0KCOLZ19Aecs5msWPu1jKrk=
-github.com/csmith/envflag v1.0.0 h1:ARMp9RyT/+1eMevJrB0cQeHxBlGpnoLSjuPdGVINzIA=
-github.com/csmith/envflag v1.0.0/go.mod h1:cE/k+xEpKPaIvo7Tz3RubNpWXRRf/WcI+bvPopn4VE0=
+github.com/csmith/envflag/v2 v2.0.0 h1:jho28W/psEqJ02EdbUHmkmFpbc5HFhog6NzHRbgtIFg=
+github.com/csmith/envflag/v2 v2.0.0/go.mod h1:GNzzXvZ2bC3z6tdoO45mTrs7l4Uht2WfBKaF1KQu0Pk=
 github.com/csmith/kowalski/v5 v5.4.0 h1:7JxM4ZCnvdRXsTOIO7XO7/p6Vfs2uS9LYmbGN/LbF6I=
 github.com/csmith/kowalski/v5 v5.4.0/go.mod h1:axtB8GrPv5bWDYh3i/9fPJ1dxNKudWesyI6UVImkFaY=
 github.com/cyphar/filepath-securejoin v0.4.1 h1:JyxxyPEaktOD+GAnqIqTf9A8tHyAG22rowi7HkoSU1s=
