@@ -13,7 +13,7 @@ import (
 	"time"
 
 	"github.com/csmith/envflag"
-	"github.com/csmith/kowalski/v5"
+	"github.com/csmith/kowalski/v6"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 )
