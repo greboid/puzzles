@@ -24,6 +24,6 @@ jobs:
       - uses: actions/toolkit/docker-login@master
         with:
           audience: u:1:52ec91db-a743-4dfd-84a8-ad63ef402315
-      - uses: actions/toolkit/docker-build@master
+      - uses: actions/toolkit/docker-push@master
         with:
           tags: git.mouse-lake.ts.net/${{ github.repository }}:latest
